@@ -1,0 +1,43 @@
+package com.rampgreen.caretakermobile.network;
+//package com.example.caretakermobile.network;
+//
+//import android.content.Context;
+//
+//
+///**
+// *  @author Manish Pathak
+// *  
+// */
+//public class TaskExecuter extends CommonTaskExecuter {
+//
+//	private TaskExecuter(Context context, VolleyController volleyController, 
+//			String downloadTitle, String url, String data, int requestFor) {
+//		super(context, volleyController, downloadTitle, url, data, requestFor);
+//	}
+//
+//	private TaskExecuter(Context context, VolleyController volleyController, 
+//			String url, String data, int requestFor) {
+//		super(context, volleyController, url, data, requestFor);
+//	}
+//	
+//	@Override
+//	protected String doInBackground() {
+//		// send login request
+//		return backgroundTask.backgroundTask(requestFor);
+//	}
+//	
+//	public static void run(Context context, VolleyController volleyController, 
+//			String url, String data, int requestFor) {
+//		new TaskExecuter(context, volleyController, url, data, requestFor).execute();
+//	}
+//	
+//	public static void run(Context context, VolleyController volleyController, 
+//			String downloadTitle, String url, String data, int requestFor) {
+//		new TaskExecuter(context, volleyController, downloadTitle, url, data, requestFor).execute();
+//	}
+//	
+//	public interface DoInBackground {
+//		// write the vollycode by implementing DoInBAckground interface.
+//		String backgroundTask(int requestFor);
+//	}
+//}

@@ -1,0 +1,107 @@
+package com.example.caretakermobile.util;
+
+
+
+public class Constants {
+
+	public static final String TAG = "AnalyticRnd";
+	public static boolean CLOSE_ALL_ACTIVITIES = false;
+
+	public static final String	URL_MANAGEMENT_ACCOUNTS   = "https://www.googleapis.com/analytics/v3/management/accounts?key=AIzaSyDoa00AFF2tacGESDykFRULm5fABbLl1Lw";
+	//	https://www.googleapis.com/analytics/v3/management/accounts/38927772/webproperties/~all/profiles?key={YOUR_API_KEY}
+	//	public static final String GA_ALL_PROFILES = "https://www.googleapis.com/analytics/v2.4/management/accounts/%s/webproperties/~all/profiles?alt=json&key=AIzaSyDh6WLbUEwA6Tbz5pTSAv0vKYwrDt2t6hE";
+	//	public static final String GA_ALL_PROFILES = "https://www.googleapis.com/analytics/v3/management/accounts/38927772/webproperties/~all/profiles?key={YOUR_API_KEY}";
+	public static final String GA_ALL_PROPERTIES = "https://www.googleapis.com/analytics/v3/management/accounts/38927772/webproperties/~all/profiles?key=AIzaSyDoa00AFF2tacGESDykFRULm5fABbLl1Lw";
+	public static final String GA_ALL_PROFILES = "https://www.googleapis.com/analytics/v3/management/accounts/%s/webproperties/~all/profiles?key=AIzaSyDoa00AFF2tacGESDykFRULm5fABbLl1Lw";
+	public static final String GA_API_URL = "https://www.googleapis.com/analytics/v3/data/ga?";
+
+	public static final int DASHBOARD_OVERVIEW = 0;
+	public static final int DASHBOARD_VISITS = 1;
+	public static final int DASHBOARD_VISITORS = 2;
+	public static final int DASHBOARD_PAGEVIEWS = 3;
+	public static final int DASHBOARD_PAGEPERVISITS = 4;
+	public static final int DASHBOARD_AVG_VISIT_DURATION = 5;
+	public static final int DASHBOARD_BOUNCERATE = 6;
+	public static final int DASHBOARD_NEW_VISITS = 7;
+
+	public static final int DEMOGRAPHIC_LANGUAGE = 8;
+	public static final int DEMOGRAPHIC_COUNTRY = 9;
+	public static final int DEMOGRAPHIC_CITY = 10;
+
+	public static final int SYSTEM_BROSWSER = 11;
+	public static final int SYSTEM_FALSH = 12;
+	public static final int SYSTEM_JAVASUPPORT = 13;
+	public static final int SYSTEM_OS = 14;
+	public static final int SYSTEM_SERVICEPRO = 15;
+
+	public static final int MOBILE_DEVICES = 16;
+	public static final int MOBILE__ISMOBILE = 17;
+	public static final int MOBILE_OS = 18;
+	public static final int MOBILE_SERVICEPRO = 19;
+	public static final int MOBILE_SCREENRES = 20;
+
+	public static final int VISITED_BY_DATE = 1;
+	public static final int VISITED_BY_COUNTRY = 2;
+	public static final int VISITED_BY_CITY= 3;
+	public static final int VISITED_BY_BROWSER= 4;
+
+	public static final int IMPRESSIONS_BY_DATE = 50;
+	public static final int AD_MATHCED_QUERY = 60;
+
+	public static final int REPORTS_CAMPAIGN= 70;
+	public static final int REPORTS_SEARCH_TERM = 80;
+	public static final int REPORTS_USER_LOCATION = 90;
+
+	public static final String TAB_TYPE = "Type";
+	public static final String PROFILE = "PROFILE";
+	public static final String ID_PROFILE = "profileid";
+	public static final String ID_ACCOUNT = "accountid";
+
+	public static final String CHART_TYPE = "cType";
+	public static final int CHART_LINE = 10;
+	public static final int CHART_PIE= 11;
+
+	public static final String HEADER = "header";
+
+	public static final String CALLING_ACTIVITY_TYPE= "calling_activity";
+	public static final int CALLING_ACTIVITY_BY_BACK_BUTTON = 100;
+	public static final int CALLING_ACTIVITY_SPLASH = 101;
+	public static final int CALLING_ACTIVITY_ACCOUNTLISTACTIVITY = 102;
+	public static final int CALLING_ACTIVITY_SETTING_ACTIVITY = 103;
+	public static final int CALLING_ACTIVITY_FRAGCHANGE_ACTIVITY_PROFILE_CHANGE = 104;
+
+	public static final String TYPE_TITLE = "titletype";
+	public static final String VISITS = "Visits";
+	public static final String VISITORS = "Unique Visitors";
+	public static final String PAGEVIEWS = "Pageviews";
+	public static final String PAGEPERVISITS = "Page/visits";
+	public static final String AVG_TIME_ONSITE = "Avg. Visit Duration";
+	public static final String BOUNCERATE = "Bounce rate";
+	public static final String NEW_VISITS = "New visits";
+
+	public static final String LANGUAGE 	= "Language";
+	public static final String COUNTRY 	= "Country";
+	public static final String CITY 		= "City";
+	
+	public static final String BROWSER = "Browser";
+	public static final String FLASH_VERSION = "Flash Version";
+	public static final String JAVA_SUPPORT = "Java Support";
+	public static final String OPERATING_SYSTEM = "Operating System";
+	public static final String SERVICE_PROVIDER = "Service Provider";
+	
+	public static final String DEVICES = "Devices";
+	public static final String IS_MOBILE = "Is mobile";
+	public static final String MOBILE_OPERATING_SYSTEM = "Mobile OS";
+	public static final String MOBILE_SERVICE_PROVIDER = "Mobile Service";
+	public static final String SCREEN_RESOLUTION = "Screen Resolution";
+	
+	public static final String IMPRESSIONS = "Impressions";
+
+	public static final String[] SUBTITLES = new String[]{"Overview", "Demographic", "System", "Mobile"};
+
+	
+
+	public static final String FETCHED_PROFILE_DATA = "fetched_Data";
+
+
+}

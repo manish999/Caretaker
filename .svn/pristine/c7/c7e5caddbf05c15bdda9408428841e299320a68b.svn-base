@@ -1,0 +1,161 @@
+package com.example.caretakermobile;
+
+import org.json.JSONObject;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.example.caretakermobile.interfaces.ParserError;
+import com.example.caretakermobile.model.BeanController;
+import com.example.caretakermobile.model.LoginBean;
+import com.example.caretakermobile.network.CustomRequest;
+import com.example.caretakermobile.network.QueryHelper;
+import com.example.caretakermobile.util.AppLog;
+
+import java.util.Map;
+
+public class RegistrationActivity extends BaseActivity
+{
+	private Button mBtnRegistration;
+	private EditText mEtUserName;
+	private EditText mEtPassword;
+	private EditText mEtAge;
+	private EditText mEtHeight;
+	private EditText mEtWeight;
+	private EditText mEtGender;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.registration);
+
+		mEtUserName = (EditText)findViewById(R.id.email);
+		mEtPassword = (EditText)findViewById(R.id.password);
+		mEtAge = (EditText)findViewById(R.id.age);
+		mEtHeight = (EditText)findViewById(R.id.height);
+		mEtWeight = (EditText)findViewById(R.id.weight);
+		mEtGender = (EditText)findViewById(R.id.gender);
+		mBtnRegistration = (Button)findViewById(R.id.btn_register);
+
+		mBtnRegistration.setOnClickListener(new View.OnClickListener() 
+		{
+			@Override
+			public void onClick(View arg0) 
+			{
+				String userName = mEtUserName.getText().toString();
+				String password = mEtPassword.getText().toString();
+				String age = mEtAge.getText().toString();
+				String height = mEtHeight.getText().toString();
+				String weight = mEtWeight.getText().toString();
+				String gender = mEtGender.getText().toString();
+
+				RequestQueue queue = MyVolley.getRequestQueue();
+				Map<String, String> registerParam = QueryHelper.createRegistrationQuery(userName, password, age, height, weight, gender);
+				CustomRequest customRequest = new CustomRequest(Method.POST, Constants.URL_WEB_SERVICE, registerParam, RegistrationActivity.this, RegistrationActivity.this);
+				queue.add(customRequest);
+			}
+		});
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+
+	@Override
+	public void onResponse(JSONObject response) {
+		int code = Integer.parseInt(response.optString("code"));
+		String msg = response.optString("message");
+
+		switch (code) {
+		case ParserError.CODE_ACTION_NOT_FOUND:
+
+			break;
+		case ParserError.CODE_MISSING_ACTION:
+
+			break;
+		case ParserError.CODE_MISSING_TASK:
+
+			break;
+		case ParserError.CODE_CLIENT_AUTHORIZATION_FAILED:
+
+			break;
+		case ParserError.CODE_TOKEN_GENERATION_FAILED:
+
+			break;
+		case ParserError.CODE_USERNAME_REQUIRED:
+
+			break;
+		case ParserError.CODE_PASSWORD_REQUIRED:
+
+			break;
+		case ParserError.CODE_PASSWORD_WRONG:
+
+			break;
+		case ParserError.CODE_USER_NOT_REGISTERED:
+			
+			break;
+		case ParserError.CODE_INVALID_TOKEN:
+
+			break;
+		case ParserError.CODE_TOKEN_EXPIRED:
+
+			break;
+		case ParserError.CODE_INTERNAL_SERVER_ERROR:
+
+			break;
+		case ParserError.CODE_USER_ALREADY_REGISTERED:
+
+			break;
+		case ParserError.CODE_SUCCESS:
+			LoginBean login = BeanController.getLoginBean();
+			login.populateBean(response);
+			Toast.makeText(this, response.toString(), Toast.LENGTH_SHORT).show();
+			break;
+
+		default:
+			break;
+		}
+
+		if(code != ParserError.CODE_SUCCESS) {
+			AppLog.showToast(this, "error web service response code - "+code);
+		}
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error) {
+		Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show();
+	}
+
+}

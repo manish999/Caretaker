@@ -1,0 +1,24 @@
+package com.example.caretakermobile;
+
+import org.json.JSONObject;
+
+import com.android.volley.VolleyError;
+
+public class HomeActivity extends BaseActivity
+{
+
+	@Override
+	public void onResponse(JSONObject response)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+}

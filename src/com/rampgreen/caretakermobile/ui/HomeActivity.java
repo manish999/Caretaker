@@ -1,0 +1,35 @@
+package com.rampgreen.caretakermobile.ui;
+
+import org.json.JSONObject;
+
+import android.os.Bundle;
+
+import com.android.volley.VolleyError;
+import com.rampgreen.caretakermobile.R;
+import com.rampgreen.caretakermobile.util.AppLog;
+
+public class HomeActivity extends BaseActivity
+{
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.report_underdevelopment);
+		AppLog.showToast(this, "Home screen is under development.");
+	}
+
+	@Override
+	public void onResponse(JSONObject response)
+	{
+
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error)
+	{
+
+	}
+
+}

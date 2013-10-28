@@ -1,0 +1,9 @@
+package com.example.caretakermobile.network;
+
+public class ParserController{
+//json parser
+//gson parser
+//xmpparser
+	
+	
+}

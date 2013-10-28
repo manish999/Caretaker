@@ -1,0 +1,22 @@
+package com.rampgreen.caretakermobile.ui;
+
+import org.json.JSONObject;
+
+import com.android.volley.VolleyError;
+
+public class HomeActivity extends BaseActivity
+{
+
+	@Override
+	public void onResponse(JSONObject response)
+	{
+
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error)
+	{
+
+	}
+
+}

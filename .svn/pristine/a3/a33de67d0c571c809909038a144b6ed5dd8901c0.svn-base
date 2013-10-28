@@ -1,0 +1,16 @@
+package com.example.caretakermobile.model;
+
+public class BeanController 
+{
+	static LoginBean loginBean=null;
+	
+	public static LoginBean getLoginBean()
+	{	
+		if(loginBean == null)
+		{
+			loginBean = new LoginBean();
+		}
+		return loginBean;
+	}
+}
+

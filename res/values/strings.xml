@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CareTakerMobile</string>
+    <string name="action_settings">Settings</string>
+    <string name="hint_email">me@email.com</string>
+    <string name="hint_password">password</string>
+    <string name="invalid_email_message">Provided e-mail address is invalid</string>
+    <string name="message_empty">Mandatory</string>
+    <string name="btn_login_txt">Log in / Register</string>
+    <string name="select">select</string>
+
+</resources>

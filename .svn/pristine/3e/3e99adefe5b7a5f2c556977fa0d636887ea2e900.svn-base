@@ -1,0 +1,29 @@
+package com.rampgreen.caretakermobile.ui.util;
+
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.Context;
+
+import com.rampgreen.caretakermobile.util.AppSettings;
+import com.rampgreen.caretakermobile.util.DateUtils;
+import com.rampgreen.caretakermobile.util.StringUtils;
+
+import java.util.Calendar;
+
+public class WidgetUtil
+{
+	public static void callDatePicker(Context context, int date, OnDateSetListener callBack) {
+		int mYear , mMonth, mDay;
+		Calendar c = Calendar.getInstance();
+		String startdate = (String) AppSettings.getPrefernce(context, null, AppSettings.DATE_OF_BIRTH, "");
+		
+		if(StringUtils.notEmpty(startdate))
+			c= DateUtils.convertToCalender(startdate, DateUtils.FORMAT_YYYYMMDD_DASHESH);
+		mYear = c.get(Calendar.YEAR);
+		mMonth = c.get(Calendar.MONTH);
+		mDay = c.get(Calendar.DAY_OF_MONTH);
+		MyDatePickerDialog myDatePickerDialog = new MyDatePickerDialog(context, callBack, mYear, mMonth, mDay);
+		myDatePickerDialog.setTitle("Select Date");
+		myDatePickerDialog.show();
+	}
+}
+

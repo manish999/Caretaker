@@ -12,13 +12,6 @@ import com.rampgreen.caretakermobile.model.GeneralData;
  */
 public class QueryHelper {
 
-
-	/**
-	 * 
-	 * 
-	 * @param paramQuery f
-	 * @returndfg
-	 */
 	private static Map<String, String> ConvertQueryToMap(Query paramQuery) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("action", paramQuery.getAction());

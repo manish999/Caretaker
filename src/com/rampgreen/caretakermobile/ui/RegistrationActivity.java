@@ -3,26 +3,21 @@ package com.rampgreen.caretakermobile.ui;
 import org.json.JSONObject;
 
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.andreabaccega.widget.FormEditText;
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
+import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.interfaces.ParserError;
@@ -71,7 +66,7 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 		mEtHeight = (FormEditText) findViewById(R.id.et_height);
 		mEtWeight = (FormEditText) findViewById(R.id.et_weight);
 		mBtnRegistration = (Button) findViewById(R.id.btn_register);
-
+		
 		// get email id from preference store and set to registration page.
 		emailId = (String)AppSettings.getPrefernce(this, null, AppSettings.USER_SELECTED_MAIL_ID, "");
 		mEtUserName.setText(emailId);
@@ -110,17 +105,6 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 			}
 		});
 
-		// hide the keyboared on lcik of age text field
-		mEtAge.setOnEditorActionListener(new OnEditorActionListener() {
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-					InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-					in.hideSoftInputFromWindow(mEtAge.getApplicationWindowToken(), 0);
-				}
-				return false;
-			}
-		});
-
 		// click on register button
 		mBtnRegistration.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -135,13 +119,14 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 					String age = mEtAge.getText().toString();
 					String height = mEtHeight.getText().toString();
 					String weight = mEtWeight.getText().toString();
-					
+
 					if(! WidgetUtil.checkInternetConnection(RegistrationActivity.this)) {
 						WidgetUtil.showSettingDialog(RegistrationActivity.this);
 						return;
 					}
 					// request registration web service 
-					RequestQueue queue = MyVolley.getRequestQueue();
+					showLoadingBar();
+					MyRequestQueue queue = MyVolley.getRequestQueue();
 					Map<String, String> registerParam = QueryHelper.createRegistrationQuery(userName, mSalutation, 
 							firstName, middleName , lastName, password, age,height, weight, "");
 					CustomRequest customRequest = new CustomRequest(Method.POST,
@@ -155,48 +140,49 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 	@Override
 	public void onResponse(JSONObject response)
 	{
+		closeLoadingBar();
 		int code = Integer.parseInt(response.optString("code"));
 		String msg = response.optString("message");
 
 		switch (code) {
 		case ParserError.CODE_ACTION_NOT_FOUND:
-
+			AppLog.logToast(this, "CODE_ACTION_NOT_FOUND" + code);
 			break;
 		case ParserError.CODE_MISSING_ACTION:
-
+			AppLog.logToast(this, "CODE_MISSING_ACTION" + code);
 			break;
 		case ParserError.CODE_MISSING_TASK:
-
+			AppLog.logToast(this, "CODE_MISSING_TASK" + code);
 			break;
 		case ParserError.CODE_CLIENT_AUTHORIZATION_FAILED:
-
+			AppLog.logToast(this, "CODE_CLIENT_AUTHORIZATION_FAILED" + code);
 			break;
 		case ParserError.CODE_TOKEN_GENERATION_FAILED:
-
+			AppLog.logToast(this, "CODE_TOKEN_GENERATION_FAILED" + code);
 			break;
 		case ParserError.CODE_USERNAME_REQUIRED:
-
+			AppLog.logToast(this, "CODE_USERNAME_REQUIRED" + code);
 			break;
 		case ParserError.CODE_PASSWORD_REQUIRED:
-
+			AppLog.logToast(this, "CODE_PASSWORD_REQUIRED" + code);
 			break;
 		case ParserError.CODE_PASSWORD_WRONG:
 			AppLog.showToast(this, "wrong password");
 			break;
 		case ParserError.CODE_USER_NOT_REGISTERED:
-
+			AppLog.logToast(this, "CODE_PASSWORD_WRONG" + code);
 			break;
 		case ParserError.CODE_INVALID_TOKEN:
-
+			AppLog.logToast(this, "CODE_INVALID_TOKEN" + code);
 			break;
 		case ParserError.CODE_TOKEN_EXPIRED:
-
+			AppLog.logToast(this, "CODE_TOKEN_EXPIRED" + code);
 			break;
 		case ParserError.CODE_INTERNAL_SERVER_ERROR:
 			AppLog.showToast(this, "Internal server error, please contact to administrator.");
 			break;
 		case ParserError.CODE_USER_ALREADY_REGISTERED:
-
+			AppLog.showToast(this, "User already registered");
 			break;
 		case ParserError.CODE_SUCCESS:
 			LoginBean login = BeanController.getLoginBean();
@@ -205,6 +191,8 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 			// open home activity 
 			Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
 			startActivity(intent);
+			// to close the activity
+			finish();
 			break;
 
 		default:

@@ -9,8 +9,8 @@ import android.widget.Button;
 
 import com.andreabaccega.widget.FormEditText;
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
+import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.interfaces.ParserError;
@@ -63,12 +63,13 @@ public class LoginActivity extends BaseActivity
 						return;
 					}
 					// get network queue and add request to the queue
-					RequestQueue queue = MyVolley.getRequestQueue();
+					MyRequestQueue queue = MyVolley.getRequestQueue();
 					Map<String, String> loginParam = QueryHelper.createLoginQuery(
 							username, password);
 					CustomRequest customRequest = new CustomRequest(Method.POST,
 							Constants.URL_WEB_SERVICE, loginParam,
 							LoginActivity.this, LoginActivity.this);
+					showLoadingBar();
 					queue.add(customRequest);
 				}
 			}
@@ -78,6 +79,7 @@ public class LoginActivity extends BaseActivity
 	@Override
 	public void onResponse(JSONObject response)
 	{
+		closeLoadingBar();
 		int code = Integer.parseInt(response.optString("code"));
 		String msg = response.optString("message");
 		Intent intent;
@@ -104,7 +106,7 @@ public class LoginActivity extends BaseActivity
 
 			break;
 		case ParserError.CODE_PASSWORD_WRONG:
-
+			AppLog.showToast(this, "wrong password");
 			break;
 		case ParserError.CODE_USER_NOT_REGISTERED:
 			intent = new Intent(getApplicationContext(),
@@ -131,6 +133,8 @@ public class LoginActivity extends BaseActivity
 			// on success , call Home screen
 			intent = new Intent(getApplicationContext(), HomeActivity.class);
 			startActivity(intent);
+			// to close the activity
+			finish();
 			break;
 
 		default:
@@ -146,6 +150,7 @@ public class LoginActivity extends BaseActivity
 	@Override
 	public void onErrorResponse(VolleyError error)
 	{
+		closeLoadingBar();
 		AppLog.logString(error.toString());
 	}
 

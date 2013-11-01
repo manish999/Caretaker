@@ -175,12 +175,13 @@
 
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_age"
+                    style="@android:style/Widget.EditText"
                     android:layout_width="fill_parent"
                     android:layout_height="42.0dip"
                     android:layout_marginBottom="17.0dip"
                     android:layout_marginTop="16.0dip"
+                    android:focusableInTouchMode="false"
                     android:gravity="left|center"
-                    style="@android:style/Widget.EditText"
                     android:hint="Age (optional)"
                     android:paddingLeft="9.0dip"
                     android:paddingRight="9.0dip"

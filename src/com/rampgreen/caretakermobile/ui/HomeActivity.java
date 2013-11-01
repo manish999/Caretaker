@@ -10,11 +10,10 @@ import com.rampgreen.caretakermobile.util.AppLog;
 
 public class HomeActivity extends BaseActivity
 {
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.report_underdevelopment);
 		AppLog.showToast(this, "Home screen is under development.");

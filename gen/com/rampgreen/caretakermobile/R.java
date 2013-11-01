@@ -1299,6 +1299,12 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f08001c;
         public static final int activity_vertical_margin=0x7f08001d;
+        /** 
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw600dp devices (e.g. 7" tablets) here.
+    
+         */
+        public static final int between_gender_button_margin=0x7f080026;
         public static final int default_circle_indicator_radius=0x7f080000;
         public static final int default_circle_indicator_stroke_width=0x7f080001;
         public static final int default_line_indicator_gap_width=0x7f080003;
@@ -1502,13 +1508,13 @@ containing a value of this type.
         public static final int abs__textButton=0x7f04002c;
         public static final int abs__title=0x7f040034;
         public static final int abs__up=0x7f040010;
-        public static final int action_settings=0x7f040078;
+        public static final int action_settings=0x7f04007c;
         public static final int alpha=0x7f04001c;
         public static final int alphaNumeric=0x7f04001d;
         public static final int bottom=0x7f040003;
         public static final int btn_login=0x7f04005f;
-        public static final int btn_register=0x7f040070;
-        public static final int comingsoon=0x7f040072;
+        public static final int btn_register=0x7f040074;
+        public static final int comingsoon=0x7f040076;
         public static final int content_frame=0x7f04004f;
         public static final int creditCard=0x7f04001f;
         public static final int custom=0x7f040025;
@@ -1517,17 +1523,18 @@ containing a value of this type.
         public static final int domainName=0x7f040021;
         public static final int edit_query=0x7f04003f;
         public static final int email=0x7f04001e;
-        public static final int et_age=0x7f04006d;
+        public static final int et_age=0x7f04006e;
         public static final int et_email=0x7f04005d;
         public static final int et_first_name=0x7f04006a;
-        public static final int et_height=0x7f04006e;
+        public static final int et_height=0x7f04006f;
         public static final int et_last_name=0x7f04006c;
         public static final int et_middle_name=0x7f04006b;
         public static final int et_password=0x7f04005e;
-        public static final int et_weight=0x7f04006f;
+        public static final int et_weight=0x7f040070;
         public static final int fullscreen=0x7f040018;
+        public static final int gender=0x7f04006d;
         public static final int homeAsUp=0x7f04000b;
-        public static final int image_view_tab_icon=0x7f040076;
+        public static final int image_view_tab_icon=0x7f04007a;
         public static final int ipAddress=0x7f040022;
         public static final int left=0x7f040015;
         public static final int listMode=0x7f040007;
@@ -1552,17 +1559,20 @@ containing a value of this type.
         public static final int personFullName=0x7f040027;
         public static final int personName=0x7f040026;
         public static final int phone=0x7f040020;
+        public static final int radioFemale=0x7f040073;
+        public static final int radioMale=0x7f040072;
+        public static final int radioSex=0x7f040071;
         public static final int regexp=0x7f04001a;
-        public static final int relLayout1=0x7f040071;
+        public static final int relLayout1=0x7f040075;
         public static final int right=0x7f040016;
-        public static final int row_icon=0x7f040073;
-        public static final int row_title=0x7f040074;
+        public static final int row_icon=0x7f040077;
+        public static final int row_title=0x7f040078;
         public static final int selected_view=0x7f040019;
         public static final int showCustom=0x7f04000d;
         public static final int showHome=0x7f04000a;
         public static final int showTitle=0x7f04000c;
         public static final int signup=0x7f040062;
-        public static final int slidingmenumain=0x7f040075;
+        public static final int slidingmenumain=0x7f040079;
         public static final int spinner_salutation=0x7f040069;
         public static final int tabMode=0x7f040008;
         public static final int text_view_favourites=0x7f040065;
@@ -1570,7 +1580,7 @@ containing a value of this type.
         public static final int text_view_rainbow=0x7f040067;
         public static final int text_view_search=0x7f040064;
         public static final int text_view_settings=0x7f040066;
-        public static final int text_view_tab_title=0x7f040077;
+        public static final int text_view_tab_title=0x7f04007b;
         public static final int top=0x7f040004;
         public static final int triangle=0x7f040001;
         public static final int tvChild=0x7f04004e;
@@ -1706,6 +1716,8 @@ containing a value of this type.
         public static final int invalid_email_message=0x7f0a001e;
         public static final int jacob=0x7f0a002a;
         public static final int message_empty=0x7f0a001f;
+        public static final int radio_female=0x7f0a0032;
+        public static final int radio_male=0x7f0a0031;
         public static final int select=0x7f0a0021;
         public static final int self=0x7f0a002b;
         public static final int temperature=0x7f0a0030;
@@ -1748,6 +1760,7 @@ containing a value of this type.
         public static final int Sherlock___Widget_Holo_ListView=0x7f09002a;
         public static final int Sherlock___Widget_Holo_Spinner=0x7f090027;
         public static final int Sherlock___Widget_SearchAutoCompleteTextView=0x7f090037;
+        public static final int SliderTheme=0x7f09005f;
         public static final int TextAppearance_Sherlock=0x7f09004e;
         public static final int TextAppearance_Sherlock_Light_SearchResult=0x7f090052;
         public static final int TextAppearance_Sherlock_Light_SearchResult_Subtitle=0x7f090054;

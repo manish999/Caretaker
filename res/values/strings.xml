@@ -25,5 +25,8 @@
     <string name="heart_rate">Heart Rate</string>
     <string name="accelerometer">Accelerometer</string>
     <string name="temperature">Temperature</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+    
 
 </resources>

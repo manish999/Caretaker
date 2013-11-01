@@ -6,11 +6,14 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -49,6 +52,7 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 	private String mSalutation;
 	private Spinner mSpinner;
 	private boolean mIsValid;
+	private RadioGroup mRadioSexGroup;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -65,8 +69,9 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 		mEtAge = (FormEditText) findViewById(R.id.et_age);
 		mEtHeight = (FormEditText) findViewById(R.id.et_height);
 		mEtWeight = (FormEditText) findViewById(R.id.et_weight);
+		mRadioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
 		mBtnRegistration = (Button) findViewById(R.id.btn_register);
-		
+
 		// get email id from preference store and set to registration page.
 		emailId = (String)AppSettings.getPrefernce(this, null, AppSettings.USER_SELECTED_MAIL_ID, "");
 		mEtUserName.setText(emailId);
@@ -120,6 +125,13 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 					String height = mEtHeight.getText().toString();
 					String weight = mEtWeight.getText().toString();
 
+					// get the selection of genderbutton
+					int selectedId = mRadioSexGroup.getCheckedRadioButtonId();
+					// find the radiobutton by returned id
+					RadioButton radioSexButton = (RadioButton) findViewById(selectedId);
+					String sexText = radioSexButton.getText().toString();
+					sexText = sexText.equalsIgnoreCase("Male") ? "M" : "F"; 
+					
 					if(! WidgetUtil.checkInternetConnection(RegistrationActivity.this)) {
 						WidgetUtil.showSettingDialog(RegistrationActivity.this);
 						return;
@@ -127,8 +139,8 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 					// request registration web service 
 					showLoadingBar();
 					MyRequestQueue queue = MyVolley.getRequestQueue();
-					Map<String, String> registerParam = QueryHelper.createRegistrationQuery(userName, mSalutation, 
-							firstName, middleName , lastName, password, age,height, weight, "");
+					Map<String, String> registerParam = QueryHelper.createRegistrationQuery(userName, "", 
+							firstName, middleName , lastName, password, age,height, weight, sexText);
 					CustomRequest customRequest = new CustomRequest(Method.POST,
 							Constants.URL_WEB_SERVICE, registerParam, RegistrationActivity.this, RegistrationActivity.this);
 					queue.add(customRequest);
@@ -189,7 +201,7 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 			login.populateBean(response);
 			AppLog.logToast(this,  response.toString());
 			// open home activity 
-			Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+			Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
 			startActivity(intent);
 			// to close the activity
 			finish();
@@ -214,7 +226,7 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 	public void onClickNext(View v)
 	{
 		mIsValid = true;
-		FormEditText[] allFields = { mEtUserName , mEtFirstName, mEtLastName, mEtPassword};
+		FormEditText[] allFields = { mEtUserName , mEtLastName, mEtPassword};
 		for (FormEditText field : allFields)
 		{
 			mIsValid = field.testValidity() && mIsValid;

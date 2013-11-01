@@ -131,7 +131,7 @@ public class LoginActivity extends BaseActivity
 			login.populateBean(response);
 			AppLog.logString(response.toString());
 			// on success , call Home screen
-			intent = new Intent(getApplicationContext(), HomeActivity.class);
+			intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
 			startActivity(intent);
 			// to close the activity
 			finish();
@@ -151,7 +151,7 @@ public class LoginActivity extends BaseActivity
 	public void onErrorResponse(VolleyError error)
 	{
 		closeLoadingBar();
-		AppLog.logString(error.toString());
+		AppLog.logToast(this, error.toString());
 	}
 
 	public void onClickNext(View v)

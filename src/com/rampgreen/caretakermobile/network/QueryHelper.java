@@ -33,10 +33,10 @@ public class QueryHelper {
 		params.put("action", "user");
 		params.put("task", "register");
 		params.put("username", userName);
-		params.put("salutation", salutation);
-		params.put("firstname", firstName);
-		params.put("middlename", middleName);
-		params.put("lastname", lastName);
+//		params.put("salutation", salutation);
+//		params.put("firstname", firstName);
+//		params.put("middlename", middleName);
+		params.put("firstname", lastName);
 		params.put("password", password);
 		params.put("dob", dateOfBirth);
 		params.put("height", height);

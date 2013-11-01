@@ -20,6 +20,7 @@ public class AppSettings {
 	public static final String USER_SELECTED_MAIL_ID = "usermailid";
 	public static final String SALUTATION = "salutation";
 	public static final String DATE_OF_BIRTH = "dob";
+	public static final String ACCESS_TOKEN = "token";
 
 
 	public static Object getPrefernce(Context context, String prefName, String tag, Object defaultValue){

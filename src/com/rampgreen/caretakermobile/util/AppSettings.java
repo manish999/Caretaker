@@ -21,6 +21,8 @@ public class AppSettings {
 	public static final String SALUTATION = "salutation";
 	public static final String DATE_OF_BIRTH = "dob";
 	public static final String ACCESS_TOKEN = "token";
+	public static final String TEMP_TOTAL_USER = "totaluser";
+	public static final String TEMP_DASHBOARD_USER = "dashuser";
 
 
 	public static Object getPrefernce(Context context, String prefName, String tag, Object defaultValue){

@@ -8,7 +8,7 @@ import com.android.volley.VolleyError;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.util.AppLog;
 
-public class HomeActivity extends BaseActivity
+public class ActivityRequest extends BaseActivity
 {
 
 	@Override
@@ -16,7 +16,7 @@ public class HomeActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.report_underdevelopment);
-//		AppLog.showToast(this, "Home screen is under development.");
+		AppLog.showToast(this, "Home screen is under development.");
 	}
 
 	@Override

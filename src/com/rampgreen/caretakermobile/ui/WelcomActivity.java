@@ -26,7 +26,7 @@ public class WelcomActivity extends BaseSliderActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled (true);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setDisplayUseLogoEnabled  (true);
-		setContentView(R.layout.arrowspage);
+		setContentView(R.layout.home_content_scroller);
 	}
 
 	@Override

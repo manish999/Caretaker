@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.rampgreen.caretakermobile.R;
+import com.rampgreen.caretakermobile.util.AppLog;
+import com.rampgreen.caretakermobile.util.AppSettings;
+import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
 
@@ -27,11 +30,12 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 			R.drawable.ic_launcher,
 			R.drawable.ic_launcher,
 			R.drawable.ic_launcher,
+			R.drawable.ic_launcher,
 			R.drawable.ic_launcher};
 	private String[] slider_menu_text = new String[]{"<<","Adam",
 			"Brie",
 			"Cindy",
-	"Jacob"};
+			"Jacob", "mady"};
 
 	public static FragmentHomeMenuUser newInstance() {
 		FragmentHomeMenuUser fragment = new FragmentHomeMenuUser();
@@ -61,7 +65,7 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 			//			accountToken  = savedInstanceState.getString(Constants.ID_ACCOUNT);
 		}
 		SampleAdapter adapter = new SampleAdapter(getActivity());
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 6; i++) {
 			adapter.add(new SampleItem(slider_menu_text[i], slider_menu_icon[i]));
 		}
 		setListAdapter(adapter);
@@ -163,20 +167,106 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 	public void onListItemClick(ListView lv, View v, int position, long id) {
 		Fragment newContent = null;
 		Bundle bundle = new Bundle();
+		AppLog.logToast(getSherlockActivity(), position+"");
+		// get total users on dashboared
+//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
+//		int totuser= Integer.parseInt(totalUser);
+
+		String	dashUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_DASHBOARD_USER, "00000");
 		//pop all fragments from backstack on click sliding menu
 		//		getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		switch (position) {
 		case 0:
 			newContent = new FragmentMenuColor();
+			if (newContent != null)
+				switchMenuContent(newContent);
 			//			newContent = new ColorFragment(R.color.red);
 			break;
-			//		case 1:
-			//			newContent = new FragmentSectionList();
-			//			//			bundle.putString(Constants.TAB_TYPE, whichTab);
-			//			//			bundle.putString(Constants.PROFILE, profile);
-			//			//			bundle.putString(key, value);
-			//			//			newContent.setArguments(args);
-			//			break;
+		case 1:
+			setPosition(dashUser, position-1);
+			newContent = new FragmentTabBottom();
+			bundle.putInt(Constants.POSITION, position);
+			newContent.setArguments(bundle);
+			//			if (getSherlockActivity() instanceof FragmentChangeActivity) {
+			//				((FragmentChangeActivity)getSherlockActivity()).toggle();
+			//			}
+			AppSettings.setPreference(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, position+"");
+			if (newContent != null)
+				switchToHomeContent(newContent);
+			//			bundle.putInt(Constants.POSITION, position);
+			//			bundle.putString(Constants.PROFILE, profile);
+			//			bundle.putString(key, value);
+			//			newContent.setArguments(bundle);
+			break;
+		case 2:
+			setPosition(dashUser, position-1);
+			newContent = new FragmentTabBottom();
+			bundle.putInt(Constants.POSITION, position);
+			newContent.setArguments(bundle);
+			AppSettings.setPreference(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, position+"");
+			//			if (getSherlockActivity() instanceof FragmentChangeActivity) {
+			//				((FragmentChangeActivity)getSherlockActivity()).toggle();
+			//			}
+			if (newContent != null)
+				switchToHomeContent(newContent);
+			//			newContent = new FragmentTabBottom();
+			//			bundle.putInt(Constants.POSITION, position);
+			//			bundle.putString(Constants.PROFILE, profile);
+			//			bundle.putString(key, value);
+			//			newContent.setArguments(bundle);
+			break;
+		case 3:
+			setPosition(dashUser, position-1);
+			newContent = new FragmentTabBottom();
+			bundle.putInt(Constants.POSITION, position);
+			newContent.setArguments(bundle);
+			AppSettings.setPreference(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, position+"");
+			//			bundle.putString(Constants.PROFILE, profile);
+			//			if (getSherlockActivity() instanceof FragmentChangeActivity) {
+			//				((FragmentChangeActivity)getSherlockActivity()).toggle();
+			//			}
+			if (newContent != null)
+				switchToHomeContent(newContent);
+			//			newContent = new FragmentTabBottom();
+			//			bundle.putInt(Constants.POSITION, position);
+			//			bundle.putString(Constants.PROFILE, profile);
+			//			bundle.putString(key, value);
+			//			newContent.setArguments(bundle);
+			break;
+		case 4:
+			setPosition(dashUser, position-1);
+			newContent = new FragmentTabBottom();
+			bundle.putInt(Constants.POSITION, position);
+			newContent.setArguments(bundle);
+			AppSettings.setPreference(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, position+"");
+			//			if (getSherlockActivity() instanceof FragmentChangeActivity) {
+			//				((FragmentChangeActivity)getSherlockActivity()).toggle();
+			//			}
+			if (newContent != null)
+				switchToHomeContent(newContent);
+			//			newContent = new FragmentTabBottom();
+			//			bundle.putInt(Constants.POSITION, position);
+			//			bundle.putString(Constants.PROFILE, profile);
+			//			bundle.putString(key, value);
+			//			newContent.setArguments(bundle);
+			break;
+		case 5:
+			setPosition(dashUser, position-1);
+			newContent = new FragmentTabBottom();
+			bundle.putInt(Constants.POSITION, position);
+			newContent.setArguments(bundle);
+
+			//			if (getSherlockActivity() instanceof FragmentChangeActivity) {
+			//				((FragmentChangeActivity)getSherlockActivity()).toggle();
+			//			}
+			if (newContent != null)
+				switchToHomeContent(newContent);
+			//			newContent = new FragmentTabBottom();
+			//			bundle.putInt(Constants.POSITION, position);
+			//			bundle.putString(Constants.PROFILE, profile);
+			//			bundle.putString(key, value);
+			//			newContent.setArguments(bundle);
+			break;
 			//		case 2:
 			//			//direct call fragment.
 			//			newContent = FragmentAdwordsImpression.newInstance();
@@ -190,8 +280,8 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 			//			newContent = new ColorFragment(android.R.color.black);
 			//			break;
 		}
-		if (newContent != null)
-			switchMenuContent(newContent);
+//		AppSettings.setPreference(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, totuser+"");
+
 	}
 
 	// the meat of switching the above fragment
@@ -203,6 +293,29 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 			FragmentChangeActivity fca = (FragmentChangeActivity) getActivity();
 			fca.switchMenuFragment(fragment);
 		} 
+	}
+
+	// this mehod is used to switch the homecontent everytime new instanse
+	private void switchToHomeContent(Fragment fragment) {
+		if (getActivity() == null)
+			return;
+
+		if (getActivity() instanceof FragmentChangeActivity) {
+			FragmentChangeActivity fca = (FragmentChangeActivity) getActivity();
+			fca.switchContent(fragment);
+		} 
+	}
+
+	private String setPosition(String users, int position) {
+		char[] arr = users.toCharArray();
+		if(arr[position] == '1') {
+			AppLog.showToast(getSherlockActivity(), "User already added on dashboard");
+		} else {
+			arr[position] = '1';
+		}
+		AppSettings.setPreference(getSherlockActivity(), null, AppSettings.TEMP_DASHBOARD_USER, new String(arr));
+		return new String(arr);
+
 	}
 
 }

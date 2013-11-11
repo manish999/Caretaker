@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class FragmentChangeActivity extends BaseSliderActivity {
 
-	private Fragment mContent;
+	Fragment mContent;
 	private String mProfileName = "manuish";
 	public static final String TAG_BACKSTACK = "backstacks";
 	ArrayList<String> profileTitles = new ArrayList<String>();

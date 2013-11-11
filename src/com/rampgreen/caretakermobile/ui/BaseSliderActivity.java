@@ -1,5 +1,6 @@
 package com.rampgreen.caretakermobile.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.WindowManager;
@@ -10,6 +11,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.rampgreen.caretakermobile.R;
+import com.rampgreen.caretakermobile.model.BeanController;
+import com.rampgreen.caretakermobile.util.AppSettings;
 
 /**
  * This class is used to give the functionality of menu. 
@@ -66,6 +69,15 @@ public abstract class BaseSliderActivity extends SlidingFragmentActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			toggle();
+			return true;
+		case R.id.action_logout:
+			AppSettings.setPreference(this, null, AppSettings.ACCESS_TOKEN, "");
+			BeanController.getLoginBean().setAccessToken("");
+			
+			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			finish();
 			return true;
 //		case R.id.action_period:
 //			return true;

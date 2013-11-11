@@ -44,4 +44,34 @@ public class QueryHelper {
 		params.put("gender", gender);
 		return params;
 	}
+	
+	public static Map<String, String> createUserProfileQuery(String accessToken) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("action", "user");
+		params.put("task", "get_user_profile");
+		params.put("token", accessToken);
+		return params;
+	}
+	
+	public static Map<String, String> createCareTakerProfileQuery(String accessToken) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("action", "caretaker");
+		params.put("task", "get_caretaker_profile");
+		params.put("token", accessToken);
+		return params;
+	}
+	
+	/**
+	 * get all users(grandma, grandpa etc) associated of login user
+	 * 
+	 * @param accessToken
+	 * @return 
+	 */
+	public static Map<String, String> createAllUsersQuery(String accessToken) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("action", "caretaker");
+		params.put("task", "get_users");
+		params.put("token", accessToken);
+		return params;
+	}
 }

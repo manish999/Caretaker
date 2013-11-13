@@ -9,6 +9,7 @@ package com.rampgreen.caretakermobile.model;
 public class BeanController 
 {
 	static LoginBean loginBean=null;
+	static User userListBean=null;
 	
 	public static LoginBean getLoginBean()
 	{	
@@ -17,6 +18,15 @@ public class BeanController
 			loginBean = new LoginBean();
 		}
 		return loginBean;
+	}
+	
+	public static User getUserBean()
+	{	
+		if(userListBean == null)
+		{
+			userListBean = new User();
+		}
+		return userListBean;
 	}
 }
 

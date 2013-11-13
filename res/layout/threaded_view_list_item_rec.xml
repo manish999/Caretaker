@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutThreadedItem"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="30.0dip"
+    android:background="#FE2E2E"
+    android:minWidth="50.0dip"
+    android:padding="10.0dip" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="30.0dip"
+        android:minWidth="30.0dip" >
+
+        <TextView
+            android:id="@+id/TextViewMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adam heart rate is now 130/min"
+            android:textColor="#ffffff"
+            android:textSize="18.0dip" />
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/TextViewMsg"
+            android:textColor="#ff000000"
+            android:text="TextView"
+            android:visibility="gone"
+            android:textSize="12.0dip" />
+
+        <!-- 
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="TextView" />
+             -->
+
+    </RelativeLayout>
+
+</RelativeLayout>

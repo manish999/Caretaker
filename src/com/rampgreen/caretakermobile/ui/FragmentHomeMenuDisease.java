@@ -13,14 +13,16 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.rampgreen.caretakermobile.R;
+import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
 import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
 
-public class FragmentHomeMenuAlert extends SherlockListFragment
+public class FragmentHomeMenuDisease extends SherlockListFragment
 {
+
 	private static final String KEY_CONTENT = "TestFragment:Content123";
 	private String test = "test";
 	private int position = 0;
@@ -29,19 +31,16 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 			R.drawable.ic_launcher,
 			R.drawable.ic_launcher,
 			R.drawable.ic_launcher,
-			R.drawable.ic_launcher,
 			R.drawable.ic_launcher};
-	private String[] slider_menu_text = new String[]{"<<","Self","Adam",
-			"Brie",
-			"Cindy",
-	"Jacob"};
+	private String[] slider_menu_text = new String[]{"<<","GSR",
+			"Heart Rate",
+			"Accelerometer",
+	"Temperature"};
+	
+	int mFragmentCalledByMenuOption;
 
-	private int mFragmentCalledByMenuOption;
-	private int mFragmentCaller;
-	private String mClickedMenuDisease;
-
-	public static FragmentHomeMenuAlert newInstance() {
-		FragmentHomeMenuAlert fragment = new FragmentHomeMenuAlert();
+	public static FragmentHomeMenuDisease newInstance() {
+		FragmentHomeMenuDisease fragment = new FragmentHomeMenuDisease();
 		return fragment;
 	}
 
@@ -51,8 +50,6 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 		Bundle bundle = getSherlockActivity().getIntent().getExtras();
 		if(bundle != null) { 
 			mFragmentCalledByMenuOption = bundle.getInt(Constants.FRAGMENT_ADD_MENU_CALLER);
-			mFragmentCaller = bundle.getInt(Constants.ActivityConstants.FRAGMENT_CALLER);
-			mClickedMenuDisease = bundle.getString(Constants.BUNDLE_KEY_DISEASE);
 		}
 	}
 
@@ -71,7 +68,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 			//			accountToken  = savedInstanceState.getString(Constants.ID_ACCOUNT);
 		}
 		SampleAdapter adapter = new SampleAdapter(getActivity());
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			adapter.add(new SampleItem(slider_menu_text[i], slider_menu_icon[i]));
 		}
 		setListAdapter(adapter);
@@ -91,7 +88,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		//		outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+		//		outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FlogToastOR_BUG_19917_VALUE");
 		//		outState.putInt(Constants.TAB_TYPE, whichTab);
 		//		outState.putString(Constants.ID_PROFILE, profileID);
 		//		outState.putString(Constants.ID_ACCOUNT, accountToken);
@@ -174,27 +171,67 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 		Fragment newContent = null;
 		Bundle bundle = new Bundle();
 		AppLog.logToast(getSherlockActivity(), position+"");
-		// get total users on dashboared
-		//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
-		//		int totuser= Integer.parseInt(totalUser);
-
 		String	dashUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_DASHBOARD_USER, "00000");
 		//pop all fragments from backstack on click sliding menu
 		//		getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-		if(position == 0) {
-			newContent = new FragmentHomeMenuDisease();
+		// notification fragment + desiese type
+		// addtextdisplay fragment
+		// addvisualdisplay fragment
+
+		switch (position) {
+		case 0:
+			newContent = new FragmentMenuColor();
+			//			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, getDashBoaredList(userList));
+			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
+			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+			newContent.setArguments(bundle);
 			switchMenuContent(newContent);
-		} else {
-			// on click slider menu close and  notification is to be set via web service and toast shown that notification has been set.
-			newContent = new FragmentTabBottom();
+			break;
+		case 1:
+			newContent = new FragmentHomeMenuAlert();
+			//			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, getDashBoaredList(userList));
 			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
 			bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, mFragmentCalledByMenuOption);
-			bundle.putString(Constants.BUNDLE_KEY_DISEASE, mClickedMenuDisease);
+			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+			bundle.putString(Constants.BUNDLE_KEY_DISEASE, Constants.DISEASE_GSR);
 			newContent.setArguments(bundle);
-			switchToHomeContent(newContent);
-		}
+			switchMenuContent(newContent);
+			break;
+		case 2:
+			newContent = new FragmentHomeMenuAlert();
+			//			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, getDashBoaredList(userList));
+			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
+			bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, mFragmentCalledByMenuOption);
+			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+			bundle.putString(Constants.BUNDLE_KEY_DISEASE, Constants.DISEASE_HEART_RATE);
+			newContent.setArguments(bundle);
+			switchMenuContent(newContent);
+			break;
+		case 3:
+			newContent = new FragmentHomeMenuAlert();
+			//			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, getDashBoaredList(userList));
+			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
+			bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, mFragmentCalledByMenuOption);
+			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+			bundle.putString(Constants.BUNDLE_KEY_DISEASE, Constants.DISEASE_ACCELEROMETER);
+			newContent.setArguments(bundle);
+			switchMenuContent(newContent);
+			break;
+		case 4:
+			newContent = new FragmentHomeMenuAlert();
+			//			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, getDashBoaredList(userList));
+			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
+			bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, mFragmentCalledByMenuOption);
+			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+			bundle.putString(Constants.BUNDLE_KEY_DISEASE, Constants.DISEASE_TEMPRATURE);
+			newContent.setArguments(bundle);
+			switchMenuContent(newContent);
+			break;
 
+		default:
+			break;
+		}
 	}
 
 	// the meat of switching the above fragment
@@ -207,17 +244,15 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 			fca.switchMenuFragment(fragment);
 		} 
 	}
+	
+	// this mehod is used to switch the homecontent everytime new instanse
+		private void switchToHomeContent(Fragment fragment) {
+			if (getActivity() == null)
+				return;
 
-	// this method is used to switch the homecontent every time new instance
-	private void switchToHomeContent(Fragment fragment) {
-		if (getActivity() == null)
-			return;
-
-		if (getActivity() instanceof FragmentChangeActivity) {
-			FragmentChangeActivity fca = (FragmentChangeActivity) getActivity();
-			fca.switchContent(fragment);
-		} 
-	}
-
-
+			if (getActivity() instanceof FragmentChangeActivity) {
+				FragmentChangeActivity fca = (FragmentChangeActivity) getActivity();
+				fca.switchContent(fragment);
+			} 
+		}
 }

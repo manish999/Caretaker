@@ -17,10 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -28,12 +28,13 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.adapter.CustomListAdapter;
 import com.rampgreen.caretakermobile.adapter.ListItemDetails;
+import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.ui.util.ExpandableHeightGridView;
 import com.rampgreen.caretakermobile.ui.util.TabBitmap;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
+import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
 
@@ -48,13 +49,13 @@ public class FragmentTabBottom extends SherlockFragment {
 	private static final String TAG_3 = "2";
 	private static final String TAG_4 = "3";
 	private static final String TAG_5 = "4";
-	
+
 	String[] text = { "Afghanistan", "Algeria", "Australia", "Bermuda", "Bhutan", "Canada", "China","India","Japan",
-            "Kuwait", "Malaysia", "Mexico" };
+			"Kuwait", "Malaysia", "Mexico" };
 
 	int[] image = { R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher,  R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher };
+			R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher,
+			R.drawable.ic_launcher,  R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher };
 
 	int buttonNo =10;
 	TabHost mTabHost;
@@ -63,12 +64,15 @@ public class FragmentTabBottom extends SherlockFragment {
 	private LayoutInflater mInflater;
 	private View smsInboxDetailView;
 	private TextView txtInboxSmsDetail;
+	private ArrayList<User> user;
 
 	public void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
-		Bundle localBundle = getActivity().getIntent().getExtras();
+		Bundle localBundle = getArguments();
+		//		Bundle localBundle = getActivity().getIntent().getExtras();
 		if (localBundle != null) {
-			buttonNo = localBundle.getInt(com.rampgreen.caretakermobile.util.Constants.POSITION);
+			user  = (ArrayList<User>)localBundle.getSerializable(Constants.BUNDLE_KEY_USERS);
+			buttonNo = localBundle.getInt(com.rampgreen.caretakermobile.util.Constants.BUNDLE_KEY_POSITION);
 		}
 		mInflater = (LayoutInflater) getSherlockActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -82,26 +86,29 @@ public class FragmentTabBottom extends SherlockFragment {
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
+		Bundle localBundle = getArguments();
 		setTabs();
 		Button button = new Button(getSherlockActivity());
 		// create the scrollview buttons 
 		homeContentTextDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentTextDisplay);
 		smsInboxDetailView = mInflater.inflate(R.layout.threaded_view_list_item_rec, null);//mInflater.inflate(R.layout.threaded_view_list_item_rec, homeContentTextDisplay, true);
-//		smsInboxDetailView = mInflater.inflate(R.layout.main_list, homeContentTextDisplay, true);
-//		txtInboxSmsDetail = (TextView) smsInboxDetailView
-//				.findViewById(R.id.TextViewMsg);
+		//		smsInboxDetailView = mInflater.inflate(R.layout.main_list, homeContentTextDisplay, true);
+		//		txtInboxSmsDetail = (TextView) smsInboxDetailView
+		//				.findViewById(R.id.TextViewMsg);
 		homeContentTextDisplay.removeAllViews();
-//		txtInboxSmsDetail.setText("mm mmmmm mmmmmmm mmmmmmmm mmmmmmmmmmm mmmmmmmm mmmmm11 mmmmmmm mmmmmmmmm mmmmmmm mmm");
+		//		txtInboxSmsDetail.setText("mm mmmmm mmmmmmm mmmmmmmm mmmmmmmmmmm mmmmmmmm mmmmm11 mmmmmmm mmmmmmmmm mmmmmmm mmm");
 		homeContentTextDisplay.addView(smsInboxDetailView);
-		
-//		homeLinearLayout = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentUser);
+
+		//		homeLinearLayout = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentUser);
 		gridView = (ExpandableHeightGridView) getSherlockActivity().findViewById(R.id.grid_view);
 		gridView.setExpanded(true);
+
+		//		gridView = (GridView) getSherlockActivity().findViewById(R.id.grid_view);
 		// Instance of ImageAdapter Class
-		
-//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
-//		int totuser= Integer.parseInt(totalUser);
-		
+
+		//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
+		//		int totuser= Integer.parseInt(totalUser);
+
 		String	dashUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_DASHBOARD_USER, "00000");
 		char[] arr = dashUser.toCharArray();
 		int totalUSers = 0;
@@ -111,10 +118,10 @@ public class FragmentTabBottom extends SherlockFragment {
 				totalUSers ++;
 			}
 		}
-		
-		gridView.setAdapter(new ImageAdapter(getSherlockActivity(), totalUSers));
-//		gridView.setAdapter(new ImageAdapter(getSherlockActivity()));
-		
+
+		gridView.setAdapter(new ImageAdapter(getSherlockActivity(), user));
+		//		gridView.setAdapter(new ImageAdapter(getSherlockActivity()));
+
 
 		/**
 		 * On Click event for Single Gridview Item
@@ -124,23 +131,40 @@ public class FragmentTabBottom extends SherlockFragment {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				// Sending image id to FullScreenActivity
-//				Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
+				//				Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
 				// passing array index
+				Bundle bundle = new Bundle();
+				Intent intent = new Intent();
+				bundle.putString("title", user.get(position+1).getName());
+				intent.setClass(getSherlockActivity(), HomeActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
 				AppLog.logToast(getSherlockActivity(), "posi"+position);
-//				i.putExtra("id", position);	
-//				startActivity(i);
+				//				i.putExtra("id", position);	
+				//				startActivity(i);
 			}
 		});
-		
-//		ArrayList<ListItemDetails> result = GetSearchResults();
-//        ListView lv = (ListView)smsInboxDetailView.findViewById(R.id.listView1);
-//        lv.setAdapter(new CustomListAdapter(result,getSherlockActivity()));
+
+		gridView.setOnItemLongClickListener(new OnItemLongClickListener()
+		{
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View v,
+										int position, long id) {
+//				AppLog.logToast(getSherlockActivity(), "Long click posi"+position);
+				return false;
+			}
+		});
+
+		//		ArrayList<ListItemDetails> result = GetSearchResults();
+		//        ListView lv = (ListView)smsInboxDetailView.findViewById(R.id.listView1);
+		//        lv.setAdapter(new CustomListAdapter(result,getSherlockActivity()));
 	}
 	ListItemDetails item_details;
 	private ArrayList<ListItemDetails> GetSearchResults() {
 		// TODO Auto-generated method stub
 		ArrayList<ListItemDetails> results = new ArrayList<ListItemDetails>();
-		 
+
 		for(int i=0;i<text.length;i++)
 		{
 			item_details = new ListItemDetails();
@@ -148,16 +172,16 @@ public class FragmentTabBottom extends SherlockFragment {
 			item_details.setImage(image[i]);
 			results.add(item_details);
 		}
-		
+
 		return results;
 	}
-	
+
 	@Override
 	public void onStart()
 	{
 		super.onStart();
-//		Activity act = getSherlockActivity();
-//		AppLog.logToast(act, act.getClass().toString());
+		//		Activity act = getSherlockActivity();
+		//		AppLog.logToast(act, act.getClass().toString());
 	}
 
 	@Override
@@ -167,23 +191,23 @@ public class FragmentTabBottom extends SherlockFragment {
 		super.onResume();
 		Activity act = getSherlockActivity();
 		AppLog.logToast(act, act.getClass().toString());
-		
-//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
-//		int totuser= Integer.parseInt(totalUser);
-//		ImageAdapter imageAdapter = new ImageAdapter(getSherlockActivity(), totuser);
-//		gridView.setAdapter(imageAdapter);
-//		imageAdapter.notifyDataSetChanged();
-		
+
+		//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
+		//		int totuser= Integer.parseInt(totalUser);
+		//		ImageAdapter imageAdapter = new ImageAdapter(getSherlockActivity(), totuser);
+		//		gridView.setAdapter(imageAdapter);
+		//		imageAdapter.notifyDataSetChanged();
+
 	}
 	private void setTabs() {
 		mTabHost = (TabHost) getSherlockActivity().findViewById(android.R.id.tabhost);
 		mTabHost.setup();
 
 		addTab("Home", TAG_1, createTabDrawable(R.drawable.home), R.id.text_view_home);
-		addTab("Self", TAG_2, createTabDrawable(R.drawable.search), R.id.text_view_search);
-		addTab("Network", TAG_3, createTabDrawable(R.drawable.star), R.id.text_view_favourites);
-		addTab("Request", TAG_4, createTabDrawable(R.drawable.settings), R.id.text_view_settings);
-		addTab("Rainbow", TAG_5, createTabDrawable(R.drawable.home), R.id.text_view_rainbow);
+		addTab("Self", TAG_2, createTabDrawable(R.drawable.self), R.id.text_view_search);
+		addTab("Network", TAG_3, createTabDrawable(R.drawable.network), R.id.text_view_favourites);
+		addTab("Request", TAG_4, createTabDrawable(R.drawable.request), R.id.text_view_settings);
+		addTab("Rainbow", TAG_5, createTabDrawable(R.drawable.rainbow), R.id.text_view_rainbow);
 	}
 
 	private Drawable createTabDrawable(int resId) {
@@ -229,25 +253,25 @@ public class FragmentTabBottom extends SherlockFragment {
 		mTabHost.setOnTabChangedListener(new OnTabChangeListener(){
 			public void onTabChanged(String tabId) {
 				int tabNum = Integer.parseInt(tabId);
-//				homeLinearLayout = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentUser);
+				//				homeLinearLayout = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentUser);
 				homeContentTextDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentTextDisplay);
 				homeContentChartDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentChartDisplay);
 				ScrollView scrollView = (ScrollView) getSherlockActivity().findViewById(R.id.scroller);
-				
+
 				switch (tabNum) {
 				case 0:
 					scrollView.setVisibility(View.VISIBLE);
-					
-//					homeLinearLayout.removeAllViews();
-//					homeContentTextDisplay.removeAllViews();
-//					homeContentChartDisplay.removeAllViews();
-//					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//							LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-//					for(int i=0; i< buttonNo ; i++) {
-//						Button button = new Button(getSherlockActivity());
-//						button.setText("ok");
-////						homeLinearLayout.addView(new Button(getSherlockActivity()), params);
-//					}
+
+					//					homeLinearLayout.removeAllViews();
+					//					homeContentTextDisplay.removeAllViews();
+					//					homeContentChartDisplay.removeAllViews();
+					//					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					//							LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+					//					for(int i=0; i< buttonNo ; i++) {
+					//						Button button = new Button(getSherlockActivity());
+					//						button.setText("ok");
+					////						homeLinearLayout.addView(new Button(getSherlockActivity()), params);
+					//					}
 					break;
 
 				case 1:
@@ -270,7 +294,7 @@ public class FragmentTabBottom extends SherlockFragment {
 					break;
 				}
 				// create the scrollview buttons 
-				
+
 				//				UiUtil.setTabColor(getSherlockActivity(),tabHost);
 				if (getSherlockActivity() instanceof FragmentChangeActivity) {
 					//					Bundle bundle = new Bundle();

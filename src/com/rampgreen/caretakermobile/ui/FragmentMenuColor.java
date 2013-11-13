@@ -20,6 +20,7 @@ import com.rampgreen.caretakermobile.adapter.ExpandableListAdapter;
 import com.rampgreen.caretakermobile.model.Account;
 import com.rampgreen.caretakermobile.model.Profile;
 import com.rampgreen.caretakermobile.util.AppLog;
+import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
 
@@ -37,13 +38,13 @@ public class FragmentMenuColor extends SherlockFragment
 			R.drawable.ic_launcher,
 			R.drawable.ic_launcher,
 			R.drawable.ic_launcher };
-	
+
 	private String[] slider_menu_text = new String[] { 
 			"Add User Icon",
 			"Add Alert Notification", 
 			"Add Visual Display", 
-			"Add Text Display" };
-	
+	"Add Text Display" };
+
 	private ArrayList<Profile> profilesList = new ArrayList<Profile>();
 	private ArrayList<Account> accountList = new ArrayList<Account>();
 	private ExpandableListAdapter adapter;
@@ -220,25 +221,28 @@ public class FragmentMenuColor extends SherlockFragment
 				switch (groupPosition) {
 				case 0:
 					newContent = FragmentHomeMenuUser.newInstance();
+					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_USER);
+					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+					newContent.setArguments(bundle);
 					break;
 				case 1:
-					newContent = FragmentHomeMenuAlert.newInstance();
-					// bundle.putString(Constants.TAB_TYPE, whichTab);
-					// bundle.putString(Constants.PROFILE, profile);
-					// bundle.putString(key, value);
-					// newContent.setArguments(args);
+					newContent = FragmentHomeMenuDisease.newInstance();
+					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_NOTIFICATION);
+					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+					newContent.setArguments(bundle);
 					break;
 				case 2:
 					// direct call fragment.
-					newContent = FragmentHomeMenuVisual.newInstance();
-					// View pager with header slide
-					// newContent = new SampleTitlesStyledLayout();
+					newContent = FragmentHomeMenuDisease.newInstance();
+					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_TEXT_DISPLAY);
+					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+					newContent.setArguments(bundle);
 					break;
 				case 3:
-					newContent = FragmentHomeMenuText.newInstance();
-					break;
-				case 4:
-					newContent = FragmentHomeMenuText.newInstance();
+					newContent = FragmentHomeMenuDisease.newInstance();
+					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_TEXT_VISUALEXPLORER);
+					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+					newContent.setArguments(bundle);
 					break;
 				}
 				if (newContent != null)

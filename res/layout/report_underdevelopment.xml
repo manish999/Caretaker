@@ -4,14 +4,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
+    android:background="#ffffff"
     android:layout_gravity="center" >
 
-    <ImageView
+    <!--  <ImageView
         android:id="@+id/comingsoon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/coming_soon"
         android:paddingTop="30px" >
-    </ImageView>
+    </ImageView>-->
 
 </RelativeLayout>

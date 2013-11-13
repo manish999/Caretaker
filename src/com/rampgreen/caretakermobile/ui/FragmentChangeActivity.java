@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.rampgreen.caretakermobile.R;
+import com.rampgreen.caretakermobile.model.User;
+import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
 
@@ -25,12 +27,17 @@ public class FragmentChangeActivity extends BaseSliderActivity {
 		super.onCreate(savedInstanceState);
 		// set the Above View
 		//if savedinstancestate is not null that means activity is recreating on orientation changes
+		User user = (User)getIntent().getSerializableExtra(Constants.BUNDLE_KEY_USERS);
 		if (savedInstanceState != null) {
 			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
 			mSectionListContent = mContent;
 		}
-		if (mContent == null)
+		if (mContent == null) {
+			Bundle bundle = new Bundle();
 			mContent = new FragmentTabBottom();
+			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, user.getUserList());
+			mContent.setArguments(bundle);
+		}
 
 		// set the Above View
 		setContentView(R.layout.content_frame);

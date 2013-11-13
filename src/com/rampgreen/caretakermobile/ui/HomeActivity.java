@@ -2,11 +2,11 @@ package com.rampgreen.caretakermobile.ui;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.volley.VolleyError;
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.util.AppLog;
 
 public class HomeActivity extends BaseActivity
 {
@@ -16,6 +16,11 @@ public class HomeActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.report_underdevelopment);
+		Intent myLocalIntent = getIntent();
+        Bundle myBundle = myLocalIntent.getExtras();
+
+        String strfname = myBundle.getString("title");
+		setTitle(strfname);
 //		AppLog.showToast(this, "Home screen is under development.");
 	}
 

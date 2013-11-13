@@ -69,6 +69,7 @@ public class QueryHelper {
 	 */
 	public static Map<String, String> createAllUsersQuery(String accessToken) {
 		HashMap<String, String> params = new HashMap<String, String>();
+		
 		params.put("action", "caretaker");
 		params.put("task", "get_users");
 		params.put("token", accessToken);

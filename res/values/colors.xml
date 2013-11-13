@@ -3,6 +3,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="red">#00ffffff</color>
     <color name="tab_line">#60FFFFFF</color>
     <color name="tab_transparent_highlight">#28FFFFFF</color>
     <color name="tab_transparent_dark">#16FFFFFF</color>

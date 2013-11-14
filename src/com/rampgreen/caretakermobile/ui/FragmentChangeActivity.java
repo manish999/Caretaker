@@ -36,6 +36,7 @@ public class FragmentChangeActivity extends BaseSliderActivity {
 			Bundle bundle = new Bundle();
 			mContent = new FragmentTabBottom();
 			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, user.getUserList());
+			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuUser);
 			mContent.setArguments(bundle);
 		}
 

@@ -34,7 +34,7 @@ public class AdapterUser extends BaseAdapter {
 			ImageView icon = (ImageView) convertView.findViewById(R.id.row_icon);
 			//			icon.setImageResource(getItem(position).iconRes);
 			TextView title = (TextView) convertView.findViewById(R.id.row_title);
-			title.setText(((User)getItem(position)).getName());
+			title.setText(((User)getItem(position)).getUsername());
 			icon.setVisibility(View.GONE);
 
 			return convertView;
@@ -68,7 +68,7 @@ public class AdapterUser extends BaseAdapter {
 			ArrayList<User> dashUserList = new ArrayList<User>();
 			for (User user : userList)
 			{
-				if(! user.isOnDashboard()){
+				if(! user.isUserOnHomeScreen()){
 					dashUserList.add(user);
 				}
 			}

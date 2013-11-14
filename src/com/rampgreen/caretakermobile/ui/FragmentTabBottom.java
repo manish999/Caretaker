@@ -30,11 +30,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.ListItemDetails;
 import com.rampgreen.caretakermobile.model.User;
+import com.rampgreen.caretakermobile.model.UserListProvider;
 import com.rampgreen.caretakermobile.ui.util.ExpandableHeightGridView;
 import com.rampgreen.caretakermobile.ui.util.TabBitmap;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
-import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
 
@@ -57,7 +57,6 @@ public class FragmentTabBottom extends SherlockFragment {
 			R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher,
 			R.drawable.ic_launcher,  R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher };
 
-	int buttonNo =10;
 	TabHost mTabHost;
 	LinearLayout homeLinearLayout, homeContentTextDisplay, homeContentChartDisplay;
 	ExpandableHeightGridView gridView;
@@ -65,16 +64,17 @@ public class FragmentTabBottom extends SherlockFragment {
 	private View smsInboxDetailView;
 	private TextView txtInboxSmsDetail;
 	private ArrayList<User> user;
+	private UserListProvider userListProvider;
 
 	public void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
 		Bundle localBundle = getArguments();
 		//		Bundle localBundle = getActivity().getIntent().getExtras();
 		if (localBundle != null) {
-			user  = (ArrayList<User>)localBundle.getSerializable(Constants.BUNDLE_KEY_USERS);
-			buttonNo = localBundle.getInt(com.rampgreen.caretakermobile.util.Constants.BUNDLE_KEY_POSITION);
+//			user  = (ArrayList<User>)localBundle.getSerializable(Constants.BUNDLE_KEY_USERS);
 		}
 		mInflater = (LayoutInflater) getSherlockActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.userListProvider = new UserListProvider();
 	}
 
 	@Override
@@ -118,10 +118,8 @@ public class FragmentTabBottom extends SherlockFragment {
 				totalUSers ++;
 			}
 		}
-
+		user = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, false);
 		gridView.setAdapter(new ImageAdapter(getSherlockActivity(), user));
-		//		gridView.setAdapter(new ImageAdapter(getSherlockActivity()));
-
 
 		/**
 		 * On Click event for Single Gridview Item
@@ -135,7 +133,7 @@ public class FragmentTabBottom extends SherlockFragment {
 				// passing array index
 				Bundle bundle = new Bundle();
 				Intent intent = new Intent();
-				bundle.putString("title", user.get(position+1).getName());
+				bundle.putString("title", user.get(position).getUsername());
 				intent.setClass(getSherlockActivity(), HomeActivity.class);
 				intent.putExtras(bundle);
 				startActivity(intent);

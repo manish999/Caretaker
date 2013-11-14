@@ -190,6 +190,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 			newContent = new FragmentTabBottom();
 			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
 			bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, mFragmentCalledByMenuOption);
+			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentChangeActivity);
 			bundle.putString(Constants.BUNDLE_KEY_DISEASE, mClickedMenuDisease);
 			newContent.setArguments(bundle);
 			switchToHomeContent(newContent);

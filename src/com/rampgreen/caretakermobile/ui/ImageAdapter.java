@@ -47,6 +47,7 @@ public class ImageAdapter extends BaseAdapter {
 
 	public ImageAdapter(Context c, ArrayList<User> user){
 		mContext = c;
+		mUserList = user;
 		mUserList = getDashBoaredList(user);
 		inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -81,7 +82,7 @@ public class ImageAdapter extends BaseAdapter {
 			v = li.inflate(R.layout.icon, null);
 			//			v.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
 			TextView tv = (TextView)v.findViewById(R.id.icon_text);
-			tv.setText(mUserList.get(position).getName());
+			tv.setText(mUserList.get(position).getUsername());
 			ImageView iv = (ImageView)v.findViewById(R.id.icon_image);
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
 			iv.setLayoutParams(layoutParams);
@@ -100,7 +101,7 @@ public class ImageAdapter extends BaseAdapter {
 		ArrayList<User> dashUserList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isOnDashboard()){
+			if(user.isUserOnHomeScreen()){
 				dashUserList.add(user);
 			}
 		}

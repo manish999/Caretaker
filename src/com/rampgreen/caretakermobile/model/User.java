@@ -14,11 +14,9 @@ import java.util.ArrayList;
 
 public class User implements Serializable, Populator
 {
-	private boolean notification = false;
 	private ImageView imageUser = null;
 	private int notificationCount;
-	private boolean isOnDashboard = false;
-	private int imageResId = R.drawable.user;
+	private int imageResId = R.drawable.user;;
 	private String uId;
 	private String userName;
 	private String gender;
@@ -30,6 +28,7 @@ public class User implements Serializable, Populator
 	private String devicid;
 	
 	private boolean userOnHomeScreen = false;
+	private boolean notification = false;
 
 	private boolean gsrNotification = false;
 	private boolean heartRateNotification = false;
@@ -46,7 +45,33 @@ public class User implements Serializable, Populator
 	private boolean accelerometerVisualDisplay = false;
 	private boolean tempratureVisualDisplay = false;
 	
-	private ArrayList<User> userList = new ArrayList<User>();
+	public User(String userName, boolean userOnHomeScreen,
+			boolean gsrNotification, boolean heartRateNotification,
+			boolean accelerometerNotification, boolean tempratureNotification,
+			boolean gsrTextDisplay, boolean heartRateTextDisplay,
+			boolean accelerometerTextDisplay, boolean tempratureTextDisplay,
+			boolean gsrVisualDisplay, boolean heartRateVisualDisplay,
+			boolean accelerometerVisualDisplay, boolean tempratureVisualDisplay)
+	{
+		super();
+		this.userName = userName;
+		this.userOnHomeScreen = userOnHomeScreen;
+		this.gsrNotification = gsrNotification;
+		this.heartRateNotification = heartRateNotification;
+		this.accelerometerNotification = accelerometerNotification;
+		this.tempratureNotification = tempratureNotification;
+		this.gsrTextDisplay = gsrTextDisplay;
+		this.heartRateTextDisplay = heartRateTextDisplay;
+		this.accelerometerTextDisplay = accelerometerTextDisplay;
+		this.tempratureTextDisplay = tempratureTextDisplay;
+		this.gsrVisualDisplay = gsrVisualDisplay;
+		this.heartRateVisualDisplay = heartRateVisualDisplay;
+		this.accelerometerVisualDisplay = accelerometerVisualDisplay;
+		this.tempratureVisualDisplay = tempratureVisualDisplay;
+	}
+
+	
+	private static ArrayList<User> userList = new ArrayList<User>();
 
 	public User(String Uid,String Username,String Gender,String DOB,String Emailid,String Registrationdate,String Height,String Weight,String Devicid) {
 		this.uId = Uid;
@@ -106,16 +131,6 @@ public class User implements Serializable, Populator
 	public void setNotificationCount(int notificationCount)
 	{
 		this.notificationCount = notificationCount;
-	}
-
-	public boolean isOnDashboard()
-	{
-		return isOnDashboard;
-	}
-
-	public void setOnDashboard(boolean isOnDashboard)
-	{
-		this.isOnDashboard = isOnDashboard;
 	}
 
 	public int getImageResId()
@@ -351,29 +366,64 @@ public class User implements Serializable, Populator
 	@Override
 	public void populateBean(JSONObject jsonObject)
 	{
-		JSONArray jArray;
+		JSONArray jsonUserArray;
 		try
 		{
-			jArray = jsonObject.getJSONArray("users");
-			for(int i=0;i<jArray.length();i++){
-				JSONObject objJson = jArray.getJSONObject(i);
-				jsonObject = jArray.getJSONObject(i);
+			// it should be refilled each time response came.
+			userList.clear();
+			jsonUserArray = jsonObject.getJSONArray("users");
+			for(int i=0;i<jsonUserArray.length();i++){
+				JSONObject jsonObjUserAndSetting = jsonUserArray.getJSONObject(i);
+				JSONObject jsonObjUser = jsonObjUserAndSetting.getJSONObject("user");
+				JSONArray jsonArraySetting = jsonObjUserAndSetting.getJSONArray("settings");
+				
+				jsonObject = jsonUserArray.getJSONObject(i);
 				User user = new User();
 
-				user.uId = objJson.getString("u_id");
-				user.userName = objJson.getString("firstname");
-				user.gender = objJson.getString("gender");
-				user.dob = objJson.getString("dob");
-				user.eMailid = objJson.getString("emailid");
-				user.registrationdate = objJson.getString("registrationdate");
-				user.height = objJson.getString("height");
-				user.weight = objJson.getString("weight");
-				user.devicid = objJson.getString("d_id");
+				// parsing userlist data
+				user.uId = jsonObjUser.getString("u_id");
+				user.userName = jsonObjUser.getString("firstname");
+				user.gender = jsonObjUser.getString("gender");
+				user.dob = jsonObjUser.getString("dob");
+				user.eMailid = jsonObjUser.getString("emailid");
+				user.registrationdate = jsonObjUser.getString("registrationdate");
+				user.height = jsonObjUser.getString("height");
+				user.weight = jsonObjUser.getString("weight");
+				user.devicid = jsonObjUser.getString("d_id");
+				// these two settings are part of jsonObjectUser, should be part of setting object. 
+				user.userOnHomeScreen = jsonObjUser.getString("ishomescreen").equalsIgnoreCase("1") ? true : false;
+				user.notification = jsonObjUser.getString("isnotificationon").equalsIgnoreCase("1") ? true : false;
+				
+				// parsing user's dashboared settings
+				for(int index=0; index < jsonArraySetting.length(); index++){
+					JSONObject jsonObjSetting = jsonArraySetting.getJSONObject(index);
+					String disease = jsonObjSetting.getString("biometricname");
+					String textSetting = jsonObjSetting.getString("textsetting");
+					String visualSetting = jsonObjSetting.getString("visualsetting");
+					String biometricid_pk = jsonObjSetting.getString("biometricid_pk");
+					
+					if(disease.equalsIgnoreCase("GSR")) {
+						user.gsrTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+						user.gsrVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+						
+					} else if(disease.equalsIgnoreCase("Heart Rate")) {
+						user.heartRateTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+						user.heartRateVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+						
+					} else if(disease.equalsIgnoreCase("Accelerometer")) {
+						user.accelerometerTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+						user.accelerometerVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+						
+					} else if(disease.equalsIgnoreCase("Temperature")) {
+						user.tempratureTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+						user.tempratureVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+						
+					}
+				}
 				userList.add(user);
 			}
 		} catch (JSONException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

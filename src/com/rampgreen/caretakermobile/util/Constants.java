@@ -41,6 +41,7 @@ public class Constants {
 		public static final int FragmentHomeMenuVisual= 1005;
 		public static final int FragmentHomeMenuDisease= 1006;
 		public static final int FragmentTabBottom= 1007;
+		public static final int FragmentChangeActivity= 1008;
 		public static final int nothing = -1;
 	}
 }

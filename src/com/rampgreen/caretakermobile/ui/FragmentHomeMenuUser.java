@@ -12,6 +12,7 @@ import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.AdapterUser;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.User;
+import com.rampgreen.caretakermobile.model.UserListProvider;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
 import com.rampgreen.caretakermobile.util.Constants;
@@ -25,6 +26,7 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 
 	private static final String KEY_CONTENT = "TestFragment:Content123";
 	private AdapterUser adapter;
+	private UserListProvider userListProvider;
 
 	public static FragmentHomeMenuUser newInstance() {
 		FragmentHomeMenuUser fragment = new FragmentHomeMenuUser();
@@ -75,6 +77,7 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle fd = getSherlockActivity().getIntent().getExtras();
+		this.userListProvider = new UserListProvider();
 		//		this.accountToken = (String) AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.ACCOUNT_TOKEN, "");
 		//		this.profileID = (String) AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.PROFILE_ID, "");
 	}
@@ -93,6 +96,8 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 			//			profileID  = savedInstanceState.getString(Constants.ID_PROFILE);
 			//			accountToken  = savedInstanceState.getString(Constants.ID_ACCOUNT);
 		}
+
+		userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, true);
 		adapter = new AdapterUser(getActivity(),userList);
 		setListAdapter(adapter);
 		//		if (savedInstanceState == null) {
@@ -184,16 +189,20 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 			newContent = new FragmentMenuColor();
 			switchMenuContent(newContent);
 		} else {
-			ArrayList<User> arrayList = adapter.getMenuUserList(userList);
-			User user = arrayList.get(position);
-			user.setOnDashboard(true);
+			//			ArrayList<User> arrayList = adapter.getMenuUserList(userList);
+			//			User user = arrayList.get(position);
+			//			user.setOnDashboard(true);
+			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, true);
+			User user = userList.get(position);
+			user.setUserOnHomeScreen(true);
 
 			newContent = new FragmentTabBottom();
-			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, getDashBoaredList(userList));
-			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
+			//			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, getDashBoaredList(userList));
+			//			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
+			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuUser);
 			newContent.setArguments(bundle);
 			//			removeUsers(position);
-			adapter.setList(adapter.getMenuUserList(arrayList));
+			adapter.setList(adapter.getMenuUserList(userList));
 			adapter.notifyDataSetChanged();
 
 			if (newContent != null)
@@ -234,17 +243,4 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 		return new String(arr);
 
 	}
-
-	private ArrayList<User> getDashBoaredList(ArrayList<User> userList) {
-		ArrayList<User> dashUserList = new ArrayList<User>();
-		for (User user : userList)
-		{
-			if(user.isOnDashboard()){
-				dashUserList.add(user);
-			}
-		}
-		return dashUserList; 
-	}
-
-
 }

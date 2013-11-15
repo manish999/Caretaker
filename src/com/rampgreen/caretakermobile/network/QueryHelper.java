@@ -3,8 +3,6 @@ package com.rampgreen.caretakermobile.network;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.rampgreen.caretakermobile.model.GeneralData;
-
 /**
  * This class helps to make a http request query
  * 
@@ -76,31 +74,29 @@ public class QueryHelper {
 		return params;
 	}
 	
-	public static Map<String, String> createAddNotificationQuery(String accessToken, String requestId, String biometricId, String biometricValue, String settingType) {
+	public static Map<String, String> createAddUserIconQuery(String accessToken, String requestId, String biometricValue) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("action", "caretaker");
 		params.put("task", "edit_settings");
 		params.put("token", accessToken);
 		params.put("request_id", requestId);
-		params.put("biometric_id", biometricId);
 		params.put("biometric_val", biometricValue);
-		params.put("type", settingType);
+		params.put("type", "homescreen");
 		return params;
 	}
 	
-	public static Map<String, String> createAddTextDisplayQuery(String accessToken, String requestId, String biometricId, String biometricValue, String settingType) {
+	public static Map<String, String> createAddNotificationQuery(String accessToken, String requestId, String biometricValue) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("action", "caretaker");
 		params.put("task", "edit_settings");
 		params.put("token", accessToken);
 		params.put("request_id", requestId);
-		params.put("biometric_id", biometricId);
 		params.put("biometric_val", biometricValue);
-		params.put("type", settingType);
+		params.put("type", "notification");
 		return params;
 	}
 	
-	public static Map<String, String> createAddVisualDisplayQuery(String accessToken, String requestId, String biometricId, String biometricValue, String settingType) {
+	public static Map<String, String> createAddTextDisplayQuery(String accessToken, String requestId, String biometricId, String biometricValue) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("action", "caretaker");
 		params.put("task", "edit_settings");
@@ -108,7 +104,19 @@ public class QueryHelper {
 		params.put("request_id", requestId);
 		params.put("biometric_id", biometricId);
 		params.put("biometric_val", biometricValue);
-		params.put("type", settingType);
+		params.put("type", "text");
+		return params;
+	}
+	
+	public static Map<String, String> createAddVisualDisplayQuery(String accessToken, String requestId, String biometricId, String biometricValue) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("action", "caretaker");
+		params.put("task", "edit_settings");
+		params.put("token", accessToken);
+		params.put("request_id", requestId);
+		params.put("biometric_id", biometricId);
+		params.put("biometric_val", biometricValue);
+		params.put("type", "visual");
 		return params;
 	}
 

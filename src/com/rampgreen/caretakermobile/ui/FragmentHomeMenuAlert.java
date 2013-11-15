@@ -1,20 +1,19 @@
 package com.rampgreen.caretakermobile.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.rampgreen.caretakermobile.R;
+import com.rampgreen.caretakermobile.adapter.AdapterUser;
+import com.rampgreen.caretakermobile.model.User;
+import com.rampgreen.caretakermobile.model.UserListProvider;
 import com.rampgreen.caretakermobile.util.AppLog;
-import com.rampgreen.caretakermobile.util.AppSettings;
 import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
@@ -22,20 +21,9 @@ import java.util.ArrayList;
 public class FragmentHomeMenuAlert extends SherlockListFragment
 {
 	private static final String KEY_CONTENT = "TestFragment:Content123";
-	private String test = "test";
-	private int position = 0;
-
-	private int[] slider_menu_icon = new int[]{R.drawable.ic_launcher,
-			R.drawable.ic_launcher,
-			R.drawable.ic_launcher,
-			R.drawable.ic_launcher,
-			R.drawable.ic_launcher,
-			R.drawable.ic_launcher};
-	private String[] slider_menu_text = new String[]{"<<","Self","Adam",
-			"Brie",
-			"Cindy",
-	"Jacob"};
-
+	private UserListProvider userListProvider;
+	private ArrayList<User> userList;
+	private AdapterUser adapter;
 	private int mFragmentCalledByMenuOption;
 	private int mFragmentCaller;
 	private String mClickedMenuDisease;
@@ -48,12 +36,48 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Bundle bundle = getSherlockActivity().getIntent().getExtras();
+		Bundle bundle = getArguments();
+		this.userListProvider = new UserListProvider();
 		if(bundle != null) { 
 			mFragmentCalledByMenuOption = bundle.getInt(Constants.FRAGMENT_ADD_MENU_CALLER);
 			mFragmentCaller = bundle.getInt(Constants.ActivityConstants.FRAGMENT_CALLER);
 			mClickedMenuDisease = bundle.getString(Constants.BUNDLE_KEY_DISEASE);
 		}
+
+		SlidingMenu slidingMenu = ((FragmentChangeActivity)getSherlockActivity()).getSlidingMenu();
+		slidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
+			@Override
+			public void onOpen() {
+				int menuType = AdapterUser.MENU_HOME_TEXT_DISPLAY_USER_LIST;
+				userList = getUserListByDisease(mClickedMenuDisease);
+				if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY){
+					menuType = AdapterUser.MENU_HOME_TEXT_DISPLAY_USER_LIST;
+				} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER) {
+					menuType = AdapterUser.MENU_VISUAL_DISPLAY_USER_LIST;
+				}
+				adapter.setList(userList, menuType); 
+				adapter.notifyDataSetChanged();
+				AppLog.logToast(getSherlockActivity(), "onOpen");
+			}
+		});
+		slidingMenu.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {
+			@Override
+			public void onOpened() {
+				AppLog.logToast(getSherlockActivity(), "onOpened");
+			}
+		});
+		slidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
+			@Override
+			public void onClose() {
+				AppLog.logToast(getSherlockActivity(), "onClose");
+			}
+		});
+		slidingMenu.setOnClosedListener(new SlidingMenu.OnClosedListener() {
+			@Override
+			public void onClosed() {
+				AppLog.logToast(getSherlockActivity(), "onClosed");
+			}
+		});
 	}
 
 	@Override
@@ -70,10 +94,16 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 			//			profileID  = savedInstanceState.getString(Constants.ID_PROFILE);
 			//			accountToken  = savedInstanceState.getString(Constants.ID_ACCOUNT);
 		}
-		SampleAdapter adapter = new SampleAdapter(getActivity());
-		for (int i = 0; i < 4; i++) {
-			adapter.add(new SampleItem(slider_menu_text[i], slider_menu_icon[i]));
+
+		int menuType = AdapterUser.MENU_HOME_TEXT_DISPLAY_USER_LIST;
+		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY){
+			menuType = AdapterUser.MENU_HOME_TEXT_DISPLAY_USER_LIST;
+		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER) {
+			menuType = AdapterUser.MENU_VISUAL_DISPLAY_USER_LIST;
 		}
+
+		userList = getUserListByDisease(mClickedMenuDisease);
+		adapter = new AdapterUser(getActivity(),userList, menuType);
 		setListAdapter(adapter);
 		//		if (savedInstanceState == null) {
 		//            FragmentManager fragmentManager = getSherlockActivity().getSupportFragmentManager();
@@ -105,68 +135,6 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		//		Fragment f =  getFragmentManager().findFragmentById(R.id.content_frame);
-		//		if (f != null) 
-		//			getFragmentManager().be ginTransaction().hide(f).commit();
-	}
-
-	//	private void updateVisitFrag(Bundle bundle) {
-	//		FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
-	//		//		FragmentManager fm = getSherlockActivity().getSupportFragmentManager();
-	//		FragmentGraph fragGraph = new FragmentGraph();
-	//		FragmentChartList fragList = new FragmentChartList();
-	//		//		Bundle args = new Bundle();
-	//		//	args.putInt(ArticleFragment.ARG_POSITION, position);
-	//		fragGraph.setArguments(bundle);
-	//		fragList.setArguments(bundle);
-	//
-	//		// Replace whatever is in the fragment_container view with this fragment,
-	//		// and add the transaction to the back stack so the user can navigate back
-	//		transaction.replace(R.id.frag_graph, fragGraph);
-	//		transaction.replace(R.id.frag_chartlist, fragList);
-	//		//		transaction.addToBackStack(null);
-	//
-	//		// Commit the transaction
-	//		transaction.commit();
-	//		//    if (fm.findFragmentById(R.id.) == null) {
-	//		//        fm.beginTransaction()
-	//		//                .replace(placeholder, new MyListFragment(tabId),onResponseReceived tabId)
-	//		//                .commit();
-	//		//    }
-	//	}
-
-	public class SampleAdapter extends ArrayAdapter<SampleItem> {
-		ArrayList<SampleItem> listItem;
-		public SampleAdapter(Context context) {
-			super(context, 0);
-		}
-
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.row, null);
-			}
-			ImageView icon = (ImageView) convertView.findViewById(R.id.row_icon);
-			//			icon.setImageResource(getItem(position).iconRes);
-			TextView title = (TextView) convertView.findViewById(R.id.row_title);
-			title.setText(getItem(position).tag);
-			icon.setVisibility(View.GONE);
-
-			return convertView;
-		}
-
-		public void setList (ArrayList<SampleItem> list) {
-
-		}
-
-	}
-
-	private class SampleItem {
-		public String tag;
-		//		public int iconRes;
-		public SampleItem(String tag, int iconRes) {
-			this.tag = tag; 
-			//			this.iconRes = iconRes;
-		}
 	}
 
 	@Override
@@ -174,18 +142,17 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 		Fragment newContent = null;
 		Bundle bundle = new Bundle();
 		AppLog.logToast(getSherlockActivity(), position+"");
-		// get total users on dashboared
-		//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
-		//		int totuser= Integer.parseInt(totalUser);
-
-		String	dashUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_DASHBOARD_USER, "00000");
-		//pop all fragments from backstack on click sliding menu
-		//		getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
 		if(position == 0) {
 			newContent = new FragmentHomeMenuDisease();
 			switchMenuContent(newContent);
 		} else {
+
+			userList = getUserListByDisease(mClickedMenuDisease);
+			User user = userList.get(position);
+			setArgumentForUser(user, mClickedMenuDisease, true);
+
+
+			AppLog.logToast(getSherlockActivity(), position+"");
 			// on click slider menu close and  notification is to be set via web service and toast shown that notification has been set.
 			newContent = new FragmentTabBottom();
 			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
@@ -218,6 +185,60 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 			FragmentChangeActivity fca = (FragmentChangeActivity) getActivity();
 			fca.switchContent(fragment);
 		} 
+	}
+
+	private ArrayList<User> getUserListByDisease(String diseaseType) {
+		ArrayList<User> userList = null;
+		int menuType = mFragmentCalledByMenuOption;
+		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
+			menuType = UserListProvider.TEXT_DISPLAY;
+		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER){
+			menuType = UserListProvider.VISUAL_DISPLAY;
+		}
+
+		if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
+			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_GSR, menuType, true);
+		} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
+			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_HEART_RATE, menuType, true);
+		} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
+			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_ACCELEROMETER, menuType, true);
+		} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
+			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_TEMPRATURE, menuType, true);
+		}
+		return userList;
+
+	}
+
+	private void setArgumentForUser(User user, String diseaseType, boolean setterValue) {
+		int menuType;
+		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
+			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
+				user.setGsrTextDisplay(setterValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
+				user.setHeartRateTextDisplay(setterValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
+				user.setAccelerometerTextDisplay(setterValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
+				user.setTempratureTextDisplay(setterValue);
+
+			}
+		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER){
+			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
+				user.setGsrVisualDisplay(setterValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
+				user.setHeartRateVisualDisplay(setterValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
+				user.setAccelerometerVisualDisplay(setterValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
+				user.setTempratureVisualDisplay(setterValue);
+			}
+		}
 	}
 
 

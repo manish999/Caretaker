@@ -17,7 +17,9 @@ import java.util.ArrayList;
 public class AdapterUser extends BaseAdapter {
 	public static final int MENU_HOME_USER_LIST = 300;
 	public static final int MENU_NOTIFICATION_USER_LIST = 301;
-
+	public static final int MENU_HOME_TEXT_DISPLAY_USER_LIST = 302;
+	public static final int MENU_VISUAL_DISPLAY_USER_LIST = 303;
+	
 	private ArrayList<User> listItem;
 	private Context context;
 
@@ -70,6 +72,7 @@ public class AdapterUser extends BaseAdapter {
 	public  ArrayList<User> getMenuUserList(ArrayList<User> userList, int menuType) {
 		ArrayList<User> dashUserList = new ArrayList<User>();
 		switch (menuType) {
+		
 		case MENU_HOME_USER_LIST:
 			for (User user : userList)
 			{
@@ -78,6 +81,7 @@ public class AdapterUser extends BaseAdapter {
 				}
 			}
 			break;
+			
 		case MENU_NOTIFICATION_USER_LIST:
 			for (User user : userList)
 			{
@@ -85,6 +89,26 @@ public class AdapterUser extends BaseAdapter {
 					dashUserList.add(user);
 				}
 			}
+			break;
+			
+		case MENU_HOME_TEXT_DISPLAY_USER_LIST:
+			dashUserList = userList;
+//			for (User user : userList)
+//			{
+//				if(! user.isUserOnHomeScreen()){
+//					dashUserList.add(user);
+//				}
+//			}
+			break;
+			
+		case MENU_VISUAL_DISPLAY_USER_LIST:
+			dashUserList = userList;
+//			for (User user : userList)
+//			{
+//				if(! user.isUserOnHomeScreen()){
+//					dashUserList.add(user);
+//				}
+//			}
 			break;
 
 		default:

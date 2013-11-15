@@ -114,10 +114,6 @@ public class FragmentHomeMenuNotification extends SherlockListFragment
 		Fragment newContent = null;
 		Bundle bundle = new Bundle();
 		AppLog.logToast(getSherlockActivity(), position+"");
-		// get total users on dashboared
-		//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
-		//		int totuser= Integer.parseInt(totalUser);
-
 		String	dashUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_DASHBOARD_USER, "00000");
 		//pop all fragments from backstack on click sliding menu
 		//		getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

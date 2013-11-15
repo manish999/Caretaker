@@ -31,13 +31,14 @@ public class FragmentHomeMenuDisease extends SherlockListFragment
 			R.drawable.ic_launcher,
 			R.drawable.ic_launcher,
 			R.drawable.ic_launcher,
-			R.drawable.ic_launcher};
+			R.drawable.ic_launcher
+			};
 	private String[] slider_menu_text = new String[]{"<<","GSR",
 			"Heart Rate",
 			"Accelerometer",
 	"Temperature"};
 	
-	int mFragmentCalledByMenuOption;
+	static int mFragmentCalledByMenuOption;
 
 	public static FragmentHomeMenuDisease newInstance() {
 		FragmentHomeMenuDisease fragment = new FragmentHomeMenuDisease();
@@ -47,7 +48,7 @@ public class FragmentHomeMenuDisease extends SherlockListFragment
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Bundle bundle = getSherlockActivity().getIntent().getExtras();
+		Bundle bundle = getArguments();
 		if(bundle != null) { 
 			mFragmentCalledByMenuOption = bundle.getInt(Constants.FRAGMENT_ADD_MENU_CALLER);
 		}

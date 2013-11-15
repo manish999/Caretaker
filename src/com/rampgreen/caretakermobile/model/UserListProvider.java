@@ -102,7 +102,7 @@ public class UserListProvider
 		}
 
 		if(userList == null)
-			throw new NullPointerException("Method getMenuList() of UserListProvider is returning null arraylist, check it"); 
+			throw new NullPointerException("Method getMenuList() of UserListProvider is returning null arraylist, check it disease type = "+diseaseType +"menutype = "+menuType ); 
 		return userList;
 	}
 
@@ -166,7 +166,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isGsrNotification()) {
+			if(! user.isGsrNotification()) {
 				tempList.add(user);
 			}
 		}
@@ -178,7 +178,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isHeartRateNotification()) {
+			if(! user.isHeartRateNotification()) {
 				tempList.add(user);
 			}
 		}
@@ -190,7 +190,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isAccelerometerNotification()) {
+			if(! user.isAccelerometerNotification()) {
 				tempList.add(user);
 			}
 		}
@@ -201,7 +201,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isTempratureNotification()) {
+			if(! user.isTempratureNotification()) {
 				tempList.add(user);
 			}
 		}
@@ -213,7 +213,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isGsrTextDisplay()) {
+			if(! user.isGsrTextDisplay()) {
 				tempList.add(user);
 			}
 		}
@@ -225,7 +225,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isHeartRateTextDisplay()) {
+			if(! user.isHeartRateTextDisplay()) {
 				tempList.add(user);
 			}
 		}
@@ -237,7 +237,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isAccelerometerTextDisplay()) {
+			if(! user.isAccelerometerTextDisplay()) {
 				tempList.add(user);
 			}
 		}
@@ -248,7 +248,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isTempratureTextDisplay()) {
+			if(! user.isTempratureTextDisplay()) {
 				tempList.add(user);
 			}
 		}
@@ -260,7 +260,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isGsrVisualDisplay()) {
+			if(! user.isGsrVisualDisplay()) {
 				tempList.add(user);
 			}
 		}
@@ -272,7 +272,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isHeartRateVisualDisplay()) {
+			if(! user.isHeartRateVisualDisplay()) {
 				tempList.add(user);
 			}
 		}
@@ -284,7 +284,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isAccelerometerVisualDisplay()) {
+			if(! user.isAccelerometerVisualDisplay()) {
 				tempList.add(user);
 			}
 		}
@@ -295,7 +295,7 @@ public class UserListProvider
 		ArrayList<User> tempList = new ArrayList<User>();
 		for (User user : userList)
 		{
-			if(user.isTempratureVisualDisplay()) {
+			if(! user.isTempratureVisualDisplay()) {
 				tempList.add(user);
 			}
 		}

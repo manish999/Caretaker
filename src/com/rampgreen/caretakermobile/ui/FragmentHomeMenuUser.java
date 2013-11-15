@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.MenuItem;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.AdapterUser;
 import com.rampgreen.caretakermobile.model.BeanController;
@@ -78,6 +80,36 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 		super.onCreate(savedInstanceState);
 		Bundle fd = getSherlockActivity().getIntent().getExtras();
 		this.userListProvider = new UserListProvider();
+		setHasOptionsMenu(true);
+		
+		SlidingMenu slidingMenu = ((FragmentChangeActivity)getSherlockActivity()).getSlidingMenu();
+		slidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
+            @Override
+            public void onOpen() {
+            	userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, true);
+        		adapter.setList(userList, AdapterUser.MENU_HOME_USER_LIST); 
+        		adapter.notifyDataSetChanged();
+                AppLog.logToast(getSherlockActivity(), "onOpen");
+            }
+        });
+		slidingMenu.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {
+            @Override
+            public void onOpened() {
+            	AppLog.logToast(getSherlockActivity(), "onOpened");
+            }
+        });
+		slidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
+            @Override
+            public void onClose() {
+            	AppLog.logToast(getSherlockActivity(), "onClose");
+            }
+        });
+		slidingMenu.setOnClosedListener(new SlidingMenu.OnClosedListener() {
+            @Override
+            public void onClosed() {
+            	AppLog.logToast(getSherlockActivity(), "onClosed");
+            }
+        });
 		//		this.accountToken = (String) AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.ACCOUNT_TOKEN, "");
 		//		this.profileID = (String) AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.PROFILE_ID, "");
 	}
@@ -98,7 +130,7 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 		}
 
 		userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, true);
-		adapter = new AdapterUser(getActivity(),userList);
+		adapter = new AdapterUser(getActivity(),userList, AdapterUser.MENU_HOME_USER_LIST);
 		setListAdapter(adapter);
 		//		if (savedInstanceState == null) {
 		//            FragmentManager fragmentManager = getSherlockActivity().getSupportFragmentManager();
@@ -112,19 +144,6 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 
 		// it is used to get the data from fragmentsectionlist 
 
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		//		outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
-		//		outState.putInt(Constants.TAB_TYPE, whichTab);
-		//		outState.putString(Constants.ID_PROFILE, profileID);
-		//		outState.putString(Constants.ID_ACCOUNT, accountToken);
-		//		outState.putString(Constants.TYPE_TITLE, Constants.IMPRESSIONS);
-		//		this.accountToken = (String) AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.ACCOUNT_TOKEN, "");
-		//		this.profileID = (String) AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.PROFILE_ID, "");
-		//		super.onSaveInstanceState(outState);
-		//		outState.putInt("mColorRes", mColorRes);
 	}
 
 	@Override
@@ -202,7 +221,7 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuUser);
 			newContent.setArguments(bundle);
 			//			removeUsers(position);
-			adapter.setList(adapter.getMenuUserList(userList));
+			adapter.setList(adapter.getMenuUserList(userList, AdapterUser.MENU_HOME_USER_LIST), AdapterUser.MENU_HOME_USER_LIST);
 			adapter.notifyDataSetChanged();
 
 			if (newContent != null)
@@ -242,5 +261,26 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 		AppSettings.setPreference(getSherlockActivity(), null, AppSettings.TEMP_DASHBOARD_USER, new String(arr));
 		return new String(arr);
 
+	}
+	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// home click
+			adapter.setList(adapter.getMenuUserList(userList, AdapterUser.MENU_HOME_USER_LIST),AdapterUser.MENU_HOME_USER_LIST);
+			adapter.notifyDataSetChanged();
+			return false;
+//	    case R.id.activity_menu_item:
+//	        // Not implemented here
+//	        return false;
+//	    case R.id.fragment_menu_item:
+//	        // Do Fragment menu item stuff here
+//	        return true;
+	    default:
+	        break;
+	    }
+	    return super.onOptionsItemSelected(item);
 	}
 }

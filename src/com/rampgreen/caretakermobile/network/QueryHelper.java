@@ -75,4 +75,41 @@ public class QueryHelper {
 		params.put("token", accessToken);
 		return params;
 	}
+	
+	public static Map<String, String> createAddNotificationQuery(String accessToken, String requestId, String biometricId, String biometricValue, String settingType) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("action", "caretaker");
+		params.put("task", "edit_settings");
+		params.put("token", accessToken);
+		params.put("request_id", requestId);
+		params.put("biometric_id", biometricId);
+		params.put("biometric_val", biometricValue);
+		params.put("type", settingType);
+		return params;
+	}
+	
+	public static Map<String, String> createAddTextDisplayQuery(String accessToken, String requestId, String biometricId, String biometricValue, String settingType) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("action", "caretaker");
+		params.put("task", "edit_settings");
+		params.put("token", accessToken);
+		params.put("request_id", requestId);
+		params.put("biometric_id", biometricId);
+		params.put("biometric_val", biometricValue);
+		params.put("type", settingType);
+		return params;
+	}
+	
+	public static Map<String, String> createAddVisualDisplayQuery(String accessToken, String requestId, String biometricId, String biometricValue, String settingType) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("action", "caretaker");
+		params.put("task", "edit_settings");
+		params.put("token", accessToken);
+		params.put("request_id", requestId);
+		params.put("biometric_id", biometricId);
+		params.put("biometric_val", biometricValue);
+		params.put("type", settingType);
+		return params;
+	}
+
 }

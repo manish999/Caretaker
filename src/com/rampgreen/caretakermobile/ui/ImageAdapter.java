@@ -66,6 +66,10 @@ public class ImageAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return 0;
 	}
+	
+	public void setList(ArrayList<User> user) {
+		mUserList = getDashBoaredList(user);
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {			
@@ -76,25 +80,49 @@ public class ImageAdapter extends BaseAdapter {
 		//		return imageView;
 
 		// TODO Auto-generated method stub
-		View v;
-		if(convertView==null){
-			LayoutInflater li = inflater;
-			v = li.inflate(R.layout.icon, null);
-			//			v.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
-			TextView tv = (TextView)v.findViewById(R.id.icon_text);
-			tv.setText(mUserList.get(position).getUsername());
-			ImageView iv = (ImageView)v.findViewById(R.id.icon_image);
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
-			iv.setLayoutParams(layoutParams);
-			//			iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			//			iv.setImageResource(mUserList.get(position).getImageResId());
-		}
-		else
-		{
-			v = convertView;
-		}
-		return v;
+		
+		ViewHolder holder;
+		if(convertView==null) {
+			convertView = inflater.inflate(R.layout.icon, null);
+			holder = new ViewHolder();
 
+			holder.icontext = (TextView)convertView.findViewById(R.id.icon_text); 
+			holder.imageView = (ImageView)convertView.findViewById(R.id.icon_image);
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+			holder.imageView.setLayoutParams(layoutParams);
+			 
+			convertView.setTag(holder);
+		}
+		else {
+			holder = (ViewHolder) convertView.getTag();
+		}
+		holder.icontext.setText(mUserList.get(position).getUsername());
+////		holder.imageView.setText(resultDesc);
+		return convertView;
+//		View v;
+//		if(convertView==null){
+//			LayoutInflater li = inflater;
+//			v = li.inflate(R.layout.icon, null);
+//			//			v.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
+//			TextView tv = (TextView)v.findViewById(R.id.icon_text);
+//			tv.setText();
+//			ImageView iv = (ImageView)v.findViewById(R.id.icon_image);
+//			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+//			iv.setLayoutParams(layoutParams);
+//			//			iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//			//			iv.setImageResource(mUserList.get(position).getImageResId());
+//		}
+//		else
+//		{
+//			v = convertView;
+//		}
+//		return v;
+
+	}
+	
+	static class ViewHolder {
+		TextView icontext;
+		ImageView imageView;
 	}
 
 	private ArrayList<User> getDashBoaredList(ArrayList<User> userList) {

@@ -7,6 +7,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.model.User;
+import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
@@ -211,9 +212,14 @@ public class FragmentChangeActivity extends BaseSliderActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem p_item) {
+		
 		switch (p_item.getItemId()) {
 		case 0:
 			return true;
+		case android.R.id.home:
+			mContent.getActivity();
+			//refersh the list on click 
+			break;
 //		case R.id.action_period:
 //			openPeriodSelector();
 //			return true;

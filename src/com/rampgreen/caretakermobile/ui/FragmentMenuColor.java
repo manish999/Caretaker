@@ -226,7 +226,7 @@ public class FragmentMenuColor extends SherlockFragment
 					newContent.setArguments(bundle);
 					break;
 				case 1:
-					newContent = FragmentHomeMenuDisease.newInstance();
+					newContent = FragmentHomeMenuNotification.newInstance();
 					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_NOTIFICATION);
 					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
 					newContent.setArguments(bundle);

@@ -1,7 +1,9 @@
 package com.rampgreen.caretakermobile.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -27,6 +29,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.ListItemDetails;
 import com.rampgreen.caretakermobile.model.User;
@@ -63,8 +66,9 @@ public class FragmentTabBottom extends SherlockFragment {
 	private LayoutInflater mInflater;
 	private View smsInboxDetailView;
 	private TextView txtInboxSmsDetail;
-	private ArrayList<User> user;
+	private ArrayList<User> userList;
 	private UserListProvider userListProvider;
+	private ImageAdapter imageAdapter;
 
 	public void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
@@ -75,6 +79,7 @@ public class FragmentTabBottom extends SherlockFragment {
 		}
 		mInflater = (LayoutInflater) getSherlockActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.userListProvider = new UserListProvider();
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -118,8 +123,10 @@ public class FragmentTabBottom extends SherlockFragment {
 				totalUSers ++;
 			}
 		}
-		user = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, false);
-		gridView.setAdapter(new ImageAdapter(getSherlockActivity(), user));
+		
+		userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, false);
+		imageAdapter = new ImageAdapter(getSherlockActivity(), userList);
+		gridView.setAdapter(imageAdapter);
 
 		/**
 		 * On Click event for Single Gridview Item
@@ -133,7 +140,7 @@ public class FragmentTabBottom extends SherlockFragment {
 				// passing array index
 				Bundle bundle = new Bundle();
 				Intent intent = new Intent();
-				bundle.putString("title", user.get(position).getUsername());
+				bundle.putString("title", userList.get(position).getUsername());
 				intent.setClass(getSherlockActivity(), HomeActivity.class);
 				intent.putExtras(bundle);
 				startActivity(intent);
@@ -149,6 +156,33 @@ public class FragmentTabBottom extends SherlockFragment {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View v,
 										int position, long id) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
+				builder.setTitle("Exit");
+				final User user = userList.get(position);
+				builder.setMessage("Are You Sure to delete "+user.getUsername()+" from home screen ?");
+
+				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						user.setUserOnHomeScreen(false);
+						UserListProvider userListProvider = new UserListProvider();
+						userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, false);
+//						userList.remove(user);
+						// updat
+						refreshUserListAdapter(userList);
+//						Constants.CLOSE_ALL_ACTIVITIES = true;
+//						finish();
+					}
+				});
+
+				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
 //				AppLog.logToast(getSherlockActivity(), "Long click posi"+position);
 				return false;
 			}
@@ -197,6 +231,12 @@ public class FragmentTabBottom extends SherlockFragment {
 		//		imageAdapter.notifyDataSetChanged();
 
 	}
+	
+	private void refreshUserListAdapter(ArrayList<User> userList2) {
+		imageAdapter.setList(userList2);
+		imageAdapter.notifyDataSetChanged();
+	}
+	
 	private void setTabs() {
 		mTabHost = (TabHost) getSherlockActivity().findViewById(android.R.id.tabhost);
 		mTabHost.setup();
@@ -316,5 +356,24 @@ public class FragmentTabBottom extends SherlockFragment {
 		spec.setContent(intent);
 
 		mTabHost.addTab(spec);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// home click
+			return true;
+//	    case R.id.activity_menu_item:
+//	        // Not implemented here
+//	        return false;
+//	    case R.id.fragment_menu_item:
+//	        // Do Fragment menu item stuff here
+//	        return true;
+	    default:
+	        break;
+	    }
+
+	    return super.onOptionsItemSelected(item);
 	}
 }

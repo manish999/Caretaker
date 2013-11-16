@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context=".sendrecived_request" >
+
+    <TextView
+        android:id="@+id/textUserid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/textViewdot"
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLargeInverse"
+        android:textColor="#0099CC" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewdot"
+        android:layout_toRightOf="@+id/textViewdot"
+        android:text="User Name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayoutR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/textView1" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button1"
+            android:layout_toLeftOf="@+id/textView2"
+            android:background="@android:color/transparent"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="Accept"
+            android:textColor="#0099CC" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/button1"
+            android:layout_toLeftOf="@+id/button2"
+            android:text=""
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button1"
+            android:layout_toLeftOf="@+id/textView3"
+            android:background="@android:color/transparent"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="Ignore" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/button1"
+            android:layout_toLeftOf="@+id/button3"
+            android:text="" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button1"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="Delete" />
+    </RelativeLayout>
+
+</RelativeLayout>

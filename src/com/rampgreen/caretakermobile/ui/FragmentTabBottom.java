@@ -32,8 +32,8 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
-import com.android.volley.Response;
 import com.android.volley.Request.Method;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
@@ -307,6 +307,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 
 		mTabHost.addTab(spec);
 		mTabHost.setOnTabChangedListener(new OnTabChangeListener(){
+			Intent intent;
 			public void onTabChanged(String tabId) {
 				int tabNum = Integer.parseInt(tabId);
 				//				homeLinearLayout = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentUser);
@@ -331,14 +332,19 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 					break;
 
 				case 1:
+					
 					scrollView.setVisibility(View.INVISIBLE);
 					break;
 
 				case 2:
+					intent = new Intent(getSherlockActivity(), UsersCaretakers.class);
+					startActivity(intent);
 					scrollView.setVisibility(View.INVISIBLE);
 					break;
 
 				case 3:
+					intent = new Intent(getSherlockActivity(), SendReceived_Request.class);
+					startActivity(intent);
 					scrollView.setVisibility(View.INVISIBLE);
 					break;
 

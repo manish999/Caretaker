@@ -59,6 +59,15 @@
             android:name=".ui.WelcomActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".ui.SendReceived_Request"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".ui.UsersCaretakers"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

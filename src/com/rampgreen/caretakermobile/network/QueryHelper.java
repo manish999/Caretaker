@@ -107,6 +107,59 @@ public class QueryHelper {
 		params.put("type", "text");
 		return params;
 	}
+	// ishu 
+	
+	public static Map<String, String> getRecivedQuery(String token) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		params.put("action", "caretaker");
+		params.put("task", "get_caretaker_requests_recieved");		
+		params.put("token", token);
+		return params;
+	}
+	
+	public static Map<String, String> getSentQuery(String token) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		params.put("action", "caretaker");
+		params.put("task", "get_caretaker_requests_sent");		
+		params.put("token", token);
+		return params;
+	}
+	
+	public static Map<String, String> responseAcceptQuery(String token,String request_id) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		params.put("action", "caretaker");
+		params.put("task", "caretaker_response_accept");		
+		params.put("token", token);
+		params.put("request_id", request_id);
+		return params;
+	}
+	
+	public static Map<String, String> responseDeleteQuery(String token,String request_id) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		params.put("action", "caretaker");
+		params.put("task", "caretaker_response_delete");		
+		params.put("token", token);
+		params.put("request_id", request_id);
+		return params;
+	}
+	
+	public static Map<String, String> responseIgnoreQuery(String token,String request_id) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		params.put("action", "caretaker");
+		params.put("task", "caretaker_response_ignore");		
+		params.put("token", token);
+		params.put("request_id", request_id);
+		return params;
+	}
+	
+	public static Map<String, String> caretakerRequestSendQuery(String token,String emailid) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		params.put("action", "caretaker");
+		params.put("task", "caretaker_request_add");		
+		params.put("token", token);
+		params.put("emailid", emailid);
+		return params;
+	}
 	
 	public static Map<String, String> createAddVisualDisplayQuery(String accessToken, String requestId, String biometricId, String biometricValue) {
 		HashMap<String, String> params = new HashMap<String, String>();
@@ -119,5 +172,23 @@ public class QueryHelper {
 		params.put("type", "visual");
 		return params;
 	}
-
+	// ishu //
+	// rajeev
+	public static Map<String, String> getMyCaretakersQuery(String accessToken) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		
+		params.put("action", "caretaker");
+		params.put("task", "get_caretaker_list");		
+		params.put("token", accessToken);	
+		return params;
+	}
+	public static Map<String, String> getMyUsersQuery(String accessToken) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		params.put("action", "caretaker");
+		params.put("task", "get_users");		
+		params.put("token", accessToken);	
+		return params;
+	}	
+	// rajeev//
+	
 }

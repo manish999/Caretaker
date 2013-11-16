@@ -28,6 +28,7 @@
     <string name="radio_male">Male</string>
     <string name="radio_female">Female</string>
     <string name="action_logout">Logout</string>
+    <string name="sentrequest">sent request</string>
     
 
 </resources>

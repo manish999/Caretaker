@@ -1,5 +1,7 @@
 package com.rampgreen.caretakermobile.ui;
 
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,19 +11,28 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.MenuItem;
+import com.android.volley.Response;
+import com.android.volley.Request.Method;
+import com.android.volley.VolleyError;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.rampgreen.caretakermobile.MyRequestQueue;
+import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.AdapterUser;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
+import com.rampgreen.caretakermobile.network.CustomRequest;
+import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
 import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.RandomAccess;
 
-public class FragmentHomeMenuUser extends SherlockListFragment
+public class FragmentHomeMenuUser extends SherlockListFragment implements  Response.Listener<JSONObject>, Response.ErrorListener
 {
 	static ArrayList<User> userList = new ArrayList<User>();
 
@@ -208,12 +219,16 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 			newContent = new FragmentMenuColor();
 			switchMenuContent(newContent);
 		} else {
-			//			ArrayList<User> arrayList = adapter.getMenuUserList(userList);
-			//			User user = arrayList.get(position);
-			//			user.setOnDashboard(true);
 			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, true);
 			User user = userList.get(position);
 			user.setUserOnHomeScreen(true);
+			
+			// set the value on server
+			MyRequestQueue queue = MyVolley.getRequestQueue();
+			Map<String, String> paramMap = QueryHelper.createAddUserIconQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "1");
+			CustomRequest customRequest = new CustomRequest(Method.POST,
+					Constants.URL_WEB_SERVICE, paramMap, FragmentHomeMenuUser.this, FragmentHomeMenuUser.this);
+			queue.add(customRequest);
 
 			newContent = new FragmentTabBottom();
 			//			bundle.putSerializable(Constants.BUNDLE_KEY_USERS, getDashBoaredList(userList));
@@ -282,5 +297,17 @@ public class FragmentHomeMenuUser extends SherlockListFragment
 	        break;
 	    }
 	    return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error)
+	{
+		
+	}
+
+	@Override
+	public void onResponse(JSONObject response)
+	{
+		
 	}
 }

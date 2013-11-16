@@ -1,5 +1,7 @@
 package com.rampgreen.caretakermobile.ui;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -30,22 +32,32 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
+import com.android.volley.Response;
+import com.android.volley.Request.Method;
+import com.android.volley.VolleyError;
+import com.rampgreen.caretakermobile.MyRequestQueue;
+import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.ListItemDetails;
+import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
+import com.rampgreen.caretakermobile.network.CustomRequest;
+import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.ui.util.ExpandableHeightGridView;
 import com.rampgreen.caretakermobile.ui.util.TabBitmap;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
+import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author Manish Pathak
  *
  */
-public class FragmentTabBottom extends SherlockFragment {
+public class FragmentTabBottom extends SherlockFragment implements  Response.Listener<JSONObject>, Response.ErrorListener{
 
 	private static final String TAG_1 = "0";
 	private static final String TAG_2 = "1";
@@ -156,15 +168,21 @@ public class FragmentTabBottom extends SherlockFragment {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View v,
 										int position, long id) {
+				final User user = userList.get(position);
 				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
 				builder.setTitle("Exit");
-				final User user = userList.get(position);
 				builder.setMessage("Are You Sure to delete "+user.getUsername()+" from home screen ?");
-
 				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						user.setUserOnHomeScreen(false);
+						// set the value on server
+						MyRequestQueue queue = MyVolley.getRequestQueue();
+						Map<String, String> paramMap = QueryHelper.createAddUserIconQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "0");
+						CustomRequest customRequest = new CustomRequest(Method.POST,
+								Constants.URL_WEB_SERVICE, paramMap, FragmentTabBottom.this, FragmentTabBottom.this);
+						queue.add(customRequest);
+						
 						UserListProvider userListProvider = new UserListProvider();
 						userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, false);
 //						userList.remove(user);
@@ -375,5 +393,19 @@ public class FragmentTabBottom extends SherlockFragment {
 	    }
 
 	    return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onResponse(JSONObject response)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

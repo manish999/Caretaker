@@ -26,6 +26,7 @@ public class User implements Serializable, Populator
 	private String height;
 	private String weight;
 	private String devicid;
+	private String requestId;
 	
 	private boolean userOnHomeScreen = false;
 	private boolean notification = false;
@@ -363,6 +364,16 @@ public class User implements Serializable, Populator
 		this.tempratureVisualDisplay = tempratureVisualDisplay;
 	}
 
+	public String getRequestId()
+	{
+		return requestId;
+	}
+
+	public void setRequestId(String requestId)
+	{
+		this.requestId = requestId;
+	}
+
 	@Override
 	public void populateBean(JSONObject jsonObject)
 	{
@@ -390,6 +401,7 @@ public class User implements Serializable, Populator
 				user.height = jsonObjUser.getString("height");
 				user.weight = jsonObjUser.getString("weight");
 				user.devicid = jsonObjUser.getString("d_id");
+				user.requestId = jsonObjUser.getString("request_id");
 				// these two settings are part of jsonObjectUser, should be part of setting object. 
 				user.userOnHomeScreen = jsonObjUser.getString("ishomescreen").equalsIgnoreCase("1") ? true : false;
 				user.notification = jsonObjUser.getString("isnotificationon").equalsIgnoreCase("1") ? true : false;

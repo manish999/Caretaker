@@ -1,5 +1,7 @@
 package com.rampgreen.caretakermobile.ui;
 
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,18 +10,27 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.android.volley.Response;
+import com.android.volley.Request.Method;
+import com.android.volley.VolleyError;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.rampgreen.caretakermobile.MyRequestQueue;
+import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.AdapterUser;
+import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
+import com.rampgreen.caretakermobile.network.CustomRequest;
+import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
 import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class FragmentHomeMenuNotification extends SherlockListFragment
+public class FragmentHomeMenuNotification extends SherlockListFragment implements  Response.Listener<JSONObject>, Response.ErrorListener
 {
 	private static final String KEY_CONTENT = "TestFragment:Content123";
 	private UserListProvider userListProvider;
@@ -44,35 +55,35 @@ public class FragmentHomeMenuNotification extends SherlockListFragment
 			mFragmentCaller = bundle.getInt(Constants.ActivityConstants.FRAGMENT_CALLER);
 			mClickedMenuDisease = bundle.getString(Constants.BUNDLE_KEY_DISEASE);
 		}
-		
+
 		SlidingMenu slidingMenu = ((FragmentChangeActivity)getSherlockActivity()).getSlidingMenu();
 		slidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
-            @Override
-            public void onOpen() {
-            	userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, true);
-        		adapter.setList(userList, AdapterUser.MENU_NOTIFICATION_USER_LIST); 
-        		adapter.notifyDataSetChanged();
-                AppLog.logToast(getSherlockActivity(), "onOpen");
-            }
-        });
+			@Override
+			public void onOpen() {
+				userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, true);
+				adapter.setList(userList, AdapterUser.MENU_NOTIFICATION_USER_LIST); 
+				adapter.notifyDataSetChanged();
+				AppLog.logToast(getSherlockActivity(), "onOpen");
+			}
+		});
 		slidingMenu.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {
-            @Override
-            public void onOpened() {
-            	AppLog.logToast(getSherlockActivity(), "onOpened");
-            }
-        });
+			@Override
+			public void onOpened() {
+				AppLog.logToast(getSherlockActivity(), "onOpened");
+			}
+		});
 		slidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
-            @Override
-            public void onClose() {
-            	AppLog.logToast(getSherlockActivity(), "onClose");
-            }
-        });
+			@Override
+			public void onClose() {
+				AppLog.logToast(getSherlockActivity(), "onClose");
+			}
+		});
 		slidingMenu.setOnClosedListener(new SlidingMenu.OnClosedListener() {
-            @Override
-            public void onClosed() {
-            	AppLog.logToast(getSherlockActivity(), "onClosed");
-            }
-        });
+			@Override
+			public void onClosed() {
+				AppLog.logToast(getSherlockActivity(), "onClosed");
+			}
+		});
 	}
 
 	@Override
@@ -89,16 +100,16 @@ public class FragmentHomeMenuNotification extends SherlockListFragment
 			//			profileID  = savedInstanceState.getString(Constants.ID_PROFILE);
 			//			accountToken  = savedInstanceState.getString(Constants.ID_ACCOUNT);
 		}
-		
+
 		userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, true);
 		adapter = new AdapterUser(getActivity(),userList, AdapterUser.MENU_NOTIFICATION_USER_LIST);
 		setListAdapter(adapter);
-		
-//		SampleAdapter adapter = new SampleAdapter(getActivity());
-//		for (int i = 0; i < 4; i++) {
-//			adapter.add(new SampleItem(slider_menu_text[i], slider_menu_icon[i]));
-//		}
-//		setListAdapter(adapter);
+
+		//		SampleAdapter adapter = new SampleAdapter(getActivity());
+		//		for (int i = 0; i < 4; i++) {
+		//			adapter.add(new SampleItem(slider_menu_text[i], slider_menu_icon[i]));
+		//		}
+		//		setListAdapter(adapter);
 	}
 
 	@Override
@@ -126,15 +137,22 @@ public class FragmentHomeMenuNotification extends SherlockListFragment
 			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, true);
 			User user = userList.get(position);
 			user.setNotification(true);
-			
+
+			// set the value on server
+			MyRequestQueue queue = MyVolley.getRequestQueue();
+			Map<String, String> paramMap = QueryHelper.createAddNotificationQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "1");
+			CustomRequest customRequest = new CustomRequest(Method.POST,
+					Constants.URL_WEB_SERVICE, paramMap, FragmentHomeMenuNotification.this, FragmentHomeMenuNotification.this);
+			queue.add(customRequest);
+
 			AppLog.logToast(getSherlockActivity(), position+"");
-			
+
 			newContent = new FragmentTabBottom();
-//			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
-//			bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, mFragmentCalledByMenuOption);
-//			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentChangeActivity);
-//			bundle.putString(Constants.BUNDLE_KEY_DISEASE, mClickedMenuDisease);
-//			newContent.setArguments(bundle);
+			//			bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
+			//			bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, mFragmentCalledByMenuOption);
+			//			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentChangeActivity);
+			//			bundle.putString(Constants.BUNDLE_KEY_DISEASE, mClickedMenuDisease);
+			//			newContent.setArguments(bundle);
 			switchToHomeContent(newContent);
 		}
 
@@ -160,6 +178,20 @@ public class FragmentHomeMenuNotification extends SherlockListFragment
 			FragmentChangeActivity fca = (FragmentChangeActivity) getActivity();
 			fca.switchContent(fragment);
 		} 
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onResponse(JSONObject response)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 

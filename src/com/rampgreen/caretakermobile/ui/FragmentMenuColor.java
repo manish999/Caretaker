@@ -42,8 +42,8 @@ public class FragmentMenuColor extends SherlockFragment
 	private String[] slider_menu_text = new String[] { 
 			"Add User Icon",
 			"Add Alert Notification", 
-			"Add Visual Display", 
-	"Add Text Display" };
+			"Add Text Display", 
+	"Add Visual Display" };
 
 	private ArrayList<Profile> profilesList = new ArrayList<Profile>();
 	private ArrayList<Account> accountList = new ArrayList<Account>();
@@ -137,7 +137,7 @@ public class FragmentMenuColor extends SherlockFragment
 	// break;
 	// // case 1:
 	// // newContent = new FragmentSectionList();
-	// // // bundle.putString(Constants.TAB_TYPE, whichTab);
+	// // // bundle.putStringsetValuesOnWebServer(Constants.TAB_TYPE, whichTab);
 	// // // bundle.putString(Constants.PROFILE, profile);
 	// // // bundle.putString(key, value);
 	// // // newContent.setArguments(args);
@@ -234,13 +234,13 @@ public class FragmentMenuColor extends SherlockFragment
 				case 2:
 					// direct call fragment.
 					newContent = FragmentHomeMenuDisease.newInstance();
-					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_TEXT_DISPLAY);
+					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_TEXT_VISUALEXPLORER);
 					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
 					newContent.setArguments(bundle);
 					break;
 				case 3:
 					newContent = FragmentHomeMenuDisease.newInstance();
-					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_TEXT_VISUALEXPLORER);
+					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_TEXT_DISPLAY);
 					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
 					newContent.setArguments(bundle);
 					break;

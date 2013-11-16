@@ -1,5 +1,7 @@
 package com.rampgreen.caretakermobile.ui;
 
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,17 +10,26 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.rampgreen.caretakermobile.MyRequestQueue;
+import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.AdapterUser;
+import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
+import com.rampgreen.caretakermobile.network.CustomRequest;
+import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class FragmentHomeMenuAlert extends SherlockListFragment
+public class FragmentHomeMenuAlert extends SherlockListFragment implements  Response.Listener<JSONObject>, Response.ErrorListener
 {
 	private static final String KEY_CONTENT = "TestFragment:Content123";
 	private UserListProvider userListProvider;
@@ -150,7 +161,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 			userList = getUserListByDisease(mClickedMenuDisease);
 			User user = userList.get(position);
 			setArgumentForUser(user, mClickedMenuDisease, true);
-
+			setValuesOnWebServer(user, mClickedMenuDisease, true);
 
 			AppLog.logToast(getSherlockActivity(), position+"");
 			// on click slider menu close and  notification is to be set via web service and toast shown that notification has been set.
@@ -206,11 +217,9 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_TEMPRATURE, menuType, true);
 		}
 		return userList;
-
 	}
 
 	private void setArgumentForUser(User user, String diseaseType, boolean setterValue) {
-		int menuType;
 		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
 				user.setGsrTextDisplay(setterValue);
@@ -239,6 +248,66 @@ public class FragmentHomeMenuAlert extends SherlockListFragment
 				user.setTempratureVisualDisplay(setterValue);
 			}
 		}
+	}
+
+	private void setValuesOnWebServer(User user, String diseaseType, boolean setterValue) {
+		int menuType;
+		String biometricValue = setterValue ? "1" : "0";
+		// set the value on server
+		MyRequestQueue queue = MyVolley.getRequestQueue();
+		Map<String, String> paramMap = null;
+		
+		
+		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
+			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
+				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "1", biometricValue);
+				
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
+				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "2", biometricValue);
+				
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
+				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "3", biometricValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
+				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "4", biometricValue);
+
+			}
+		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER){
+			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
+				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "1", biometricValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
+				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "2", biometricValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
+				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "3", biometricValue);
+
+			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
+				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "4", biometricValue);
+			}
+		}
+		
+		if(paramMap ==null) {
+			throw new NullPointerException("netwrok parameter are null, check method FragmentHomeMenuAlert's setValuesOnWebServer");
+		}
+		
+		CustomRequest customRequest = new CustomRequest(Method.POST,
+				Constants.URL_WEB_SERVICE, paramMap, FragmentHomeMenuAlert.this, FragmentHomeMenuAlert.this);
+		queue.add(customRequest);
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onResponse(JSONObject response)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -56,8 +56,17 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 		MyRequestQueue queue = MyVolley.getRequestQueue();
 		Map<String, String> loginParam = QueryHelper.getRecivedQuery(token);
 		CustomRequest customRequest = new CustomRequest(Method.POST,
-				Constants.URL_WEB_SERVICE, loginParam, this, this);		
+				Constants.URL_WEB_SERVICE, loginParam, this, this);
+		customRequest.setTag(this);
 		queue.add(customRequest);
+		
+	}
+	
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		MyVolley.getRequestQueue().cancelAll(this);
 	}
 
 	@Override

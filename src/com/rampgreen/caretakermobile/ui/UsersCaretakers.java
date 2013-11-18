@@ -77,6 +77,7 @@ public class UsersCaretakers extends BaseActivity implements OnPageChangeListene
 		CustomRequest customRequest = new CustomRequest(Method.POST,
 				Constants.URL_WEB_SERVICE, loginParam, UsersCaretakers.this,
 				UsersCaretakers.this);
+		customRequest.setTag(this);
 		queue.add(customRequest);
 
 		//
@@ -87,6 +88,13 @@ public class UsersCaretakers extends BaseActivity implements OnPageChangeListene
 		//	indicator.setViewPager(pager);
 		//	pager.setOnPageChangeListener(sendrecived_request.this);
 		//	*/
+	}
+	
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		MyVolley.getRequestQueue().cancelAll(this);
 	}
 
 	@Override

@@ -37,33 +37,41 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 	String token = BeanController.getLoginBean().getAccessToken();//"b1916c6daa00b1d5d2297166008f3a7c4825e6f8";
 	private UserCustomAdapterRecived userAdapter;
 	private ListView lvs;
-	
+
 	public Sent_request() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.sent_request, null); 
-    }
-	
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		MyRequestQueue queue = MyVolley.getRequestQueue();
 		Map<String, String> loginParam = QueryHelper.getSentQuery(token);
 		CustomRequest customRequest = new CustomRequest(Method.POST,
-				Constants.URL_WEB_SERVICE, loginParam, this, this);		
+				Constants.URL_WEB_SERVICE, loginParam, this, this);	
+		customRequest.setTag(this);
 		queue.add(customRequest);
 	}
-	
+
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		MyVolley.getRequestQueue().cancelAll(this);
+	}
+
 	@Override
 	public void onErrorResponse(VolleyError error) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -114,7 +122,7 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 					Toast.LENGTH_SHORT).show();
 			break;
 		case ParserError.CODE_NO_REQUEST_RECEIVED:			
-				AppLog.showToast(getActivity(), "No request sent");			
+			AppLog.showToast(getActivity(), "No request sent");			
 			break;
 		case ParserError.CODE_NO_CARETAKER_REQUEST_SENT_IS_PENDING:
 			userAdapter.clear();
@@ -123,13 +131,13 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 		case ParserError.CODE_SUCCESS:
 
 			try {				
-					userAdapter = new UserCustomAdapterRecived(getActivity(),
-							R.layout.row_ishu, 1, GetSentDetails(response));				
+				userAdapter = new UserCustomAdapterRecived(getActivity(),
+						R.layout.row_ishu, 1, GetSentDetails(response));				
 
-					lvs = (ListView) getActivity().findViewById(R.id.lstSents);
-					/* lvs.setVisibility(View.VISIBLE); */
-					lvs.setAdapter(userAdapter);
-				
+				lvs = (ListView) getActivity().findViewById(R.id.lstSents);
+				/* lvs.setVisibility(View.VISIBLE); */
+				lvs.setAdapter(userAdapter);
+
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -145,9 +153,9 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 			AppLog.logToast(getActivity(), "error web service response code - "
 					+ code);
 		}
-		
+
 	}
-	
+
 	private ArrayList<Recived> GetSentDetails(JSONObject jsonObject)
 			throws JSONException {
 		JSONArray jArray = jsonObject.getJSONArray("caretaker_profile");

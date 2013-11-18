@@ -4,7 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +31,7 @@ import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.Constants;
+import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +39,15 @@ import java.util.Map;
 
 public class UsersCaretakers extends BaseActivity implements OnPageChangeListener {
 	GridView gridView;
+	private static final String[] CONTENT = new String[] { "My Caretakers", "My Users" };
+	private static final int[] ICONS = new int[] { R.drawable.received,
+		R.drawable.sent };
+	private GoogleMusicAdapter adapter;
+	private ViewPager pager;
+	private TabPageIndicator indicator;
+	final Context context = this;
+	String token = BeanController.getLoginBean().getAccessToken();//"b1916c6daa00b1d5d2297166008f3a7c4825e6f8";
+	private String Email = "";		
 	//private ListView userList;	
 	//private ViewPager pager;
 	//private TabPageIndicator indicator;
@@ -40,25 +55,21 @@ public class UsersCaretakers extends BaseActivity implements OnPageChangeListene
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_users_caretakers);
+		setContentView(R.layout.sendrecived_request);
 		// Fragment code Start 
-		
+
 		//setUserView(new String[]{"ABC","XYZ"});
 
-        // Fragment Code end
-		
-		
-		/*FragmentPagerAdapter adapter = new GoogleMusicAdapter(getSupportFragmentManager());
+		adapter = new GoogleMusicAdapter(getSupportFragmentManager());		
 
-	       
-        pager = (ViewPager)findViewById(R.id.pager);
-        pager.setAdapter(adapter);
+		pager = (ViewPager) findViewById(R.id.pager);
+		pager.setAdapter(adapter);
 
-        indicator = (TabPageIndicator)findViewById(R.id.indicator);
-        indicator.setViewPager(pager);
-        pager.setOnPageChangeListener(sendrecived_request.this);
-		*/
-		
+		indicator = (TabPageIndicator) findViewById(R.id.indicator);
+		indicator.setViewPager(pager);
+
+		indicator.notifyDataSetChanged();
+
 		
 		String token = BeanController.getLoginBean().getAccessToken();
 		MyRequestQueue queue = MyVolley.getRequestQueue();
@@ -67,16 +78,24 @@ public class UsersCaretakers extends BaseActivity implements OnPageChangeListene
 				Constants.URL_WEB_SERVICE, loginParam, UsersCaretakers.this,
 				UsersCaretakers.this);
 		queue.add(customRequest);
-		
+
+		//
+		//	pager = (ViewPager)findViewById(R.id.pager);
+		//	pager.setAdapter(adapter);
+		//
+		//	indicator = (TabPageIndicator)findViewById(R.id.indicator);
+		//	indicator.setViewPager(pager);
+		//	pager.setOnPageChangeListener(sendrecived_request.this);
+		//	*/
 	}
 
 	@Override
 	public void onResponse(JSONObject response) {
 		String[] users = null;
 		System.out.println("response" + response);
-		
+
 		//************************************************
-		
+
 		int code = Integer.parseInt(response.optString("code"));
 		String msg = response.optString("message");
 		switch (code) {
@@ -106,13 +125,14 @@ public class UsersCaretakers extends BaseActivity implements OnPageChangeListene
 			break;
 		case ParserError.CODE_SUCCESS:
 			try {
-				List<User> lstUsers = GetCareTakers(response.toString());
-				setUserView(lstUsers);
+				ArrayList<User> lstUsers = GetCareTakers(response.toString());
+				adapter.refreshAdapter(lstUsers);
+//				setUserView(lstUsers);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}		
-			
+
 			break;
 
 		default:
@@ -123,15 +143,9 @@ public class UsersCaretakers extends BaseActivity implements OnPageChangeListene
 		{
 			AppLog.logToast(this, "error web service response code - " + code);
 		}
-		
-		
+
+
 		//************************************************
-		
-		
-		
-		
-		
-		
 	}
 
 	@Override
@@ -140,8 +154,8 @@ public class UsersCaretakers extends BaseActivity implements OnPageChangeListene
 
 	}
 
-	private List<User> GetCareTakers(String jsonObject) throws JSONException {
-		List<User> lstUsers = null;
+	private ArrayList<User> GetCareTakers(String jsonObject) throws JSONException {
+		ArrayList<User> lstUsers = null;
 		try {
 			JSONObject j = new JSONObject(jsonObject);
 			JSONArray jArray = j.getJSONArray("caretaker");
@@ -155,7 +169,7 @@ public class UsersCaretakers extends BaseActivity implements OnPageChangeListene
 				user.setUsername(json_data.getString("firstname"));
 				user.setUid(json_data.getString("u_id"));
 				lstUsers.add(user);
-				
+
 			}
 
 			return lstUsers;
@@ -166,73 +180,81 @@ public class UsersCaretakers extends BaseActivity implements OnPageChangeListene
 	}
 
 	private void setUserView(List<User> users) {
-		setContentView(R.layout.grid);
+//		setContentView(R.layout.grid);
 
-		gridView = (GridView) findViewById(R.id.users_caretakers);
-
-		gridView.setAdapter(new UsersCaretakersImageAdapter(this, users));
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				Toast.makeText(
-						getApplicationContext(),
-						((TextView) v.findViewById(R.id.grid_item_label))
-								.getText(), Toast.LENGTH_SHORT).show();
-
-			}
-		});
-			//PagerAdapter pm = new PagerAdapter(getSupportFragmentManager(), gridFragments);
+//		gridView = (GridView) findViewById(R.id.users_caretakers);
+//
+//		gridView.setAdapter(new UsersCaretakersImageAdapter(this, users));
+//		gridView.setOnItemClickListener(new OnItemClickListener() {
+//			public void onItemClick(AdapterView<?> parent, View v,
+//					int position, long id) {
+//				Toast.makeText(
+//						getApplicationContext(),
+//						((TextView) v.findViewById(R.id.grid_item_label))
+//						.getText(), Toast.LENGTH_SHORT).show();
+//
+//			}
+//		});
+		//PagerAdapter pm = new PagerAdapter(getSupportFragmentManager(), gridFragments);
 		//pager.setAdapter(new UsersCaretakersImageAdapter(this, users));
 		//i//ndicator.setViewPager( gridView);
-		
+
 	}
-	
-    /*
-      class GoogleMusicAdapter extends FragmentPagerAdapter {
-     
-        public GoogleMusicAdapter(FragmentManager fm) {
-            super(fm);
-            
-        }
 
-        @Override
-        public Fragment getItem(int position) {        	
-           /* return TestFragment.newInstance(CONTENT[position % CONTENT.length]);*/     
-        /*	if(position==0){
-        		return TestFragment.newInstance(GetRecivedDetails());
-        	}
-        	else
-        		return TestFragment.newInstance(GetRecivedDetails());        /	
-        	return TestFragment.newInstance("",users);
-        }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return CONTENT[position % CONTENT.length].toUpperCase();
-        }
+	class GoogleMusicAdapter extends FragmentPagerAdapter {
+		FragmentUserCaretaker fragment =null;
+		public GoogleMusicAdapter(FragmentManager fm) {
+			super(fm);
+		}
 
-        @Override
-        public int getCount() {
-            return CONTENT.length;
-        }
-    }
-    */
+		@Override
+		public Fragment getItem(int position) {		
+			/*return SendReceivedFragment.newInstance(lvr);*/
+			switch (position) {
+			case 0:
+				fragment = new FragmentUserCaretaker();
+				break;
+			case 1:
+				fragment = new FragmentUserCaretaker();
+				break;              
+			}
+			return fragment;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return CONTENT[position % CONTENT.length];
+		}
+
+		@Override
+		public int getCount() {
+			return CONTENT.length;
+		}
+		
+		public void refreshAdapter(ArrayList< User> users) {
+			if(fragment != null)
+				fragment.refreshAdapter(users);
+		}
+	}
+
+
 
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onPageScrolled(int arg0, float arg1, int arg2) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onPageSelected(int arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}	
 }

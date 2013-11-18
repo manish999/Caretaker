@@ -79,7 +79,7 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 		}
 
 		Recived user = data.get(position);
-		holder.textdot.setText(".");
+		holder.textdot.setText("");
 		holder.textUserid.setText(user.getUserid());
 		Getlistdata(pos, holder, user);
 

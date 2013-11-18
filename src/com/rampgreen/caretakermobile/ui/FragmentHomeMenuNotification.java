@@ -137,6 +137,8 @@ public class FragmentHomeMenuNotification extends SherlockListFragment implement
 			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, true);
 			User user = userList.get(position);
 			user.setNotification(true);
+			
+			AppLog.showToast(getSherlockActivity(), "Notification is activated for "+user.getUsername());
 
 			// set the value on server
 			MyRequestQueue queue = MyVolley.getRequestQueue();

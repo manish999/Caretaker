@@ -8,5 +8,6 @@
     <color name="tab_transparent_highlight">#28FFFFFF</color>
     <color name="tab_transparent_dark">#16FFFFFF</color>
     <color name="tab_transparent_light">#38FFFFFF</color>
+    <color name="transparent">#00000000</color>
 
 </resources>

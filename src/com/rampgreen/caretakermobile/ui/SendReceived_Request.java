@@ -38,8 +38,8 @@ import java.util.Map;
 public class SendReceived_Request extends BaseActivity {
 
 	private static final String[] CONTENT = new String[] { "Received", "Sent" };
-	private static final int[] ICONS = new int[] { R.drawable.received,
-			R.drawable.sent };
+//	private static final int[] ICONS = new int[] { R.drawable.received,
+//			R.drawable.sent };
 	private GoogleMusicAdapter adapter;
 	private ViewPager pager;
 	private TabPageIndicator indicator;
@@ -97,10 +97,17 @@ public class SendReceived_Request extends BaseActivity {
 		}
 
 		@Override
-		public int getIconResId(int index) {
+		public int getIconResId(int index)
+		{
 			// TODO Auto-generated method stub
-			return ICONS[index];
-		}		
+			return 0;
+		}
+
+//		@Override
+//		public int getIconResId(int index) {
+//			// TODO Auto-generated method stub
+//			return ICONS[index];
+//		}		
 		 
 	}
 	

@@ -26,6 +26,7 @@ import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.Recived;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
+import com.rampgreen.caretakermobile.ui.LegalTerms;
 import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 		this.data = data;
 		this.pos = pos;
 	}
-	
+
 	public void setAdapterList(ArrayList<Recived> data, int position) {
 		this.data = data;
 		this.pos = position;
@@ -81,7 +82,7 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 		Recived user = data.get(position);
 		holder.textdot.setText("");
 		holder.textUserid.setText(user.getUserid());
-		Getlistdata(pos, holder, user);
+		Getlistdata(pos, holder, user, position);
 
 		return row;
 	}
@@ -97,13 +98,13 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 		Button btnDelete;
 	}
 
-	private void Getlistdata(int pos, UserHolder holder, final Recived userrs) {
+	private void Getlistdata(int pos, UserHolder holder, final Recived userrs, final int position) {
 		if (pos == 0) {
 
 			holder.textName.setText(userrs.getName());
 			holder.textAddress.setText("|");
 			holder.textLocation.setText("|");
-			
+
 			if (userrs.getIsignore().equals("0")) {				
 				holder.textdot.setVisibility(View.VISIBLE);
 				holder.btnIgnore.setVisibility(View.GONE);
@@ -113,17 +114,17 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 				holder.btnIgnore.setVisibility(View.GONE);
 				holder.textAddress.setVisibility(View.GONE);
 			}*/
-			
+
 
 			holder.btnAccept.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					response_accept(token,userrs.getUserid());
-					Toast.makeText(context, "Record Accept",
-							Toast.LENGTH_LONG).show();					
-					
+					Intent intent=new Intent(context,LegalTerms.class);                                  
+					intent.putExtra("userid",userrs.getUserid());
+					intent.putExtra("UserName",userrs.getName());//here you will add the data into intent to pass bw activites
+					context.startActivity(intent); 
 				}
 			});
 
@@ -135,6 +136,8 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 					response_ignor(token,userrs.getUserid());
 					Toast.makeText(context, "Record Ignor",
 							Toast.LENGTH_LONG).show();
+					((Recived)data.get(position)).isignore = "0";
+					notifyDataSetChanged();
 				}
 			});
 
@@ -146,6 +149,8 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 					response_delete(token,userrs.getUserid());
 					Toast.makeText(context, "Record Deleted",
 							Toast.LENGTH_LONG).show();
+					data.remove(position);
+					notifyDataSetChanged(); 
 				}
 			});
 		} else if (pos == 1) {
@@ -168,41 +173,41 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 		}
 
 	}
-	
+
 	private void response_accept(String token,String request_id){
 		MyRequestQueue queue = MyVolley.getRequestQueue();
 		Map<String, String> loginParam = QueryHelper.responseAcceptQuery(token, request_id);
 		CustomRequest customRequest = new CustomRequest(Method.POST,
 				Constants.URL_WEB_SERVICE, loginParam,
 				this, this);
-		
+
 		queue.add(customRequest);		
 	}
-	
+
 	private void response_ignor(String token,String request_id){
 		MyRequestQueue queue = MyVolley.getRequestQueue();
 		Map<String, String> loginParam = QueryHelper.responseIgnoreQuery(token, request_id);
 		CustomRequest customRequest = new CustomRequest(Method.POST,
 				Constants.URL_WEB_SERVICE, loginParam,
 				this, this);
-		
+
 		queue.add(customRequest);		
 	}
-	
+
 	private void response_delete(String token,String request_id){
 		MyRequestQueue queue = MyVolley.getRequestQueue();
 		Map<String, String> loginParam = QueryHelper.responseDeleteQuery(token, request_id);
 		CustomRequest customRequest = new CustomRequest(Method.POST,
 				Constants.URL_WEB_SERVICE, loginParam,
 				this, this);
-		
+
 		queue.add(customRequest);		
 	}
 
 	@Override
 	public void onErrorResponse(VolleyError error) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -236,7 +241,7 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 			/*AppLog.showToast(this, "wrong password");*/
 			break;
 		case ParserError.CODE_USER_NOT_REGISTERED:
-			
+
 			break;
 		case ParserError.CODE_INVALID_TOKEN:
 
@@ -262,6 +267,6 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 		{
 			/*AppLog.logToast(this, "error web service response code - " + code);*/
 		}
-		
+
 	}
 }

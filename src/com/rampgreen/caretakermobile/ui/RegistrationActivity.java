@@ -6,7 +6,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 
 import com.andreabaccega.widget.FormEditText;
 import com.android.volley.Request.Method;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
@@ -26,6 +26,7 @@ import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.interfaces.ParserError;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.LoginBean;
+import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
@@ -201,10 +202,11 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 			login.populateBean(response);
 			AppLog.logToast(this,  response.toString());
 			// open home activity 
-			Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
-			startActivity(intent);
+			callUserListWebService();
+//			Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
+//			startActivity(intent);
 			// to close the activity
-			finish();
+//			finish();
 			break;
 
 		default:
@@ -253,4 +255,73 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 		AppSettings.setPreference(this, null, AppSettings.DATE_OF_BIRTH, dateString);
 		//		WidgetUtil.callDatePicker(this, 0, this);
 	}
+	
+	private void callUserListWebService () {
+		String accessToken = BeanController.getLoginBean().getAccessToken();
+		MyRequestQueue queue = MyVolley.getRequestQueue();
+		Map<String, String> loginParam = QueryHelper.createAllUsersQuery(accessToken);
+
+		CustomRequest customRequest = new CustomRequest(Method.POST,
+				Constants.URL_WEB_SERVICE, loginParam,
+				new ResponseListener(), new ErrorListener());
+		queue.add(customRequest);
+	}
+
+	private class ResponseListener implements Response.Listener<JSONObject> {
+		@Override
+		public void onResponse(JSONObject response){
+			int code = Integer.parseInt(response.optString("code"));
+			String msg = response.optString("message");
+			switch (code) {
+			case ParserError.CODE_NO_USER_FOUND:
+				User userBean = BeanController.getUserBean();
+				userBean.populateBean(response);
+				AppLog.logString(response.toString());
+				
+				// on success , call Home screen
+				Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
+				intent.putExtra(Constants.BUNDLE_KEY_USERS, userBean);
+				startActivity(intent);
+				// to close the activity
+				closeLoadingBar();
+				finish();
+//				AppLog.showToast(this, "No userfound ")
+//				closeLoadingBar();
+				break;
+			case ParserError.CODE_SUCCESS:
+				userBean = BeanController.getUserBean();
+				userBean.populateBean(response);
+				AppLog.logString(response.toString());
+				
+				// on success , call Home screen
+				intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
+				intent.putExtra(Constants.BUNDLE_KEY_USERS, userBean);
+				startActivity(intent);
+				// to close the activity
+				closeLoadingBar();
+				finish();
+			
+				break;
+
+			default:
+				closeLoadingBar();
+				break;
+			}
+
+			if (code != ParserError.CODE_SUCCESS)
+			{
+				AppLog.logToast(RegistrationActivity.this, "error web service response code - " + code);
+			}
+		}
+	}
+
+
+	private class ErrorListener implements Response.ErrorListener{
+		@Override
+		public void onErrorResponse(VolleyError error){
+			closeLoadingBar();
+			AppLog.logToast(RegistrationActivity.this, error.toString());
+		}
+	}
+
 }

@@ -3,19 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-<TableRow
+
+    <TableRow
         android:id="@+id/TableRow001"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#C0C0C0" >
+        android:background="@android:color/transparent" >
 
         <EditText
             android:id="@+id/SentrequestEditText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content" >
         </EditText>
+    </TableRow>
 
-     </TableRow>
 </LinearLayout>

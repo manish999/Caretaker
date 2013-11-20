@@ -56,11 +56,11 @@ public class FragmentTabBottom extends SherlockFragment {
 		mTabHost = (TabHost) getSherlockActivity().findViewById(android.R.id.tabhost);
 		mTabHost.setup();
 		
-		addTab("Home", TAG_1, createTabDrawable(R.drawable.home), R.id.text_view_home);
+		addTab("Home", TAG_1, createTabDrawable(R.drawable.home), R.id.text_view_search);
 		addTab("Self", TAG_2, createTabDrawable(R.drawable.search), R.id.text_view_search);
 		addTab("Network", TAG_3, createTabDrawable(R.drawable.star), R.id.text_view_favourites);
 		addTab("Request", TAG_4, createTabDrawable(R.drawable.settings), R.id.text_view_settings);
-		addTab("Rainbow", TAG_5, createTabDrawable(R.drawable.home), R.id.text_view_home);
+		addTab("Rainbow", TAG_5, createTabDrawable(R.drawable.home), R.id.text_view_search);
 	}
 	
 	private Drawable createTabDrawable(int resId) {

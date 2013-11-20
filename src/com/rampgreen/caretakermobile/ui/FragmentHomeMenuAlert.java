@@ -38,6 +38,9 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 	private int mFragmentCalledByMenuOption;
 	private int mFragmentCaller;
 	private String mClickedMenuDisease;
+	
+//	public static ArrayList<String> textArrayList = new ArrayList<String>();
+//	public static ArrayList<String> visualArrayList = new ArrayList<String>();
 
 	public static FragmentHomeMenuAlert newInstance() {
 		FragmentHomeMenuAlert fragment = new FragmentHomeMenuAlert();
@@ -170,6 +173,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 			bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, mFragmentCalledByMenuOption);
 			bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentChangeActivity);
 			bundle.putString(Constants.BUNDLE_KEY_DISEASE, mClickedMenuDisease);
+			
 			newContent.setArguments(bundle);
 			switchToHomeContent(newContent);
 		}
@@ -203,6 +207,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 		int menuType = mFragmentCalledByMenuOption;
 		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
 			menuType = UserListProvider.TEXT_DISPLAY;
+			
 		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER){
 			menuType = UserListProvider.VISUAL_DISPLAY;
 		}
@@ -221,6 +226,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 
 	private void setArgumentForUser(User user, String diseaseType, boolean setterValue) {
 		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
+//			textArrayList.add(user.getUsername());
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
 				user.setGsrTextDisplay(setterValue);
 
@@ -235,6 +241,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 
 			}
 		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER){
+//			visualArrayList.add(user.getUsername());
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
 				user.setGsrVisualDisplay(setterValue);
 

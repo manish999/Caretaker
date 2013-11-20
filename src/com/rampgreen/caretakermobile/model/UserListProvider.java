@@ -1,11 +1,12 @@
 package com.rampgreen.caretakermobile.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserListProvider
 {
 	public static final int NOT_DEFINE = -1;
-	
+
 	public static final int FOR_HOME_CONTENT = 1;
 	public static final int FOR_MENU_CONTENT = 2;
 
@@ -49,6 +50,187 @@ public class UserListProvider
 		return userList;
 	}
 
+	public ArrayList<User> getTextDisplayList() {
+		// get the content data for each disease for textdisplay 
+		ArrayList<User> tempList = new ArrayList<User>();
+		List<User> userList = getContentList(DISEASE_GSR, TEXT_DISPLAY);
+		tempList.addAll(userList);
+		userList = getContentList(DISEASE_HEART_RATE, TEXT_DISPLAY);
+		tempList.addAll(userList);
+		userList = getContentList(DISEASE_ACCELEROMETER, TEXT_DISPLAY);
+		tempList.addAll(userList);
+		userList = getContentList(DISEASE_TEMPRATURE, TEXT_DISPLAY);
+		tempList.addAll(userList);
+		return tempList;
+	}
+
+	public ArrayList<TextDisplaySettings> getTextDisplayListForMenu(int diseaseType) {
+
+		ArrayList<TextDisplaySettings> textDisplaySettingsList = ListHolder.getTextDisplaySettingList();
+		ArrayList<User> userBeanList = getUserBeanList();
+		ArrayList<TextDisplaySettings> tempList = new ArrayList<TextDisplaySettings>();
+		tempList.add(new TextDisplaySettings("-1", "<<"));
+
+		if(diseaseType == DISEASE_GSR) {
+			if(textDisplaySettingsList.size() == 0) {
+				for (User user : userBeanList)
+				{
+					tempList.add(new TextDisplaySettings(user.getUid(), "GSR"));
+				}
+			}
+			else {
+				// check if textlist userid present not need to check otherwise check it in
+				// 
+				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
+				{
+					textDisplaySettings.getUserID();
+				}
+				
+				
+				
+				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
+				{
+					if(textDisplaySettings.getUserID().equalsIgnoreCase("GSR")) {
+						for (User user : userBeanList)
+						{
+							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()))) {
+								tempList.add(new TextDisplaySettings(user.getUid(), "GSR"));
+							}
+						}
+					}
+
+				}
+				
+				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
+				{
+					if(textDisplaySettings.getBiometricID().equalsIgnoreCase("GSR")) {
+						for (User user : userBeanList)
+						{
+							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()))) {
+								tempList.add(new TextDisplaySettings(user.getUid(), "GSR"));
+							}
+						}
+					}
+
+				}
+			}
+			//			userList = getMenuListForGsrTextDisplay();
+		} else if(diseaseType == DISEASE_HEART_RATE) {
+			if(textDisplaySettingsList.size() == 0) {
+				for (User user : userBeanList)
+				{
+					tempList.add(new TextDisplaySettings(user.getUid(), "Heart Rate"));
+				}
+			}
+			else {
+				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
+				{
+					if(textDisplaySettings.getBiometricID().equalsIgnoreCase("Heart Rate")) {
+						for (User user : userBeanList)
+						{
+							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()) && textDisplaySettings.getBiometricID().equalsIgnoreCase("Heart Rate"))) {
+								tempList.add(new TextDisplaySettings(user.getUid(), "Heart Rate"));
+							}
+						}
+					}
+
+				}
+			}
+			//			userList = getMenuListForGsrTextDisplay();
+
+			//			userList = getMenuListForHeartTextDisplay();
+		}else if(diseaseType == DISEASE_ACCELEROMETER){
+			if(textDisplaySettingsList.size() == 0) {
+				for (User user : userBeanList)
+				{
+					tempList.add(new TextDisplaySettings(user.getUid(), "Accelerometer"));
+				}
+			}
+			else {
+				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
+				{
+					if(textDisplaySettings.getBiometricID().equalsIgnoreCase("Accelerometer")) {
+						for (User user : userBeanList)
+						{
+							//map the userid with usermodel and biometricid with deisease , it need to be changed to biometric ID 
+							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()) && textDisplaySettings.getBiometricID().equalsIgnoreCase("Accelerometer"))) {
+								tempList.add(new TextDisplaySettings(user.getUid(), "Accelerometer"));
+							}
+						}
+					}
+					//			userList = getMenuListForAccelTextDisplay();
+				}
+			}
+		}else if(diseaseType == DISEASE_TEMPRATURE){
+			if(textDisplaySettingsList.size() == 0) {
+				for (User user : userBeanList)
+				{
+					tempList.add(new TextDisplaySettings(user.getUid(), "Temperature"));
+				}
+			}
+			else {
+				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
+				{
+					if(textDisplaySettings.getBiometricID().equalsIgnoreCase("Temperature")) {
+						for (User user : userBeanList)
+						{
+							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()) && textDisplaySettings.getBiometricID().equalsIgnoreCase("Temperature"))) {
+								tempList.add(new TextDisplaySettings(user.getUid(), "Temperature"));
+							}
+						}
+					}
+				}
+			}
+		}
+		return tempList;
+	}
+
+	public ArrayList<TextDisplaySettings> getTextDisplayListForContent(int diseaseType) {
+
+		ArrayList<User> allUser = getUserBeanList();
+		ArrayList<TextDisplaySettings> menuUserList = getTextDisplayListForMenu(diseaseType);
+		ArrayList<TextDisplaySettings> containerUserList = new ArrayList<TextDisplaySettings>();
+
+		// need to modify by collection method.
+		for (User user : allUser)
+		{
+			for (TextDisplaySettings textDisplaySettings : menuUserList)
+			{
+				if(! textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid())) {
+					containerUserList.add(textDisplaySettings);
+					break;
+				}
+			}
+
+		}
+		return containerUserList;
+		// get the content data for each disease for textdisplay 
+		//		ArrayList<TextDisplaySettings> tempList = new ArrayList<TextDisplaySettings>();
+		//		List<User> userList = getContentList(DISEASE_GSR, TEXT_DISPLAY);
+		//		tempList.addAll(userList);
+		//		userList = getContentList(DISEASE_HEART_RATE, TEXT_DISPLAY);
+		//		tempList.addAll(userList);
+		//		userList = getContentList(DISEASE_ACCELEROMETER, TEXT_DISPLAY);
+		//		tempList.addAll(userList);
+		//		userList = getContentList(DISEASE_TEMPRATURE, TEXT_DISPLAY);
+		//		tempList.addAll(userList);
+		//		return TextDisplaySettings;
+	}
+
+	public ArrayList<User> getVisualDisplayList() {
+		// get the content data for each disease for textdisplay 
+		ArrayList<User> tempList = new ArrayList<User>();
+		List<User> userList = getContentList(DISEASE_GSR, VISUAL_DISPLAY);
+		tempList.addAll(userList);
+		userList = getContentList(DISEASE_HEART_RATE, VISUAL_DISPLAY);
+		tempList.addAll(userList);
+		userList = getContentList(DISEASE_ACCELEROMETER, VISUAL_DISPLAY);
+		tempList.addAll(userList);
+		userList = getContentList(DISEASE_TEMPRATURE, VISUAL_DISPLAY);
+		tempList.addAll(userList);
+		return tempList;
+	}
+
 	private ArrayList<User> getContentList(int diseaseType, int menuType)
 	{
 		ArrayList<User> allUser = getUserBeanList();
@@ -70,15 +252,15 @@ public class UserListProvider
 			userList = getMenuListForAddUsericon();
 		} else if(menuType == NOTIFICATION) {
 			userList = getMenuListForNotification();
-//			if(diseaseType == DISEASE_GSR) {
-//				userList = getMenuListForGsrNotification();
-//			} else if(diseaseType == DISEASE_HEART_RATE){
-//				userList = getMenuListForHeartNotification();
-//			}else if(diseaseType == DISEASE_ACCELEROMETER){
-//				userList = getMenuListForAccelNotification();
-//			}else if(diseaseType == DISEASE_TEMPRATURE){
-//				userList = getMenuListForTempNotification();
-//			}
+			//			if(diseaseType == DISEASE_GSR) {
+			//				userList = getMenuListForGsrNotification();
+			//			} else if(diseaseType == DISEASE_HEART_RATE){
+			//				userList = getMenuListForHeartNotification();
+			//			}else if(diseaseType == DISEASE_ACCELEROMETER){
+			//				userList = getMenuListForAccelNotification();
+			//			}else if(diseaseType == DISEASE_TEMPRATURE){
+			//				userList = getMenuListForTempNotification();
+			//			}
 		} else if(menuType == TEXT_DISPLAY) {
 			if(diseaseType == DISEASE_GSR) {
 				userList = getMenuListForGsrTextDisplay();
@@ -313,7 +495,7 @@ public class UserListProvider
 		}
 		return tempList;
 	}
-	
+
 	private ArrayList<User> getMenuListForNotification () {
 		ArrayList<User> userList = BeanController.getUserBean().getUserList();
 		ArrayList<User> tempList = new ArrayList<User>();

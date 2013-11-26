@@ -19,6 +19,8 @@ import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.AdapterUser;
 import com.rampgreen.caretakermobile.model.BeanController;
+import com.rampgreen.caretakermobile.model.ListHolder;
+import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
 import com.rampgreen.caretakermobile.network.CustomRequest;
@@ -33,14 +35,11 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 {
 	private static final String KEY_CONTENT = "TestFragment:Content123";
 	private UserListProvider userListProvider;
-	private ArrayList<User> userList;
+	private ArrayList<TextDisplaySettings> userList;
 	private AdapterUser adapter;
 	private int mFragmentCalledByMenuOption;
 	private int mFragmentCaller;
 	private String mClickedMenuDisease;
-	
-//	public static ArrayList<String> textArrayList = new ArrayList<String>();
-//	public static ArrayList<String> visualArrayList = new ArrayList<String>();
 
 	public static FragmentHomeMenuAlert newInstance() {
 		FragmentHomeMenuAlert fragment = new FragmentHomeMenuAlert();
@@ -117,7 +116,8 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 		}
 
 		userList = getUserListByDisease(mClickedMenuDisease);
-		adapter = new AdapterUser(getActivity(),userList, menuType);
+		adapter = new AdapterUser(getActivity());
+		adapter.setList(userList, menuType);
 		setListAdapter(adapter);
 		//		if (savedInstanceState == null) {
 		//            FragmentManager fragmentManager = getSherlockActivity().getSupportFragmentManager();
@@ -162,9 +162,10 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 		} else {
 
 			userList = getUserListByDisease(mClickedMenuDisease);
-			User user = userList.get(position);
+			TextDisplaySettings user = userList.get(position);
 			setArgumentForUser(user, mClickedMenuDisease, true);
-			setValuesOnWebServer(user, mClickedMenuDisease, true);
+			// need send update server too
+//			setValuesOnWebServer(user, mClickedMenuDisease, true);
 
 			AppLog.logToast(getSherlockActivity(), position+"");
 			// on click slider menu close and  notification is to be set via web service and toast shown that notification has been set.
@@ -202,8 +203,8 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 		} 
 	}
 
-	private ArrayList<User> getUserListByDisease(String diseaseType) {
-		ArrayList<User> userList = null;
+	private ArrayList<TextDisplaySettings> getUserListByDisease(String diseaseType) {
+		ArrayList<TextDisplaySettings> userList = null;
 		int menuType = mFragmentCalledByMenuOption;
 		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
 			menuType = UserListProvider.TEXT_DISPLAY;
@@ -213,46 +214,50 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 		}
 
 		if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_GSR, menuType, true);
+			userList = userListProvider.getTextDisplayListForMenu(UserListProvider.DISEASE_GSR);
+//			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_GSR, menuType, true);
 		} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_HEART_RATE, menuType, true);
+			userList = userListProvider.getTextDisplayListForMenu(UserListProvider.DISEASE_HEART_RATE);
+//			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_HEART_RATE, menuType, true);
 		} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_ACCELEROMETER, menuType, true);
+			userList = userListProvider.getTextDisplayListForMenu(UserListProvider.DISEASE_ACCELEROMETER);
+//			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_ACCELEROMETER, menuType, true);
 		} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_TEMPRATURE, menuType, true);
+			userList = userListProvider.getTextDisplayListForMenu(UserListProvider.DISEASE_TEMPRATURE);
+//			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_TEMPRATURE, menuType, true);
 		}
 		return userList;
 	}
 
-	private void setArgumentForUser(User user, String diseaseType, boolean setterValue) {
+	private void setArgumentForUser(TextDisplaySettings user, String diseaseType, boolean setterValue) {
+		
 		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
-//			textArrayList.add(user.getUsername());
+			ListHolder.getTextDisplaySettingList().add(user);
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-				user.setGsrTextDisplay(setterValue);
+//				user.setGsrTextDisplay(setterValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-				user.setHeartRateTextDisplay(setterValue);
+//				user.setHeartRateTextDisplay(setterValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-				user.setAccelerometerTextDisplay(setterValue);
+//				user.setAccelerometerTextDisplay(setterValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-				user.setTempratureTextDisplay(setterValue);
+//				user.setTempratureTextDisplay(setterValue);
 
 			}
 		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER){
-//			visualArrayList.add(user.getUsername());
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-				user.setGsrVisualDisplay(setterValue);
+//				user.setGsrVisualDisplay(setterValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-				user.setHeartRateVisualDisplay(setterValue);
+//				user.setHeartRateVisualDisplay(setterValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-				user.setAccelerometerVisualDisplay(setterValue);
+//				user.setAccelerometerVisualDisplay(setterValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-				user.setTempratureVisualDisplay(setterValue);
+//				user.setTempratureVisualDisplay(setterValue);
 			}
 		}
 	}

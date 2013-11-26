@@ -121,6 +121,11 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					//					response_accept(token,userrs.getUserid());
+					//					Toast.makeText(context, "Record Accept",
+					//							Toast.LENGTH_LONG).show();	
+					//					data.remove(position);
+					//                    notifyDataSetChanged(); 
 					Intent intent=new Intent(context,LegalTerms.class);                                  
 					intent.putExtra("userid",userrs.getUserid());
 					intent.putExtra("UserName",userrs.getName());//here you will add the data into intent to pass bw activites

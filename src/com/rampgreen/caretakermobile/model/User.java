@@ -446,10 +446,17 @@ public class User implements Serializable, Populator
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	public ArrayList<User> getUserList()
 	{
 		return userList;
 	}
-
+	
+	public ArrayList<User> getDeleteSetting() {
+		return null;
+	}
+	
+	public TextDisplaySettings getDeleteTextDisplaySetting(String userId, String diseaseType) {
+		return new TextDisplaySettings(userId, diseaseType);
+	}
 }

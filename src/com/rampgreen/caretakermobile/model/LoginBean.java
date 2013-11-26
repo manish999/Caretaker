@@ -3,6 +3,7 @@ package com.rampgreen.caretakermobile.model;
 import org.json.JSONObject;
 
 import com.rampgreen.caretakermobile.interfaces.Populator;
+import com.rampgreen.caretakermobile.util.AppLog;
 
 
 public class LoginBean extends GeneralData implements Populator{
@@ -31,6 +32,9 @@ public class LoginBean extends GeneralData implements Populator{
 	public void setAccessToken(String accessToken)
 	{
 		this.accessToken = accessToken;
+		AppLog.e("**********************************************");
+		AppLog.e("ACCESS TOKEN"+accessToken);
+		AppLog.e("**********************************************");
 	}
 
 	@Override

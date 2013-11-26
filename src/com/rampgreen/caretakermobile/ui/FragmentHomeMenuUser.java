@@ -141,7 +141,8 @@ public class FragmentHomeMenuUser extends SherlockListFragment implements  Respo
 		}
 
 		userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, true);
-		adapter = new AdapterUser(getActivity(),userList, AdapterUser.MENU_HOME_USER_LIST);
+		adapter = new AdapterUser(getActivity());
+		adapter.setList(userList, AdapterUser.MENU_HOME_USER_LIST);
 		setListAdapter(adapter);
 		//		if (savedInstanceState == null) {
 		//            FragmentManager fragmentManager = getSherlockActivity().getSupportFragmentManager();
@@ -176,31 +177,6 @@ public class FragmentHomeMenuUser extends SherlockListFragment implements  Respo
 		//		if (f != null) 
 		//			getFragmentManager().be ginTransaction().hide(f).commit();
 	}
-
-	//	private void updateVisitFrag(Bundle bundle) {
-	//		FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
-	//		//		FragmentManager fm = getSherlockActivity().getSupportFragmentManager();
-	//		FragmentGraph fragGraph = new FragmentGraph();
-	//		FragmentChartList fragList = new FragmentChartList();
-	//		//		Bundle args = new Bundle();
-	//		//	args.putInt(ArticleFragment.ARG_POSITION, position);
-	//		fragGraph.setArguments(bundle);
-	//		fragList.setArguments(bundle);
-	//
-	//		// Replace whatever is in the fragment_container view with this fragment,
-	//		// and add the transaction to the back stack so the user can navigate back
-	//		transaction.replace(R.id.frag_graph, fragGraph);
-	//		transaction.replace(R.id.frag_chartlist, fragList);
-	//		//		transaction.addToBackStack(null);
-	//
-	//		// Commit the transaction
-	//		transaction.commit();
-	//		//    if (fm.findFragmentById(R.id.) == null) {
-	//		//        fm.beginTransaction()
-	//		//                .replace(placeholder, new MyListFragment(tabId),onResponseReceived tabId)
-	//		//                .commit();
-	//		//    }
-	//	}
 
 	@Override
 	public void onListItemClick(ListView lv, View v, int position, long id) {

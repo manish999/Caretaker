@@ -42,6 +42,8 @@ import com.rampgreen.caretakermobile.adapter.ListItemDetails;
 import com.rampgreen.caretakermobile.adapter.TextDisplayAdapter;
 import com.rampgreen.caretakermobile.adapter.VisualDisplayAdapter;
 import com.rampgreen.caretakermobile.model.BeanController;
+import com.rampgreen.caretakermobile.model.ListHolder;
+import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
 import com.rampgreen.caretakermobile.network.CustomRequest;
@@ -66,10 +68,10 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 	private static final String TAG_3 = "2";
 	private static final String TAG_4 = "3";
 	private static final String TAG_5 = "4";
-	
+
 	TabHost mTabHost;
-//	LinearLayout homeLinearLayout, homeContentTextDisplay, homeContentChartDisplay;
-//	ExpandableHeightGridView gridView;
+	//	LinearLayout homeLinearLayout, homeContentTextDisplay, homeContentChartDisplay;
+	//	ExpandableHeightGridView gridView;
 	GridView gridView;
 	private LayoutInflater mInflater;
 	private View smsInboxDetailView;
@@ -94,7 +96,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			mFragmentCaller = bundle.getInt(Constants.ActivityConstants.FRAGMENT_CALLER);
 			mClickedMenuDisease = bundle.getString(Constants.BUNDLE_KEY_DISEASE);
 			muserList = (ArrayList<User>)bundle.getSerializable(Constants.BUNDLE_KEY_USERS);
-			
+
 		}
 		mInflater = (LayoutInflater) getSherlockActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.userListProvider = new UserListProvider();
@@ -113,15 +115,15 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		Bundle localBundle = getArguments();
 		setTabs();
 		// create the scrollview buttons 
-//		homeContentTextDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentTextDisplay);
+		//		homeContentTextDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentTextDisplay);
 		homeTextDisplayListView = (ListView) getSherlockActivity().findViewById(R.id.homeContentTextDisplayList1);
 		homeChartDisplayListView = (ListView) getSherlockActivity().findViewById(R.id.homeContentChartDisplayList);
-//		ImageView imgViewTemp = (ImageView) getSherlockActivity().findViewById(R.id.text_view_home12);
+		//		ImageView imgViewTemp = (ImageView) getSherlockActivity().findViewById(R.id.text_view_home12);
 		if(muserList != null && muserList.size() == 0) {
 			AppLog.showToast(getSherlockActivity(), "No user is associated with the account.");
-//			imgViewTemp.setVisibility(View.INVISIBLE);
+			//			imgViewTemp.setVisibility(View.INVISIBLE);
 		} else {
-//			imgViewTemp.setVisibility(View.VISIBLE);
+			//			imgViewTemp.setVisibility(View.VISIBLE);
 		}
 		//		smsInboxDetailView = mInflater.inflate(R.layout.threaded_view_list_item_rec, null);//mInflater.inflate(R.layout.threaded_view_list_item_rec, homeContentTextDisplay, true);
 		//		smsInboxDetailView = mInflater.inflate(R.layout.main_list, homeContentTextDisplay, true);
@@ -132,10 +134,10 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		//		homeContentTextDisplay.addView(smsInboxDetailView);
 
 		//		homeLinearLayout = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentUser);
-//		gridView = (ExpandableHeightGridView) getSherlockActivity().findViewById(R.id.grid_view);
-//		gridView.setExpanded(true);
+		//		gridView = (ExpandableHeightGridView) getSherlockActivity().findViewById(R.id.grid_view);
+		//		gridView.setExpanded(true);
 
-				gridView = (GridView) getSherlockActivity().findViewById(R.id.grid_view);
+		gridView = (GridView) getSherlockActivity().findViewById(R.id.grid_view);
 		// Instance of ImageAdapter Class
 
 		//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
@@ -220,14 +222,14 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 				return false;
 			}
 		});
-//		userList = getUserListByDisease(mClickedMenuDisease);
-//		userList = getUserListByDisease(Constants.DISEASE_GSR);
-		userList = userListProvider.getTextDisplayList();
-		//userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, false);
-		mTextDisplayAdapter = new TextDisplayAdapter(getSherlockActivity(), userList);
+		//		userList = getUserListByDisease(mClickedMenuDisease);
+		//		userList = getUserListByDisease(Constants.DISEASE_GSR);
+		//		userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, false);
+		ArrayList<TextDisplaySettings> textDisplaySettings = ListHolder.getTextDisplaySettingList();//userListProvider.getTextDisplayList();
+		mTextDisplayAdapter = new TextDisplayAdapter(getSherlockActivity(), textDisplaySettings);
 		homeTextDisplayListView.setAdapter(mTextDisplayAdapter);
-		
-		
+
+
 		homeTextDisplayListView.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
@@ -244,7 +246,66 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			public boolean onItemLongClick(AdapterView<?> parent, View v,
 					int position, long id)
 			{
-				userList = userListProvider.getTextDisplayList();
+//				final UserListProvider userListProvider = new UserListProvider();
+//				userList = userListProvider.getTextDisplayList();
+				final ArrayList<TextDisplaySettings> textDisplaySettingList  = ListHolder.getTextDisplaySettingList();
+				final TextDisplaySettings textDisplaySettings = textDisplaySettingList.get(position);
+				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
+				builder.setTitle("Delete");
+				builder.setMessage("Are You Sure to delete "+textDisplaySettings.getUserID()+" from home screen ?");
+				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						// set the value on server
+						String biometricId = getAndSetBiometricId(textDisplaySettings, mClickedMenuDisease, false, Constants.ADD_TEXT_DISPLAY);
+//						MyRequestQueue queue = MyVolley.getRequestQueue();
+//						Map<String, String> paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), biometricId, "0");
+//						CustomRequest customRequest = new CustomRequest(Method.POST,
+//								Constants.URL_WEB_SERVICE, paramMap, FragmentTabBottom.this, FragmentTabBottom.this);
+//						queue.add(customRequest);
+
+						//						userList = getUserListByDisease(mClickedMenuDisease);
+//						userList = userListProvider.getTextDisplayList();
+						refreshTextDisplayListAdapter(textDisplaySettingList);
+					}
+				});
+
+				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
+				//				AppLog.logToast(getSherlockActivity(), "Long click posi"+position);
+				return false;
+			}
+
+		});
+
+		//		userList = getUserListByDisease(Constants.DISEASE_GSR);
+		//		userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, false);
+		//userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.VISUAL_DISPLAY, false);
+		userList = userListProvider.getVisualDisplayList();
+		mVisualDisplayAdapter = new VisualDisplayAdapter(getSherlockActivity(), userList);
+		homeChartDisplayListView.setAdapter(mVisualDisplayAdapter);
+
+		homeChartDisplayListView.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+				AppLog.showToast(getSherlockActivity(), position+"");
+			}
+		});
+
+		homeChartDisplayListView.setOnItemLongClickListener(new OnItemLongClickListener()
+		{
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View v,
+					int position, long id)
+			{
 				final User user = userList.get(position);
 				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
 				builder.setTitle("Delete");
@@ -253,18 +314,16 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						// set the value on server
-						String biometricId = getAndSetBiometricId(user, mClickedMenuDisease, false, Constants.ADD_TEXT_DISPLAY);
+						String biometricId = getAndSetBiometricId(user, mClickedMenuDisease, false, Constants.ADD_TEXT_VISUALEXPLORER);
 						MyRequestQueue queue = MyVolley.getRequestQueue();
-						Map<String, String> paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), biometricId, "0");
+						Map<String, String> paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(),biometricId, "0");
 						CustomRequest customRequest = new CustomRequest(Method.POST,
 								Constants.URL_WEB_SERVICE, paramMap, FragmentTabBottom.this, FragmentTabBottom.this);
 						queue.add(customRequest);
 
-						userList = getUserListByDisease(mClickedMenuDisease);
-						
-						//						userList.remove(user);
-						// updat
-						refreshTextDisplayListAdapter(userList);
+						UserListProvider userListProvider = new UserListProvider();
+						userList = userListProvider.getVisualDisplayList();
+						refreshVisualDisplayListAdapter(userList);
 						//						Constants.CLOSE_ALL_ACTIVITIES = true;
 						//						finish();
 					}
@@ -283,67 +342,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			}
 
 		});
-		
-//		userList = getUserListByDisease(Constants.DISEASE_GSR);
-//		userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, false);
-		//userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.VISUAL_DISPLAY, false);
-		userList = userListProvider.getVisualDisplayList();
-		mVisualDisplayAdapter = new VisualDisplayAdapter(getSherlockActivity(), userList);
-		homeChartDisplayListView.setAdapter(mVisualDisplayAdapter);
 
-		homeChartDisplayListView.setOnItemClickListener(new OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				AppLog.showToast(getSherlockActivity(), position+"");
-			}
-		});
-
-		homeChartDisplayListView.setOnItemLongClickListener(new OnItemLongClickListener()
-		{
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View v,
-					int position, long id)
-			{
-				userList = userListProvider.getVisualDisplayList();
-				final User user = userList.get(position);
-				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
-				builder.setTitle("Delete");
-				builder.setMessage("Are You Sure to delete "+user.getUsername()+" from home screen ?");
-				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-						//						user.setNotification(false);
-						// set the value on server
-						String biometricId = getAndSetBiometricId(user, mClickedMenuDisease, false, Constants.ADD_TEXT_VISUALEXPLORER);
-						MyRequestQueue queue = MyVolley.getRequestQueue();
-						Map<String, String> paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(),biometricId, "0");
-						CustomRequest customRequest = new CustomRequest(Method.POST,
-								Constants.URL_WEB_SERVICE, paramMap, FragmentTabBottom.this, FragmentTabBottom.this);
-						queue.add(customRequest);
-
-						UserListProvider userListProvider = new UserListProvider();
-						userList = userListProvider.getVisualDisplayList();
-						refreshVisualDisplayListAdapter(userList);
-					}
-				});
-
-				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				AlertDialog alert = builder.create();
-				alert.show();
-				//				AppLog.logToast(getSherlockActivity(), "Long click posi"+position);
-				return false;
-			}
-
-		});
-		
 		UiUtil.setListViewHeightBasedOnChildren(homeTextDisplayListView);
 		UiUtil.setListViewHeightBasedOnChildren(homeChartDisplayListView);
 
@@ -379,12 +378,12 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		imageAdapter.setList(userList2);
 		imageAdapter.notifyDataSetChanged();
 	}
-	
-	private void refreshTextDisplayListAdapter(ArrayList<User> userList2) {
+
+	private void refreshTextDisplayListAdapter(ArrayList<TextDisplaySettings> userList2) {
 		mTextDisplayAdapter.setList(userList2);
 		mTextDisplayAdapter.notifyDataSetChanged();
 	}
-	
+
 	private void refreshVisualDisplayListAdapter(ArrayList<User> userList2) {
 		mVisualDisplayAdapter.setList(userList2);
 		mVisualDisplayAdapter.notifyDataSetChanged();
@@ -446,17 +445,15 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			public void onTabChanged(String tabId) {
 				int tabNum = Integer.parseInt(tabId);
 				//				homeLinearLayout = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentUser);
-//				homeContentTextDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentTextDisplay);
-//				homeContentChartDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentChartDisplay);
-//				ScrollView scrollView = (ScrollView) getSherlockActivity().findViewById(R.id.scroller);
+				//				homeContentTextDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentTextDisplay);
+				//				homeContentChartDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentChartDisplay);
+				//				ScrollView scrollView = (ScrollView) getSherlockActivity().findViewById(R.id.scroller);
 
 				switch (tabNum) {
 				case 0:
 					break;
 
 				case 1:
-					intent = new Intent(getSherlockActivity(), SelfScreen.class);
-					startActivity(intent);
 					break;
 
 				case 2:
@@ -533,45 +530,46 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 
 	}
 
-	private String getAndSetBiometricId(User user, String diseaseType, boolean setterValue, int menuType) {
+	private String getAndSetBiometricId(Object user, String diseaseType, boolean setterValue, int menuType) {
 		if(menuType == Constants.ADD_TEXT_DISPLAY) {
+			ListHolder.getTextDisplaySettingList().remove((TextDisplaySettings)user);
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-				user.setGsrTextDisplay(setterValue);
+//				user.setGsrTextDisplay(setterValue);
 				return "1";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-				user.setHeartRateTextDisplay(setterValue);
+//				user.setHeartRateTextDisplay(setterValue);
 				return "2";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-				user.setAccelerometerTextDisplay(setterValue);
+//				user.setAccelerometerTextDisplay(setterValue);
 				return "3";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-				user.setTempratureTextDisplay(setterValue);
+//				user.setTempratureTextDisplay(setterValue);
 				return "4";
 			}
 		}else if(menuType == Constants.ADD_TEXT_VISUALEXPLORER){
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-				user.setGsrVisualDisplay(setterValue);
+//				user.setGsrVisualDisplay(setterValue);
 				return "1";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-				user.setHeartRateVisualDisplay(setterValue);
+//				user.setHeartRateVisualDisplay(setterValue);
 				return "2";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-				user.setAccelerometerVisualDisplay(setterValue);
+//				user.setAccelerometerVisualDisplay(setterValue);
 				return "3";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-				user.setTempratureVisualDisplay(setterValue);
+//				user.setTempratureVisualDisplay(setterValue);
 				return "4";
 			}
 		}
 		return "-1";
 	}
-	
+
 	private ArrayList<User> getUserListByDisease(String diseaseType) {
 		ArrayList<User> userList = null;
 		int menuType = mFragmentCalledByMenuOption;

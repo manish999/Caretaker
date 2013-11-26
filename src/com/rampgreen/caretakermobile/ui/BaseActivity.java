@@ -48,5 +48,9 @@ abstract public class BaseActivity extends FragmentActivity implements Response.
 		super.onBackPressed();
 
 	}
+	
+	public void setActionBarTitle(String title) {
+	    setTitle(title);
+	}
 
 }

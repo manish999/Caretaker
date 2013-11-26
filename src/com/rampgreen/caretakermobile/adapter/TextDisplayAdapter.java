@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.model.BeanController;
+import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.ui.FragmentHomeMenuAlert;
 
@@ -18,10 +19,10 @@ import java.util.List;
 
 public class TextDisplayAdapter extends BaseAdapter {
 	private Context context;
-	private ArrayList<User> caretakersUsers;
+	private ArrayList<TextDisplaySettings> caretakersUsers;
 	LayoutInflater inflater;
 
-	public TextDisplayAdapter(Context context, ArrayList<User> caretakersUsers) {
+	public TextDisplayAdapter(Context context, ArrayList<TextDisplaySettings> caretakersUsers) {
 		this.context = context;
 //		this.caretakersUsers = FragmentHomeMenuAlert.textArrayList;
 		this.caretakersUsers = caretakersUsers;
@@ -43,12 +44,12 @@ public class TextDisplayAdapter extends BaseAdapter {
 			// Get the ViewHolder back to get fast access to the TextView
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.accountName.setText(caretakersUsers.get(position).getUsername());
+		holder.accountName.setText(caretakersUsers.get(position).getUserID());
 //		holder.accountName.getPaint().setFakeBoldText(true);
 		return convertView;
 	}
 
-	private static class ViewHolder {
+	public static class ViewHolder {
 		TextView accountName;
 		ImageView imageIcon;
 	}
@@ -72,9 +73,8 @@ public class TextDisplayAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	public void setList(ArrayList<User> caretakersUsers) {
+	public void setList(ArrayList<TextDisplaySettings> caretakersUsers) {
 		this.caretakersUsers = caretakersUsers;
 		notifyDataSetChanged();
 	}
-
 }

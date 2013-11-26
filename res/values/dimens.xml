@@ -17,5 +17,6 @@
     <dimen name="tab_transparent_overlay_height">25dp</dimen>
     
     <dimen name="between_gender_button_margin">45dp</dimen>
+    <dimen name="header_icon_margin">10dp</dimen>
 
 </resources>

@@ -38,8 +38,8 @@ import java.util.Map;
 public class SendReceived_Request extends BaseActivity {
 
 	private static final String[] CONTENT = new String[] { "Received", "Sent" };
-//	private static final int[] ICONS = new int[] { R.drawable.received,
-//			R.drawable.sent };
+	//	private static final int[] ICONS = new int[] { R.drawable.received,
+	//			R.drawable.sent };
 	private GoogleMusicAdapter adapter;
 	private ViewPager pager;
 	private TabPageIndicator indicator;
@@ -50,23 +50,24 @@ public class SendReceived_Request extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle("Requests");
 		setContentView(R.layout.sendrecived_request);
 
 		adapter = new GoogleMusicAdapter(getSupportFragmentManager());		
-		
+
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
 
 		indicator = (TabPageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
-		
+
 		indicator.notifyDataSetChanged();
 		adapter.notifyDataSetChanged();		  
-	
+
 	}
 
 	class GoogleMusicAdapter extends FragmentPagerAdapter implements
-			IconPagerAdapter {
+	IconPagerAdapter {
 		public GoogleMusicAdapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -75,15 +76,15 @@ public class SendReceived_Request extends BaseActivity {
 		public Fragment getItem(int position) {		
 			/*return SendReceivedFragment.newInstance(lvr);*/
 			Fragment fragment =null;
-	        switch (position) {
-	            case 0:
-	                fragment = new Received_request();
-	                break;
-	            case 1:
-	                fragment = new Sent_request();
-	                break;              
-	            }
-	        return fragment;
+			switch (position) {
+			case 0:
+				fragment = new Received_request();
+				break;
+			case 1:
+				fragment = new Sent_request();
+				break;              
+			}
+			return fragment;
 		}
 
 		@Override
@@ -103,14 +104,14 @@ public class SendReceived_Request extends BaseActivity {
 			return 0;
 		}
 
-//		@Override
-//		public int getIconResId(int index) {
-//			// TODO Auto-generated method stub
-//			return ICONS[index];
-//		}		
-		 
+		//		@Override
+		//		public int getIconResId(int index) {
+		//			// TODO Auto-generated method stub
+		//			return ICONS[index];
+		//		}		
+
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -150,7 +151,7 @@ public class SendReceived_Request extends BaseActivity {
 			break;
 		case ParserError.CODE_USER_NOT_REGISTERED:
 			Toast.makeText(this, "USER NOT REGISTERED: ", Toast.LENGTH_SHORT)
-					.show();
+			.show();
 			break;
 		case ParserError.CODE_INVALID_TOKEN:
 
@@ -216,21 +217,21 @@ public class SendReceived_Request extends BaseActivity {
 
 			// set dialog message
 			alertDialogBuilder
-					.setCancelable(false)
-					.setPositiveButton("Send",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id) {
-									sendrequest(userInput.getText().toString());
-								}
-							})
-					.setNegativeButton("Cancel",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id) {
-									dialog.cancel();
-								}
-							});
+			.setCancelable(false)
+			.setPositiveButton("Send",
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,
+						int id) {
+					sendrequest(userInput.getText().toString());
+				}
+			})
+			.setNegativeButton("Cancel",
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,
+						int id) {
+					dialog.cancel();
+				}
+			});
 
 			// create alert dialog
 			AlertDialog alertDialog = alertDialogBuilder.create();

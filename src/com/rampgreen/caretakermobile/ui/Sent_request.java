@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -31,7 +32,7 @@ import com.rampgreen.caretakermobile.util.Constants;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Sent_request extends Fragment implements
+public class Sent_request extends SherlockFragment implements
 Response.Listener<JSONObject>, Response.ErrorListener{
 
 	String token = BeanController.getLoginBean().getAccessToken();//"b1916c6daa00b1d5d2297166008f3a7c4825e6f8";
@@ -42,7 +43,7 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

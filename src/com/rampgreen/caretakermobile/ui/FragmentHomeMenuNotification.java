@@ -102,7 +102,8 @@ public class FragmentHomeMenuNotification extends SherlockListFragment implement
 		}
 
 		userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, true);
-		adapter = new AdapterUser(getActivity(),userList, AdapterUser.MENU_NOTIFICATION_USER_LIST);
+		adapter = new AdapterUser(getActivity());
+		adapter.setList(userList, AdapterUser.MENU_NOTIFICATION_USER_LIST);
 		setListAdapter(adapter);
 
 		//		SampleAdapter adapter = new SampleAdapter(getActivity());

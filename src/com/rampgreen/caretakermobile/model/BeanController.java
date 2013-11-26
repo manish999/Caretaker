@@ -10,6 +10,8 @@ public class BeanController
 {
 	static LoginBean loginBean=null;
 	static User userListBean=null;
+	static TextDisplaySettings settingBean=null;
+	
 	
 	public static LoginBean getLoginBean()
 	{	
@@ -27,6 +29,15 @@ public class BeanController
 			userListBean = new User();
 		}
 		return userListBean;
+	}
+	
+	public static TextDisplaySettings getTextDisplaySettings()
+	{	
+		if(settingBean == null)
+		{
+			settingBean = new TextDisplaySettings();
+		}
+		return settingBean;
 	}
 }
 

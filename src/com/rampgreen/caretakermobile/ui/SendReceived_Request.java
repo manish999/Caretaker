@@ -264,7 +264,7 @@ public class SendReceived_Request extends BaseActivity {
 		CustomRequest customRequest = new CustomRequest(Method.POST,
 				Constants.URL_WEB_SERVICE, loginParam, this, this);
 		customRequest.setTag(this);
-		
+		queue.add(customRequest);
 		Email = emailid;
 	}
 

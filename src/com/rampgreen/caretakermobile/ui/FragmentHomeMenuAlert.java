@@ -18,11 +18,13 @@ import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.AdapterUser;
+import com.rampgreen.caretakermobile.model.BaseDeleteSettings;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.ListHolder;
 import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
+import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.util.AppLog;
@@ -35,7 +37,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 {
 	private static final String KEY_CONTENT = "TestFragment:Content123";
 	private UserListProvider userListProvider;
-	private ArrayList<TextDisplaySettings> userList;
+	private ArrayList<?> userList;
 	private AdapterUser adapter;
 	private int mFragmentCalledByMenuOption;
 	private int mFragmentCaller;
@@ -107,17 +109,21 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 			//			profileID  = savedInstanceState.getString(Constants.ID_PROFILE);
 			//			accountToken  = savedInstanceState.getString(Constants.ID_ACCOUNT);
 		}
-
+		adapter = new AdapterUser(getActivity());
 		int menuType = AdapterUser.MENU_HOME_TEXT_DISPLAY_USER_LIST;
 		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY){
 			menuType = AdapterUser.MENU_HOME_TEXT_DISPLAY_USER_LIST;
+			userList = getUserListByDisease(mClickedMenuDisease);
+			adapter.setList(userList, menuType);
 		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER) {
 			menuType = AdapterUser.MENU_VISUAL_DISPLAY_USER_LIST;
+			userList = getUserListByDisease(mClickedMenuDisease);
+			adapter.setList(userList, menuType);
 		}
 
-		userList = getUserListByDisease(mClickedMenuDisease);
-		adapter = new AdapterUser(getActivity());
-		adapter.setList(userList, menuType);
+		
+		
+		
 		setListAdapter(adapter);
 		//		if (savedInstanceState == null) {
 		//            FragmentManager fragmentManager = getSherlockActivity().getSupportFragmentManager();
@@ -160,12 +166,22 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 			newContent = new FragmentHomeMenuDisease();
 			switchMenuContent(newContent);
 		} else {
-
+			Object obj = userList.get(position);
 			userList = getUserListByDisease(mClickedMenuDisease);
-			TextDisplaySettings user = userList.get(position);
-			setArgumentForUser(user, mClickedMenuDisease, true);
-			// need send update server too
-//			setValuesOnWebServer(user, mClickedMenuDisease, true);
+			if(obj instanceof TextDisplaySettings) {
+				TextDisplaySettings user = (TextDisplaySettings)obj;
+				setArgumentForUser(user, mClickedMenuDisease, true);
+				// need send update server too
+				setValuesOnWebServer(user, mClickedMenuDisease, true);
+
+			} else if(obj instanceof VisualDisplaySettings) {
+				VisualDisplaySettings user =(VisualDisplaySettings)obj;
+				setArgumentForUser(user, mClickedMenuDisease, true);
+				// need send update server too
+				setValuesOnWebServer(user, mClickedMenuDisease, true);
+			}
+						
+			
 
 			AppLog.logToast(getSherlockActivity(), position+"");
 			// on click slider menu close and  notification is to be set via web service and toast shown that notification has been set.
@@ -203,36 +219,24 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 		} 
 	}
 
-	private ArrayList<TextDisplaySettings> getUserListByDisease(String diseaseType) {
+	private ArrayList<?> getUserListByDisease(String diseaseType) {
 		ArrayList<TextDisplaySettings> userList = null;
 		int menuType = mFragmentCalledByMenuOption;
 		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
 			menuType = UserListProvider.TEXT_DISPLAY;
+			return userListProvider.getFilterUserbyTextDisplayUserID(diseaseType);
 			
 		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER){
 			menuType = UserListProvider.VISUAL_DISPLAY;
-		}
-
-		if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-			userList = userListProvider.getTextDisplayListForMenu(UserListProvider.DISEASE_GSR);
-//			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_GSR, menuType, true);
-		} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-			userList = userListProvider.getTextDisplayListForMenu(UserListProvider.DISEASE_HEART_RATE);
-//			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_HEART_RATE, menuType, true);
-		} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-			userList = userListProvider.getTextDisplayListForMenu(UserListProvider.DISEASE_ACCELEROMETER);
-//			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_ACCELEROMETER, menuType, true);
-		} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-			userList = userListProvider.getTextDisplayListForMenu(UserListProvider.DISEASE_TEMPRATURE);
-//			userList = userListProvider.getList(UserListProvider.FOR_MENU_CONTENT, UserListProvider.DISEASE_TEMPRATURE, menuType, true);
+			return userListProvider.getFilterUserbyVisualDisplayUserID(diseaseType);
 		}
 		return userList;
 	}
 
-	private void setArgumentForUser(TextDisplaySettings user, String diseaseType, boolean setterValue) {
+	private void setArgumentForUser(Object user, String diseaseType, boolean setterValue) {
 		
 		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
-			ListHolder.getTextDisplaySettingList().add(user);
+			ListHolder.getTextDisplaySettingList().add((TextDisplaySettings)user);
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
 //				user.setGsrTextDisplay(setterValue);
 
@@ -247,6 +251,7 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 
 			}
 		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER){
+			ListHolder.getVisualDisplaySettingsList().add((VisualDisplaySettings)user);
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
 //				user.setGsrVisualDisplay(setterValue);
 
@@ -262,40 +267,43 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 		}
 	}
 
-	private void setValuesOnWebServer(User user, String diseaseType, boolean setterValue) {
+	private void setValuesOnWebServer(BaseDeleteSettings setting, String diseaseType, boolean setterValue) {
 		int menuType;
 		String biometricValue = setterValue ? "1" : "0";
+		
 		// set the value on server
 		MyRequestQueue queue = MyVolley.getRequestQueue();
 		Map<String, String> paramMap = null;
 		
-		
+		String rquestId = userListProvider.getUser(setting.getUserID()).getRequestId();
 		if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_DISPLAY) {
+			TextDisplaySettings textDisplaySettings = (TextDisplaySettings)setting;
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "1", biometricValue);
+				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, "1", biometricValue);
 				
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "2", biometricValue);
+				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, "2", biometricValue);
 				
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "3", biometricValue);
+				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, "3", biometricValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "4", biometricValue);
+				paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, "4", biometricValue);
 
 			}
 		} else if(mFragmentCalledByMenuOption == Constants.ADD_TEXT_VISUALEXPLORER){
+			VisualDisplaySettings visualDisplaySettings = (VisualDisplaySettings)setting;
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "1", biometricValue);
+				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, "1", biometricValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "2", biometricValue);
+				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, "2", biometricValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "3", biometricValue);
+				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, "3", biometricValue);
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), "4", biometricValue);
+				paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, "4", biometricValue);
 			}
 		}
 		

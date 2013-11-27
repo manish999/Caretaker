@@ -4,16 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
+import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 
 import java.util.ArrayList;
 
@@ -25,16 +24,12 @@ public class AdapterUser extends BaseAdapter {
 
 	private ArrayList<String> listItem;
 	private Context context;
+	private UserListProvider userListProvider;
 
 	public AdapterUser(Context context) {
 		this.context = context;
+		userListProvider = new UserListProvider();
 	}
-
-	//	public AdapterUser(Context context, ArrayList<User> listItem, int menuType) {
-	//		this.context = context;
-	//		
-	//		this.listItem = getMenuUserList(listItem, menuType);
-	//	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
@@ -59,6 +54,9 @@ public class AdapterUser extends BaseAdapter {
 			} else  if(obj instanceof TextDisplaySettings) {
 				ArrayList<TextDisplaySettings> textDisplaySettingsList  = (ArrayList<TextDisplaySettings>)list;
 				listItem = getNamesFromTextDisplayList(textDisplaySettingsList);
+			} else  if(obj instanceof VisualDisplaySettings) {
+				ArrayList<VisualDisplaySettings> textDisplaySettingsList  = (ArrayList<VisualDisplaySettings>)list;
+				listItem = getNamesFromVisualDisplayList(textDisplaySettingsList);
 			}
 		}
 	}
@@ -109,22 +107,9 @@ public class AdapterUser extends BaseAdapter {
 
 		case MENU_HOME_TEXT_DISPLAY_USER_LIST:
 			dashUserList = userList;
-			//			for (User user : userList)
-			//			{
-			//				if(! user.isUserOnHomeScreen()){
-			//					dashUserList.add(user);
-			//				}
-			//			}
 			break;
 
 		case MENU_VISUAL_DISPLAY_USER_LIST:
-			dashUserList = userList;
-			//			for (User user : userList)
-			//			{
-			//				if(! user.isUserOnHomeScreen()){
-			//					dashUserList.add(user);
-			//				}
-			//			}
 			break;
 
 		default:
@@ -148,7 +133,24 @@ public class AdapterUser extends BaseAdapter {
 		ArrayList<String> menuNameList = new ArrayList<String>();
 		for (TextDisplaySettings setting : userList)
 		{
-			menuNameList.add(setting.getUserID());
+			if(setting.getUserID().equalsIgnoreCase("-1")) {
+				menuNameList.add("<<");
+			} else {
+				menuNameList.add(userListProvider.getUser(setting.getUserID()).getUsername() + setting.getUserID());
+			}
+		}
+		return menuNameList; 
+	}
+	
+	private  ArrayList<String> getNamesFromVisualDisplayList(ArrayList<VisualDisplaySettings> userList) {
+		ArrayList<String> menuNameList = new ArrayList<String>();
+		for (VisualDisplaySettings setting : userList)
+		{
+			if(setting.getUserID().equalsIgnoreCase("-1")) {
+				menuNameList.add("<<");
+			} else {
+				menuNameList.add(userListProvider.getUser(setting.getUserID()).getUsername() + setting.getUserID());
+			}
 		}
 		return menuNameList; 
 	}

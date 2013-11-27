@@ -22,10 +22,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -46,13 +44,14 @@ import com.rampgreen.caretakermobile.model.ListHolder;
 import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
+import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
+import com.rampgreen.caretakermobile.ui.util.ExpandableHeightGridView;
+import com.rampgreen.caretakermobile.ui.util.ExpandableListView;
 import com.rampgreen.caretakermobile.ui.util.TabBitmap;
 import com.rampgreen.caretakermobile.util.AppLog;
-import com.rampgreen.caretakermobile.util.AppSettings;
 import com.rampgreen.caretakermobile.util.Constants;
-import com.rampgreen.caretakermobile.util.UiUtil;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -69,19 +68,25 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 	private static final String TAG_4 = "3";
 	private static final String TAG_5 = "4";
 
+	static String[] letters = new String[] {
+		"A", "B", "C", "D", "E",
+	};
+	static String[] letters1 = new String[] {
+		"1", "2", "3", "4", "5",
+	};
 	TabHost mTabHost;
 	//	LinearLayout homeLinearLayout, homeContentTextDisplay, homeContentChartDisplay;
 	//	ExpandableHeightGridView gridView;
-	GridView gridView;
+	ExpandableHeightGridView gridView;
 	private LayoutInflater mInflater;
 	private View smsInboxDetailView;
 	private TextView txtInboxSmsDetail;
 	private ArrayList<User> userList;
 	private UserListProvider userListProvider;
 	private ImageAdapter imageAdapter;
-	private ListView homeTextDisplayListView;
+	private ExpandableListView homeTextDisplayListView;
 	private TextDisplayAdapter mTextDisplayAdapter;
-	private ListView homeChartDisplayListView;
+	private ExpandableListView homeChartDisplayListView;
 	private String mClickedMenuDisease = Constants.DISEASE_GSR;
 	private int mFragmentCaller;
 	private int mFragmentCalledByMenuOption;
@@ -115,9 +120,12 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		Bundle localBundle = getArguments();
 		setTabs();
 		// create the scrollview buttons 
-		//		homeContentTextDisplay = (LinearLayout) getSherlockActivity().findViewById(R.id.homeContentTextDisplay);
-		homeTextDisplayListView = (ListView) getSherlockActivity().findViewById(R.id.homeContentTextDisplayList1);
-		homeChartDisplayListView = (ListView) getSherlockActivity().findViewById(R.id.homeContentChartDisplayList);
+		gridView = (ExpandableHeightGridView) getSherlockActivity().findViewById(R.id.grid_view);
+		homeTextDisplayListView = (ExpandableListView) getSherlockActivity().findViewById(R.id.homeContentTextDisplayList1);
+		homeChartDisplayListView = (ExpandableListView) getSherlockActivity().findViewById(R.id.homeContentChartDisplayList);
+		gridView.setExpanded(true);
+		homeChartDisplayListView.setExpanded(true);
+		homeTextDisplayListView.setExpanded(true);
 		//		ImageView imgViewTemp = (ImageView) getSherlockActivity().findViewById(R.id.text_view_home12);
 		if(muserList != null && muserList.size() == 0) {
 			AppLog.showToast(getSherlockActivity(), "No user is associated with the account.");
@@ -137,22 +145,6 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		//		gridView = (ExpandableHeightGridView) getSherlockActivity().findViewById(R.id.grid_view);
 		//		gridView.setExpanded(true);
 
-		gridView = (GridView) getSherlockActivity().findViewById(R.id.grid_view);
-		// Instance of ImageAdapter Class
-
-		//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
-		//		int totuser= Integer.parseInt(totalUser);
-
-		String	dashUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_DASHBOARD_USER, "00000");
-		char[] arr = dashUser.toCharArray();
-		int totalUSers = 0;
-		for (int i = 0; i < dashUser.toCharArray().length; i++)
-		{
-			if( arr[i] == '1') {
-				totalUSers ++;
-			}
-		}
-
 		userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, false);
 		imageAdapter = new ImageAdapter(getSherlockActivity(), userList);
 		gridView.setAdapter(imageAdapter);
@@ -164,9 +156,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
-				// Sending image id to FullScreenActivity
-				//				Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
-				// passing array index
+				userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, false);
 				Bundle bundle = new Bundle();
 				Intent intent = new Intent();
 				bundle.putString("title", userList.get(position).getUsername());
@@ -174,8 +164,6 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 				intent.putExtras(bundle);
 				startActivity(intent);
 				AppLog.logToast(getSherlockActivity(), "posi"+position);
-				//				i.putExtra("id", position);	
-				//				startActivity(i);
 			}
 		});
 
@@ -185,6 +173,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View v,
 					int position, long id) {
+				userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.ADD_USER_ICON, false);
 				final User user = userList.get(position);
 				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
 				builder.setTitle("Delete");
@@ -225,10 +214,11 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		//		userList = getUserListByDisease(mClickedMenuDisease);
 		//		userList = getUserListByDisease(Constants.DISEASE_GSR);
 		//		userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, false);
+		//		ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_row, R.id.TextView, letters);
+		//		homeTextDisplayListView.setAdapter(adapter);
 		ArrayList<TextDisplaySettings> textDisplaySettings = ListHolder.getTextDisplaySettingList();//userListProvider.getTextDisplayList();
 		mTextDisplayAdapter = new TextDisplayAdapter(getSherlockActivity(), textDisplaySettings);
 		homeTextDisplayListView.setAdapter(mTextDisplayAdapter);
-
 
 		homeTextDisplayListView.setOnItemClickListener(new OnItemClickListener()
 		{
@@ -246,8 +236,8 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			public boolean onItemLongClick(AdapterView<?> parent, View v,
 					int position, long id)
 			{
-//				final UserListProvider userListProvider = new UserListProvider();
-//				userList = userListProvider.getTextDisplayList();
+				//				final UserListProvider userListProvider = new UserListProvider();
+				//				userList = userListProvider.getTextDisplayList();
 				final ArrayList<TextDisplaySettings> textDisplaySettingList  = ListHolder.getTextDisplaySettingList();
 				final TextDisplaySettings textDisplaySettings = textDisplaySettingList.get(position);
 				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
@@ -257,15 +247,16 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						// set the value on server
-						String biometricId = getAndSetBiometricId(textDisplaySettings, mClickedMenuDisease, false, Constants.ADD_TEXT_DISPLAY);
-//						MyRequestQueue queue = MyVolley.getRequestQueue();
-//						Map<String, String> paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(), biometricId, "0");
-//						CustomRequest customRequest = new CustomRequest(Method.POST,
-//								Constants.URL_WEB_SERVICE, paramMap, FragmentTabBottom.this, FragmentTabBottom.this);
-//						queue.add(customRequest);
+						String rquestId = userListProvider.getUser(textDisplaySettings.getUserID()).getRequestId();
+						String biometricId = getAndSetBiometricId(textDisplaySettings, textDisplaySettings.getBiometricID(), false, Constants.ADD_TEXT_DISPLAY);
+						MyRequestQueue queue = MyVolley.getRequestQueue();
+						Map<String, String> paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, biometricId, "0");
+						CustomRequest customRequest = new CustomRequest(Method.POST,
+								Constants.URL_WEB_SERVICE, paramMap, FragmentTabBottom.this, FragmentTabBottom.this);
+						queue.add(customRequest);
 
 						//						userList = getUserListByDisease(mClickedMenuDisease);
-//						userList = userListProvider.getTextDisplayList();
+						//						userList = userListProvider.getTextDisplayList();
 						refreshTextDisplayListAdapter(textDisplaySettingList);
 					}
 				});
@@ -287,8 +278,9 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		//		userList = getUserListByDisease(Constants.DISEASE_GSR);
 		//		userList = userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.NOTIFICATION, false);
 		//userListProvider.getList(UserListProvider.FOR_HOME_CONTENT, UserListProvider.NOT_DEFINE, UserListProvider.VISUAL_DISPLAY, false);
-		userList = userListProvider.getVisualDisplayList();
-		mVisualDisplayAdapter = new VisualDisplayAdapter(getSherlockActivity(), userList);
+		//		userList = userListProvider.getVisualDisplayList();
+		ArrayList<VisualDisplaySettings> visualDisplaySettings = ListHolder.getVisualDisplaySettingsList();//userListProvider.getTextDisplayList();
+		mVisualDisplayAdapter = new VisualDisplayAdapter(getSherlockActivity(), visualDisplaySettings);
 		homeChartDisplayListView.setAdapter(mVisualDisplayAdapter);
 
 		homeChartDisplayListView.setOnItemClickListener(new OnItemClickListener()
@@ -306,26 +298,28 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			public boolean onItemLongClick(AdapterView<?> parent, View v,
 					int position, long id)
 			{
-				final User user = userList.get(position);
+				final ArrayList<VisualDisplaySettings> visualDisplaySettingList  = ListHolder.getVisualDisplaySettingsList();
+				final VisualDisplaySettings visualDisplaySettings = visualDisplaySettingList.get(position);
+				//				final User user = userList.get(position);
 				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
 				builder.setTitle("Delete");
-				builder.setMessage("Are You Sure to delete "+user.getUsername()+" from home screen ?");
+				builder.setMessage("Are You Sure to delete "+visualDisplaySettings.getUserID()+" from home screen ?");
 				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						// set the value on server
-						String biometricId = getAndSetBiometricId(user, mClickedMenuDisease, false, Constants.ADD_TEXT_VISUALEXPLORER);
+						String rquestId = userListProvider.getUser(visualDisplaySettings.getUserID()).getRequestId();
+						String biometricId = getAndSetBiometricId(visualDisplaySettings, visualDisplaySettings.getBiometricID(), false, Constants.ADD_TEXT_VISUALEXPLORER);
+
 						MyRequestQueue queue = MyVolley.getRequestQueue();
-						Map<String, String> paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), user.getRequestId(),biometricId, "0");
+						Map<String, String> paramMap = QueryHelper.createAddVisualDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId , biometricId, "0");
 						CustomRequest customRequest = new CustomRequest(Method.POST,
 								Constants.URL_WEB_SERVICE, paramMap, FragmentTabBottom.this, FragmentTabBottom.this);
 						queue.add(customRequest);
 
-						UserListProvider userListProvider = new UserListProvider();
-						userList = userListProvider.getVisualDisplayList();
-						refreshVisualDisplayListAdapter(userList);
-						//						Constants.CLOSE_ALL_ACTIVITIES = true;
-						//						finish();
+						//						UserListProvider userListProvider = new UserListProvider();
+						//						userList = userListProvider.getVisualDisplayList();
+						refreshVisualDisplayListAdapter(visualDisplaySettingList);
 					}
 				});
 
@@ -342,10 +336,6 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			}
 
 		});
-
-		UiUtil.setListViewHeightBasedOnChildren(homeTextDisplayListView);
-		UiUtil.setListViewHeightBasedOnChildren(homeChartDisplayListView);
-
 	}
 	ListItemDetails item_details;
 
@@ -384,7 +374,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		mTextDisplayAdapter.notifyDataSetChanged();
 	}
 
-	private void refreshVisualDisplayListAdapter(ArrayList<User> userList2) {
+	private void refreshVisualDisplayListAdapter(ArrayList<VisualDisplaySettings> userList2) {
 		mVisualDisplayAdapter.setList(userList2);
 		mVisualDisplayAdapter.notifyDataSetChanged();
 	}
@@ -393,7 +383,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		mTabHost = (TabHost) getSherlockActivity().findViewById(android.R.id.tabhost);
 		mTabHost.setup();
 
-		addTab("Home", TAG_1, createTabDrawable(R.drawable.home), R.id.linear_view);
+		addTab("Home", TAG_1, createTabDrawable(R.drawable.home), R.id.scroller);
 		addTab("Self", TAG_2, createTabDrawable(R.drawable.self), R.id.text_view_search);
 		addTab("Network", TAG_3, createTabDrawable(R.drawable.network), R.id.text_view_favourites);
 		addTab("Request", TAG_4, createTabDrawable(R.drawable.request), R.id.text_view_settings);
@@ -534,36 +524,37 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		if(menuType == Constants.ADD_TEXT_DISPLAY) {
 			ListHolder.getTextDisplaySettingList().remove((TextDisplaySettings)user);
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-//				user.setGsrTextDisplay(setterValue);
+				//				user.setGsrTextDisplay(setterValue);
 				return "1";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-//				user.setHeartRateTextDisplay(setterValue);
+				//				user.setHeartRateTextDisplay(setterValue);
 				return "2";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-//				user.setAccelerometerTextDisplay(setterValue);
+				//				user.setAccelerometerTextDisplay(setterValue);
 				return "3";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-//				user.setTempratureTextDisplay(setterValue);
+				//				user.setTempratureTextDisplay(setterValue);
 				return "4";
 			}
 		}else if(menuType == Constants.ADD_TEXT_VISUALEXPLORER){
+			ListHolder.getVisualDisplaySettingsList().remove((VisualDisplaySettings)user);
 			if (diseaseType.equalsIgnoreCase(Constants.DISEASE_GSR)) {
-//				user.setGsrVisualDisplay(setterValue);
+				//				user.setGsrVisualDisplay(setterValue);
 				return "1";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_HEART_RATE))	{
-//				user.setHeartRateVisualDisplay(setterValue);
+				//				user.setHeartRateVisualDisplay(setterValue);
 				return "2";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_ACCELEROMETER))	{
-//				user.setAccelerometerVisualDisplay(setterValue);
+				//				user.setAccelerometerVisualDisplay(setterValue);
 				return "3";
 
 			} else if(diseaseType.equalsIgnoreCase(Constants.DISEASE_TEMPRATURE))	{
-//				user.setTempratureVisualDisplay(setterValue);
+				//				user.setTempratureVisualDisplay(setterValue);
 				return "4";
 			}
 		}

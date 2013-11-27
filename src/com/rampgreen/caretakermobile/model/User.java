@@ -386,7 +386,7 @@ public class User implements Serializable, Populator
 			for(int i=0;i<jsonUserArray.length();i++){
 				JSONObject jsonObjUserAndSetting = jsonUserArray.getJSONObject(i);
 				JSONObject jsonObjUser = jsonObjUserAndSetting.getJSONObject("user");
-				JSONArray jsonArraySetting = jsonObjUserAndSetting.getJSONArray("settings");
+				JSONObject jsonObj = jsonObjUserAndSetting.getJSONObject("settings");
 				
 				jsonObject = jsonUserArray.getJSONObject(i);
 				User user = new User();
@@ -407,31 +407,31 @@ public class User implements Serializable, Populator
 				user.notification = jsonObjUser.getString("isnotificationon").equalsIgnoreCase("1") ? true : false;
 				
 				// parsing user's dashboared settings
-				for(int index=0; index < jsonArraySetting.length(); index++){
-					JSONObject jsonObjSetting = jsonArraySetting.getJSONObject(index);
-					String disease = jsonObjSetting.getString("biometricname");
-					String textSetting = jsonObjSetting.getString("textsetting");
-					String visualSetting = jsonObjSetting.getString("visualsetting");
-					String biometricid_pk = jsonObjSetting.getString("biometricid_pk");
-					
-					if(disease.equalsIgnoreCase("GSR")) {
-						user.gsrTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
-						user.gsrVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
-						
-					} else if(disease.equalsIgnoreCase("Heart Rate")) {
-						user.heartRateTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
-						user.heartRateVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
-						
-					} else if(disease.equalsIgnoreCase("Accelerometer")) {
-						user.accelerometerTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
-						user.accelerometerVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
-						
-					} else if(disease.equalsIgnoreCase("Temperature")) {
-						user.tempratureTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
-						user.tempratureVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
-						
-					}
-				}
+//				for(int index=0; index < jsonArraySetting.length(); index++){
+//					JSONObject jsonObjSetting = jsonArraySetting.getJSONObject(index);
+//					String disease = jsonObjSetting.getString("biometricname");
+//					String textSetting = jsonObjSetting.getString("textsetting");
+//					String visualSetting = jsonObjSetting.getString("visualsetting");
+//					String biometricid_pk = jsonObjSetting.getString("biometricid_pk");
+//					
+//					if(disease.equalsIgnoreCase("GSR")) {
+//						user.gsrTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+//						user.gsrVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+//						
+//					} else if(disease.equalsIgnoreCase("Heart Rate")) {
+//						user.heartRateTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+//						user.heartRateVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+//						
+//					} else if(disease.equalsIgnoreCase("Accelerometer")) {
+//						user.accelerometerTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+//						user.accelerometerVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+//						
+//					} else if(disease.equalsIgnoreCase("Temperature")) {
+//						user.tempratureTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+//						user.tempratureVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+//						
+//					}
+//				}
 				userList.add(user);
 			}
 		} catch (JSONException e)
@@ -456,7 +456,7 @@ public class User implements Serializable, Populator
 		return null;
 	}
 	
-	public TextDisplaySettings getDeleteTextDisplaySetting(String userId, String diseaseType) {
-		return new TextDisplaySettings(userId, diseaseType);
-	}
+//	public TextDisplaySettings getDeleteTextDisplaySetting(String userId, String diseaseType) {
+//		return new TextDisplaySettings(userId, diseaseType);
+//	}
 }

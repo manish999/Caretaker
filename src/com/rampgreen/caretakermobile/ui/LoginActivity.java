@@ -19,6 +19,7 @@ import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.LoginBean;
 import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
+import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
@@ -209,6 +210,8 @@ public class LoginActivity extends BaseActivity
 				TextDisplaySettings textSetting = BeanController.getTextDisplaySettings();
 				textSetting.populateBean(response);
 				
+				VisualDisplaySettings visualSetting = BeanController.getVisualDisplaySettings();
+				visualSetting.populateBean(response);
 				// on success , call Home screen
 				Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
 				intent.putExtra(Constants.BUNDLE_KEY_USERS, userBean);

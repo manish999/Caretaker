@@ -18,10 +18,10 @@ public class Constants {
 	public static final String BUNDLE_KEY_USERS = "userbundle";
 	
 	public static final String BUNDLE_KEY_DISEASE = "bundledisease";
-	public static final String DISEASE_GSR = "bundleGSR";
-	public static final String DISEASE_HEART_RATE = "bundleHEART";
-	public static final String DISEASE_ACCELEROMETER = "bundleACCEL";
-	public static final String DISEASE_TEMPRATURE = "bundleTEMP";
+	public static final String DISEASE_GSR = "GSR";//"bundleGSR";
+	public static final String DISEASE_HEART_RATE = "Heart Rate";
+	public static final String DISEASE_ACCELEROMETER = "Accelerometer";
+	public static final String DISEASE_TEMPRATURE = "Temprature";
 	
 	public static final String FRAGMENT_ADD_MENU_CALLER = "fragmainmenucaller";
 	

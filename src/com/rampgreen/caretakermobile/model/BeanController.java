@@ -10,8 +10,8 @@ public class BeanController
 {
 	static LoginBean loginBean=null;
 	static User userListBean=null;
-	static TextDisplaySettings settingBean=null;
-	
+	static TextDisplaySettings settingTextDisplayBean=null;
+	static VisualDisplaySettings settingVisualDisplayBean=null;
 	
 	public static LoginBean getLoginBean()
 	{	
@@ -33,11 +33,20 @@ public class BeanController
 	
 	public static TextDisplaySettings getTextDisplaySettings()
 	{	
-		if(settingBean == null)
+		if(settingTextDisplayBean == null)
 		{
-			settingBean = new TextDisplaySettings();
+			settingTextDisplayBean = new TextDisplaySettings();
 		}
-		return settingBean;
+		return settingTextDisplayBean;
+	}
+	
+	public static VisualDisplaySettings getVisualDisplaySettings()
+	{	
+		if(settingVisualDisplayBean == null)
+		{
+			settingVisualDisplayBean = new VisualDisplaySettings();
+		}
+		return settingVisualDisplayBean;
 	}
 }
 

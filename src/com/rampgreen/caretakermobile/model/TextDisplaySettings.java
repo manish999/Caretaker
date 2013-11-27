@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class TextDisplaySettings  extends BaseDeleteSettings implements Populator{
 	private String displayMsg;
-//	private ArrayList<TextDisplaySettings> textDisplaySettingList = new ArrayList<TextDisplaySettings>();; 
+	//	private ArrayList<TextDisplaySettings> textDisplaySettingList = new ArrayList<TextDisplaySettings>();; 
 
 	public TextDisplaySettings()
 	{
@@ -19,12 +19,17 @@ public class TextDisplaySettings  extends BaseDeleteSettings implements Populato
 	public TextDisplaySettings(String userId, String diseaseType)
 	{
 		super(userId, diseaseType);
-	
+
 	}
 
-	public TextDisplaySettings(String userId, String diseaseType, String displayMsg)
+	public TextDisplaySettings(String userId, String diseaseType, String uniqueId)
 	{
-		this(userId, diseaseType);
+		super(userId, diseaseType, uniqueId);
+	}
+
+	public TextDisplaySettings(String userId, String diseaseType, String uniqueId, String displayMsg)
+	{
+		this(userId, diseaseType, uniqueId);
 		this.displayMsg = displayMsg;
 	}
 
@@ -42,18 +47,12 @@ public class TextDisplaySettings  extends BaseDeleteSettings implements Populato
 	public ArrayList<?> getSettingList()
 	{
 		return null;
-//		return textDisplaySettingList;
+		//		return textDisplaySettingList;
 	}
-
-//	public void addItem (TextDisplaySettings item)
-//	{
-//		textDisplaySettingList.add(item);
-//	}
 
 	@Override
 	public void populateBean(JSONObject jsonObject)
 	{
-
 		String userId;
 		JSONArray jsonUserArray;
 		try
@@ -64,80 +63,43 @@ public class TextDisplaySettings  extends BaseDeleteSettings implements Populato
 			for(int i=0;i<jsonUserArray.length();i++){
 				JSONObject jsonObjUserAndSetting = jsonUserArray.getJSONObject(i);
 				JSONObject jsonObjUser = jsonObjUserAndSetting.getJSONObject("user");
-				JSONArray jsonArraySetting = jsonObjUserAndSetting.getJSONArray("settings");
-				
-				jsonObject = jsonUserArray.getJSONObject(i);
-//				User user = new User();
-//
-//				// parsing userlist data
+				JSONObject jsonSettingObj = jsonObjUserAndSetting.getJSONObject("settings");
+
 				userId = jsonObjUser.getString("u_id");
-//				user.userName = jsonObjUser.getString("firstname");
-//				user.gender = jsonObjUser.getString("gender");
-//				user.dob = jsonObjUser.getString("dob");
-//				user.eMailid = jsonObjUser.getString("emailid");
-//				user.registrationdate = jsonObjUser.getString("registrationdate");
-//				user.height = jsonObjUser.getString("height");
-//				user.weight = jsonObjUser.getString("weight");
-//				user.devicid = jsonObjUser.getString("d_id");
-//				user.requestId = jsonObjUser.getString("request_id");
-//				// these two settings are part of jsonObjectUser, should be part of setting object. 
-//				user.userOnHomeScreen = jsonObjUser.getString("ishomescreen").equalsIgnoreCase("1") ? true : false;
-//				user.notification = jsonObjUser.getString("isnotificationon").equalsIgnoreCase("1") ? true : false;
-				
-				// parsing user's dashboared settings
-				for(int index=0; index < jsonArraySetting.length(); index++){
-					JSONObject jsonObjSetting = jsonArraySetting.getJSONObject(index);
-					String disease = jsonObjSetting.getString("biometricname");
-					String textSetting = jsonObjSetting.getString("textsetting");
-					String visualSetting = jsonObjSetting.getString("visualsetting");
-					String biometricid_pk = jsonObjSetting.getString("biometricid_pk");
-					boolean diseaseValue;
-					if(disease.equalsIgnoreCase("GSR")) {
-//						diseaseValue = textSetting.equalsIgnoreCase("1") ? true : false;
-						if(textSetting.equalsIgnoreCase("1")) {
-							TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease);
-							ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
-							tdSettingList.add(textDisplaySettings);
-						}
-//						user.gsrVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
-						
-					} else if(disease.equalsIgnoreCase("Heart Rate")) {
-						if(textSetting.equalsIgnoreCase("1")) {
-							TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease);
-							ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
-							tdSettingList.add(textDisplaySettings);
-						}
-//						user.heartRateTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
-//						user.heartRateVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
-						
-					} else if(disease.equalsIgnoreCase("Accelerometer")) {
-						if(textSetting.equalsIgnoreCase("1")) {
-							TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease);
-							ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
-							tdSettingList.add(textDisplaySettings);
-						}
-//						user.accelerometerTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
-//						user.accelerometerVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
-						
-					} else if(disease.equalsIgnoreCase("Temperature")) {
-						if(textSetting.equalsIgnoreCase("1")) {
-							TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease);
-							ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
-							tdSettingList.add(textDisplaySettings);
-							tdSettingList = ListHolder.getTextDisplaySettingList();
-						}
-//						user.tempratureTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
-//						user.tempratureVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
-						
+				Object obj = jsonSettingObj.get("textsetting");
+				try
+				{
+					if(obj ==  null || obj instanceof JSONObject) {
+						// text display setting would be null, reset all text settings 
+					} else {
+						JSONArray textSettingArray = (JSONArray)obj;
+						parseTextDisplaySetting(textSettingArray, userId);
 					}
+				} catch (Exception e)
+				{
+					// TODO: handle exception
 				}
+
+				try
+				{
+					obj = jsonSettingObj.get("visualsetting");
+					if(obj ==  null || obj instanceof JSONObject) {
+						// visual display setting would be null, reset all visual settings 
+					} else {
+						JSONArray visualSettingArray = (JSONArray)obj;			
+						//						parseVisualDisplaySetting(visualSettingArray, userId);
+					}
+				} catch (Exception e)
+				{
+					// TODO: handle exception
+				}	
 			}
 		} catch (JSONException e)
 		{
 			e.printStackTrace();
 		}
-	
-		
+
+
 	}
 
 	@Override
@@ -146,4 +108,104 @@ public class TextDisplaySettings  extends BaseDeleteSettings implements Populato
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	private void parseTextDisplaySetting(JSONArray textSettingArray, String userId) throws JSONException {
+		// parsing user's dashboared TextDisplay settings
+		for(int index=0; index < textSettingArray.length(); index++){
+			JSONObject jsonObjSetting = textSettingArray.getJSONObject(index);
+			String disease = jsonObjSetting.getString("biometric_name");
+			String textSetting = jsonObjSetting.getString("textsetting");
+			String uniqueIdForDeletion = jsonObjSetting.getString("unique_id");
+			String biometricid_pk = jsonObjSetting.getString("biometric_id");
+			boolean diseaseValue;
+			if(disease.equalsIgnoreCase("GSR")) {
+				//				diseaseValue = textSetting.equalsIgnoreCase("1") ? true : false;
+				if(textSetting.equalsIgnoreCase("1")) {
+					TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease, uniqueIdForDeletion);
+					ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
+					tdSettingList.add(textDisplaySettings);
+				}
+				//				user.gsrVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+
+			} else if(disease.equalsIgnoreCase("Heart Rate")) {
+				if(textSetting.equalsIgnoreCase("1")) {
+					TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease, uniqueIdForDeletion);
+					ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
+					tdSettingList.add(textDisplaySettings);
+				}
+				//				user.heartRateTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+				//				user.heartRateVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+
+			} else if(disease.equalsIgnoreCase("Accelerometer")) {
+				if(textSetting.equalsIgnoreCase("1")) {
+					TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease, uniqueIdForDeletion);
+					ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
+					tdSettingList.add(textDisplaySettings);
+				}
+				//				user.accelerometerTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+				//				user.accelerometerVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+
+			} else if(disease.equalsIgnoreCase("Temperature")) {
+				if(textSetting.equalsIgnoreCase("1")) {
+					TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease, uniqueIdForDeletion);
+					ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
+					tdSettingList.add(textDisplaySettings);
+					tdSettingList = ListHolder.getTextDisplaySettingList();
+				}
+				//				user.tempratureTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+				//				user.tempratureVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+
+			}
+		}
+	}
+
+	//	private void parseVisualDisplaySetting(JSONArray textSettingArray, String userId) throws JSONException {
+	//		// parsing user's dashboared TextDisplay settings
+	//		for(int index=0; index < textSettingArray.length(); index++){
+	//			JSONObject jsonObjSetting = textSettingArray.getJSONObject(index);
+	//			String disease = jsonObjSetting.getString("biometric_name");
+	//			String visualSetting = jsonObjSetting.getString("visualsetting");
+	//			String uniqueIdForDeletion = jsonObjSetting.getString("unique_id");
+	//			String biometricid_pk = jsonObjSetting.getString("biometric_id");
+	//			boolean diseaseValue;
+	//			if(disease.equalsIgnoreCase("GSR")) {
+	//				//				diseaseValue = textSetting.equalsIgnoreCase("1") ? true : false;
+	//				if(visualSetting.equalsIgnoreCase("1")) {
+	//					TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease);
+	//					ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
+	//					tdSettingList.add(textDisplaySettings);
+	//				}
+	//				//				user.gsrVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+	//
+	//			} else if(disease.equalsIgnoreCase("Heart Rate")) {
+	//				if(visualSetting.equalsIgnoreCase("1")) {
+	//					TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease);
+	//					ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
+	//					tdSettingList.add(textDisplaySettings);
+	//				}
+	//				//				user.heartRateTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+	//				//				user.heartRateVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+	//
+	//			} else if(disease.equalsIgnoreCase("Accelerometer")) {
+	//				if(visualSetting.equalsIgnoreCase("1")) {
+	//					TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease);
+	//					ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
+	//					tdSettingList.add(textDisplaySettings);
+	//				}
+	//				//				user.accelerometerTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+	//				//				user.accelerometerVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+	//
+	//			} else if(disease.equalsIgnoreCase("Temperature")) {
+	//				if(visualSetting.equalsIgnoreCase("1")) {
+	//					TextDisplaySettings textDisplaySettings = new TextDisplaySettings(userId, disease);
+	//					ArrayList<TextDisplaySettings> tdSettingList = ListHolder.getTextDisplaySettingList();
+	//					tdSettingList.add(textDisplaySettings);
+	////					tdSettingList = ListHolder.getTextDisplaySettingList();
+	//				}
+	//				//				user.tempratureTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
+	//				//				user.tempratureVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
+	//
+	//			}
+	//		}
+	//	}
 }

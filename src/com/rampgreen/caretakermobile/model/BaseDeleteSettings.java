@@ -1,13 +1,10 @@
 package com.rampgreen.caretakermobile.model;
 
-import android.provider.Contacts.SettingsColumns;
 
-import java.util.ArrayList;
-
-abstract class BaseDeleteSettings implements Setting{
-	private String uniqueID = "mama";
-	private String userID = "mama";
-	private String biometricID = "mama";// is the disease type : GSR, Heart Rate and all.
+public abstract class BaseDeleteSettings implements Setting{
+	private String uniqueID = "empty";
+	private String userID = "empty";
+	private String biometricID = "empty";// is the disease type : GSR, Heart Rate and all.
 
 	public BaseDeleteSettings(String userId)
 	{
@@ -20,7 +17,7 @@ abstract class BaseDeleteSettings implements Setting{
 		this.biometricID = biometricID;
 	}
 
-	public BaseDeleteSettings(String uniqueID, String userId, String biometricID)
+	public BaseDeleteSettings(String userId, String biometricID, String uniqueID)
 	{
 		this.userID = userId;
 		this.biometricID = biometricID;
@@ -47,5 +44,3 @@ abstract class BaseDeleteSettings implements Setting{
 		this.biometricID = biometricID;
 	}
 }
-
-

@@ -64,159 +64,6 @@ public class UserListProvider
 		return tempList;
 	}
 
-	public ArrayList<TextDisplaySettings> getTextDisplayListForMenu(int diseaseType) {
-
-		ArrayList<TextDisplaySettings> textDisplaySettingsList = ListHolder.getTextDisplaySettingList();
-		ArrayList<User> userBeanList = getUserBeanList();
-		ArrayList<TextDisplaySettings> tempList = new ArrayList<TextDisplaySettings>();
-		tempList.add(new TextDisplaySettings("-1", "<<"));
-
-		if(diseaseType == DISEASE_GSR) {
-			if(textDisplaySettingsList.size() == 0) {
-				for (User user : userBeanList)
-				{
-					tempList.add(new TextDisplaySettings(user.getUid(), "GSR"));
-				}
-			}
-			else {
-				// check if textlist userid present not need to check otherwise check it in
-				// 
-				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
-				{
-					textDisplaySettings.getUserID();
-				}
-				
-				
-				
-				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
-				{
-					if(textDisplaySettings.getUserID().equalsIgnoreCase("GSR")) {
-						for (User user : userBeanList)
-						{
-							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()))) {
-								tempList.add(new TextDisplaySettings(user.getUid(), "GSR"));
-							}
-						}
-					}
-
-				}
-				
-				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
-				{
-					if(textDisplaySettings.getBiometricID().equalsIgnoreCase("GSR")) {
-						for (User user : userBeanList)
-						{
-							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()))) {
-								tempList.add(new TextDisplaySettings(user.getUid(), "GSR"));
-							}
-						}
-					}
-
-				}
-			}
-			//			userList = getMenuListForGsrTextDisplay();
-		} else if(diseaseType == DISEASE_HEART_RATE) {
-			if(textDisplaySettingsList.size() == 0) {
-				for (User user : userBeanList)
-				{
-					tempList.add(new TextDisplaySettings(user.getUid(), "Heart Rate"));
-				}
-			}
-			else {
-				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
-				{
-					if(textDisplaySettings.getBiometricID().equalsIgnoreCase("Heart Rate")) {
-						for (User user : userBeanList)
-						{
-							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()) && textDisplaySettings.getBiometricID().equalsIgnoreCase("Heart Rate"))) {
-								tempList.add(new TextDisplaySettings(user.getUid(), "Heart Rate"));
-							}
-						}
-					}
-
-				}
-			}
-			//			userList = getMenuListForGsrTextDisplay();
-
-			//			userList = getMenuListForHeartTextDisplay();
-		}else if(diseaseType == DISEASE_ACCELEROMETER){
-			if(textDisplaySettingsList.size() == 0) {
-				for (User user : userBeanList)
-				{
-					tempList.add(new TextDisplaySettings(user.getUid(), "Accelerometer"));
-				}
-			}
-			else {
-				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
-				{
-					if(textDisplaySettings.getBiometricID().equalsIgnoreCase("Accelerometer")) {
-						for (User user : userBeanList)
-						{
-							//map the userid with usermodel and biometricid with deisease , it need to be changed to biometric ID 
-							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()) && textDisplaySettings.getBiometricID().equalsIgnoreCase("Accelerometer"))) {
-								tempList.add(new TextDisplaySettings(user.getUid(), "Accelerometer"));
-							}
-						}
-					}
-					//			userList = getMenuListForAccelTextDisplay();
-				}
-			}
-		}else if(diseaseType == DISEASE_TEMPRATURE){
-			if(textDisplaySettingsList.size() == 0) {
-				for (User user : userBeanList)
-				{
-					tempList.add(new TextDisplaySettings(user.getUid(), "Temperature"));
-				}
-			}
-			else {
-				for (TextDisplaySettings textDisplaySettings : textDisplaySettingsList)
-				{
-					if(textDisplaySettings.getBiometricID().equalsIgnoreCase("Temperature")) {
-						for (User user : userBeanList)
-						{
-							if(! (textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid()) && textDisplaySettings.getBiometricID().equalsIgnoreCase("Temperature"))) {
-								tempList.add(new TextDisplaySettings(user.getUid(), "Temperature"));
-							}
-						}
-					}
-				}
-			}
-		}
-		return tempList;
-	}
-
-	public ArrayList<TextDisplaySettings> getTextDisplayListForContent(int diseaseType) {
-
-		ArrayList<User> allUser = getUserBeanList();
-		ArrayList<TextDisplaySettings> menuUserList = getTextDisplayListForMenu(diseaseType);
-		ArrayList<TextDisplaySettings> containerUserList = new ArrayList<TextDisplaySettings>();
-
-		// need to modify by collection method.
-		for (User user : allUser)
-		{
-			for (TextDisplaySettings textDisplaySettings : menuUserList)
-			{
-				if(! textDisplaySettings.getUserID().equalsIgnoreCase(user.getUid())) {
-					containerUserList.add(textDisplaySettings);
-					break;
-				}
-			}
-
-		}
-		return containerUserList;
-		// get the content data for each disease for textdisplay 
-		//		ArrayList<TextDisplaySettings> tempList = new ArrayList<TextDisplaySettings>();
-		//		List<User> userList = getContentList(DISEASE_GSR, TEXT_DISPLAY);
-		//		tempList.addAll(userList);
-		//		userList = getContentList(DISEASE_HEART_RATE, TEXT_DISPLAY);
-		//		tempList.addAll(userList);
-		//		userList = getContentList(DISEASE_ACCELEROMETER, TEXT_DISPLAY);
-		//		tempList.addAll(userList);
-		//		userList = getContentList(DISEASE_TEMPRATURE, TEXT_DISPLAY);
-		//		tempList.addAll(userList);
-		//		return TextDisplaySettings;
-	}
-
 	public ArrayList<User> getVisualDisplayList() {
 		// get the content data for each disease for textdisplay 
 		ArrayList<User> tempList = new ArrayList<User>();
@@ -503,6 +350,158 @@ public class UserListProvider
 		{
 			if(! user.isNotification()) {
 				tempList.add(user);
+			}
+		}
+		return tempList;
+	}
+
+	public User getUser(String userID) {
+		ArrayList<User> userList = getUserBeanList();
+		for (User user : userList)
+		{
+			if(user.getUid().equalsIgnoreCase(userID)) {
+				return user;
+			}
+		}
+		throw new IllegalArgumentException("either userlist is empty with userID : "+userID+"or User is not in Userlist by given userId.");
+	}
+
+	private ArrayList<TextDisplaySettings> getUserbyBiometricID(String bioMetricId) {
+		ArrayList<TextDisplaySettings> settingList = ListHolder.getTextDisplaySettingList();
+		ArrayList<TextDisplaySettings> tempList = new ArrayList<TextDisplaySettings>();
+		for (TextDisplaySettings setting : settingList)
+		{
+			if(setting.getBiometricID().equalsIgnoreCase(bioMetricId)) {
+				tempList.add(setting);
+			}
+		}
+		return tempList;
+	}
+
+	/**
+	 * it will filter the user's by TextDisplaySetting's userid from MainUserLIst 
+	 * @param bioMetricId
+	 * @return
+	 */
+	public ArrayList<TextDisplaySettings> getFilterUserbyTextDisplayUserID(String bioMetricId) {
+		ArrayList<TextDisplaySettings> settingList = getUserbyBiometricID(bioMetricId);
+		ArrayList<User> userList = getUserBeanList();
+		ArrayList<TextDisplaySettings> tempList = new ArrayList<TextDisplaySettings>();
+		tempList.add(new TextDisplaySettings("-1", "<<", "-1"));
+		for (User user : userList)
+		{
+			boolean ispresent = false;
+			TextDisplaySettings tempSetting;
+			for (TextDisplaySettings setting : settingList)
+			{
+				//Final : get the all userlist whose id match from mainlist and is not in settinglist.
+				// if userID is available in mainlist continue 
+				// else throw exception not present in mail list
+				// else if userID not available
+				if(user.getUid().equalsIgnoreCase(setting.getUserID())) {
+					ispresent = true;
+					break;
+					//					tempList.add(setting);
+				} else {
+					tempSetting = setting;
+					ispresent = false;
+				}
+			}
+
+			if(ispresent == false) {
+				// add userId to TextDisplaySetting as USEr
+				TextDisplaySettings textDisplaySettings = new TextDisplaySettings(user.getUid(), bioMetricId, "filled by webserivice");
+				tempList.add(textDisplaySettings);
+			}
+		}
+		//		for (TextDisplaySettings setting : settingList)
+		//		{
+		//			//Final : get the all userlist whose id match from mainlist and is not in settinglist.
+		//			// if userID is available in mainlist continue 
+		//			// else throw exception not present in mail list
+		//			// else if userID not available
+		//			if(isAvalableInMainList(setting.getUserID())) {
+		//				tempList.add(setting);
+		//			}
+		//		}
+		return tempList;
+	}
+
+	/**
+	 * this method check userID presence in MainUserList
+	 * @param userID
+	 * @return return true if present otherwise false.
+	 */
+	private boolean isAvalableInMainList(String userID) {
+		ArrayList<User> userList = getUserBeanList();
+		for (User user : userList)
+		{
+			if (user.getUid().equalsIgnoreCase(userID))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isAvalableInTextDisplayList(String userID) {
+		ArrayList<TextDisplaySettings> userList = ListHolder.getTextDisplaySettingList();
+		for (TextDisplaySettings user : userList)
+		{
+			if (user.getUserID().equalsIgnoreCase(userID))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private ArrayList<VisualDisplaySettings> getUserbyBiometricIDForVisual(String bioMetricId) {
+		ArrayList<VisualDisplaySettings> settingList = ListHolder.getVisualDisplaySettingsList();
+		ArrayList<VisualDisplaySettings> tempList = new ArrayList<VisualDisplaySettings>();
+		for (VisualDisplaySettings setting : settingList)
+		{
+			if(setting.getBiometricID().equalsIgnoreCase(bioMetricId)) {
+				tempList.add(setting);
+			}
+		}
+		return tempList;
+	}
+
+	/**
+	 * it will filter the user's by VisualDisplaySettings's userid from MainUserLIst 
+	 * @param bioMetricId
+	 * @return
+	 */
+	public ArrayList<VisualDisplaySettings> getFilterUserbyVisualDisplayUserID(String bioMetricId) {
+		ArrayList<VisualDisplaySettings> settingList = getUserbyBiometricIDForVisual(bioMetricId);
+		ArrayList<User> userList = getUserBeanList();
+		ArrayList<VisualDisplaySettings> tempList = new ArrayList<VisualDisplaySettings>();
+		tempList.add(new VisualDisplaySettings("-1", "<<", "-1"));
+		for (User user : userList)
+		{
+			boolean ispresent = false;
+			VisualDisplaySettings tempSetting;
+			for (VisualDisplaySettings setting : settingList)
+			{
+				//Final : get the all userlist whose id match from mainlist and is not in settinglist.
+				// if userID is available in mainlist continue 
+				// else throw exception not present in mail list
+				// else if userID not available
+				if(user.getUid().equalsIgnoreCase(setting.getUserID())) {
+					ispresent = true;
+					break;
+					//					tempList.add(setting);
+				} else {
+					tempSetting = setting;
+					ispresent = false;
+				}
+			}
+
+			if(ispresent == false) {
+				// add userId to TextDisplaySetting as USEr
+				VisualDisplaySettings textDisplaySettings = new VisualDisplaySettings(user.getUid(), bioMetricId, "filled by webserivice");
+				tempList.add(textDisplaySettings);
 			}
 		}
 		return tempList;

@@ -9,22 +9,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.model.User;
-import com.rampgreen.caretakermobile.ui.FragmentHomeMenuAlert;
+import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
+import com.rampgreen.caretakermobile.model.UserListProvider;
+
 
 import java.util.ArrayList;
 
 public class VisualDisplayAdapter extends BaseAdapter {
 	private Context context;
-	private ArrayList<User> caretakersUsers;
-	LayoutInflater inflater;
+	private ArrayList<VisualDisplaySettings> caretakersUsers;
+	private LayoutInflater inflater;
+	private UserListProvider userListProvider;
 
-	public VisualDisplayAdapter(Context context, ArrayList<User> caretakersUsers) {
+	public VisualDisplayAdapter(Context context, ArrayList<VisualDisplaySettings> caretakersUsers) {
 		this.context = context;
 //		this.caretakersUsers = FragmentHomeMenuAlert.visualArrayList;
 		this.caretakersUsers = caretakersUsers;
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		userListProvider = new UserListProvider();
 	}
 
 	//	public View getView(int position, View convertView, ViewGroup parent) {
@@ -92,7 +95,7 @@ public class VisualDisplayAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	public void setList(ArrayList<User> caretakersUsers) {
+	public void setList(ArrayList<VisualDisplaySettings> caretakersUsers) {
 		this.caretakersUsers = caretakersUsers;
 		notifyDataSetChanged();
 	}

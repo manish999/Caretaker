@@ -160,7 +160,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 				Bundle bundle = new Bundle();
 				Intent intent = new Intent();
 				bundle.putString("title", userList.get(position).getUsername());
-				intent.setClass(getSherlockActivity(), HomeActivity.class);
+				intent.setClass(getSherlockActivity(), UserNotification.class);
 				intent.putExtras(bundle);
 				startActivity(intent);
 				AppLog.logToast(getSherlockActivity(), "posi"+position);
@@ -457,6 +457,8 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 					break;
 
 				case 4:
+					intent = new Intent(getSherlockActivity(), Rainbow.class);
+					startActivity(intent);
 					break;
 
 				default:

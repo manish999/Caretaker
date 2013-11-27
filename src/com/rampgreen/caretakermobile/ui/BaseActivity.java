@@ -2,12 +2,9 @@ package com.rampgreen.caretakermobile.ui;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.support.v4.app.FragmentActivity;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.android.volley.Response;
 import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
@@ -18,7 +15,7 @@ import com.rampgreen.caretakermobile.MyVolley;
  * @author Manish Pathak
  *
  */
-abstract public class BaseActivity extends FragmentActivity implements Response.Listener<JSONObject>, Response.ErrorListener{
+abstract public class BaseActivity extends SherlockFragmentActivity implements Response.Listener<JSONObject>, Response.ErrorListener{
 
 	private ProgressDialog progressDialog;
 	private static int numAsyncTasks;

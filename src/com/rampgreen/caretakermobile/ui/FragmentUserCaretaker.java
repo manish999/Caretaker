@@ -15,20 +15,26 @@ import android.widget.Toast;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.UsersCaretakersImageAdapter;
 import com.rampgreen.caretakermobile.model.User;
+import com.rampgreen.caretakermobile.model.UserCaretakerBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentUserCaretaker extends Fragment {
-	private static final String KEY_CONTENT = "TestFragment:Content";  
+	private static final String KEY_CONTENT = "TestFragment:Content";
+	int fragVal;
 	GridView gridView;
-	static ArrayList<User> users;
+	static ArrayList<UserCaretakerBean> users;
 	static Activity activity;
 	UsersCaretakersImageAdapter usersCaretakersImageAdapter;
 
-	public static FragmentUserCaretaker newInstance(String content,ArrayList<User> user) {
+	public static FragmentUserCaretaker newInstance(
+			ArrayList<UserCaretakerBean> user, int pos) {
 		FragmentUserCaretaker fragment = new FragmentUserCaretaker();
-		users= user;
+		users = user;
+		Bundle args = new Bundle();
+		args.putInt("val", pos);
+		fragment.setArguments(args);
 		return fragment;
 	}
 
@@ -37,24 +43,21 @@ public class FragmentUserCaretaker extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		//        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-		//            mContent = savedInstanceState.getString(KEY_CONTENT);
-		//        }
+		fragVal = getArguments() != null ? getArguments().getInt("val") : 1;
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.grid, null);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-
-		gridView = (GridView) getActivity().findViewById(R.id.users_caretakers);
-		usersCaretakersImageAdapter = new UsersCaretakersImageAdapter(getActivity(), users);
+		gridView = (GridView) getView().findViewById(R.id.users_caretakers);
+		usersCaretakersImageAdapter = new UsersCaretakersImageAdapter(
+				getActivity(), users);
 		gridView.setAdapter(usersCaretakersImageAdapter);
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
@@ -62,50 +65,9 @@ public class FragmentUserCaretaker extends Fragment {
 				Toast.makeText(
 						getActivity().getApplicationContext(),
 						((TextView) v.findViewById(R.id.grid_item_label))
-						.getText(), Toast.LENGTH_SHORT).show();
-
-			}
-		});
-
-
-
-		//super.onActivityCreated(savedInstanceState);
-
-		/* if (activity != null) {
-
-    	   mGridAdapter = new GridAdapter(activity, gridItems);
-    	   if (mGridView != null) {
-    	    mGridView.setAdapter(mGridAdapter);
-    	   }
-
-    	   mGridView.setOnItemClickListener(new OnItemClickListener() {
-    	    @Override
-    	    public void onItemClick(AdapterView parent, View view,
-    	      int position, long id) {
-    	     onGridItemClick((GridView) parent, view, position, id);
-    	    }
-    	   });
-    	  }	
-		 */
-
-		/*
-      	String[] users={"ABC","XYZ"};
-      	getActivity().setContentView(R.layout.grid);
-    	gridView = (GridView) getActivity().findViewById(R.id.users_caretakers);
-		//System.out.println("Users count" + users.length);
-		gridView.setAdapter(new UsersCaretakersImageAdapter(getActivity(), users));
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				Toast.makeText(
-						getActivity().getApplicationContext(),
-						((TextView) v.findViewById(R.id.grid_item_label))
 								.getText(), Toast.LENGTH_SHORT).show();
-
 			}
 		});
-		 */
-
 
 	}
 
@@ -113,10 +75,12 @@ public class FragmentUserCaretaker extends Fragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(KEY_CONTENT, mContent);
-	}    
 
-	public void refreshAdapter(ArrayList< User> users) {
+	}
+
+	public void refreshAdapter(ArrayList<UserCaretakerBean> users) {
 		usersCaretakersImageAdapter.setList(users);
+
 	}
 
 }

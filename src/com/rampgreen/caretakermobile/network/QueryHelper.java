@@ -189,6 +189,17 @@ public class QueryHelper {
 		params.put("token", accessToken);	
 		return params;
 	}	
+	
+	public static Map<String, String> getMyCaretakersUsersQuery(String token) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		
+		params.put("action", "caretaker");
+		params.put("task", "get_caretaker_user_list");		
+		//params.put("token", "b1916c6daa00b1d5d2297166008f3a7c4825e6f8");
+		params.put("token", token);
+		return params;
+	}	
+	
 	// rajeev//
 	
 }

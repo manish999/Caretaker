@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/users_caretakers"
-    android:numColumns="auto_fit"
-    android:gravity="center"
-    android:columnWidth="100dp"
-    android:stretchMode="columnWidth"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:orca="http://schemas.android.com/apk/res-auto"
+    xmlns:whatever="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-</GridView>
+    <com.rampgreen.caretakermobile.ui.util.ExpandableHeightGridView
+        android:id="@+id/users_caretakers"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnWidth="90dp"
+        android:gravity="center"
+        android:layout_marginLeft="30dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp" />
+
+</LinearLayout>

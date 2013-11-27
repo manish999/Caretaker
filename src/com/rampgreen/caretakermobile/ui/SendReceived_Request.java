@@ -12,9 +12,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -63,7 +63,11 @@ public class SendReceived_Request extends BaseActivity {
 
 		indicator.notifyDataSetChanged();
 		adapter.notifyDataSetChanged();		  
-
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null && bundle.getBoolean("POPUP")){
+			showDialog();	
+		}
+		
 	}
 
 	class GoogleMusicAdapter extends FragmentPagerAdapter implements
@@ -114,7 +118,7 @@ public class SendReceived_Request extends BaseActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.requestsentmenu, menu);
 		return true;
 	}
@@ -197,62 +201,70 @@ public class SendReceived_Request extends BaseActivity {
 
 	}
 
+	
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.new_request:
-
-			LayoutInflater li = LayoutInflater.from(context);
-			View promptsView = li.inflate(R.layout.requestsent_prompts, null);
-
-			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-					context);
-
-			// set requestsent_prompts.xml to alertdialog builder
-			alertDialogBuilder.setView(promptsView);
-
-			final EditText userInput = (EditText) promptsView
-					.findViewById(R.id.SentrequestEditText);
-
-			// set dialog message
-			alertDialogBuilder
-			.setCancelable(false)
-			.setPositiveButton("Send",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,
-						int id) {
-					sendrequest(userInput.getText().toString());
-				}
-			})
-			.setNegativeButton("Cancel",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,
-						int id) {
-					dialog.cancel();
-				}
-			});
-
-			// create alert dialog
-			AlertDialog alertDialog = alertDialogBuilder.create();
-
-			// show it
-			alertDialog.show();
-
+			showDialog();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
+	
+	private void showDialog(){
+		LayoutInflater li = LayoutInflater.from(context);
+		View promptsView = li.inflate(R.layout.requestsent_prompts, null);
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context);
+
+		// set requestsent_prompts.xml to alertdialog builder
+		alertDialogBuilder.setView(promptsView);
+
+		final EditText userInput = (EditText) promptsView
+				.findViewById(R.id.SentrequestEditText);
+
+		// set dialog message
+		alertDialogBuilder
+		.setCancelable(false)
+		.setPositiveButton("Send",
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,
+					int id) {
+				sendrequest(userInput.getText().toString());
+			}
+		})
+		.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,
+					int id) {
+				System.out.println("Cancel Called....");
+				finish();
+				dialog.cancel();
+			}
+		});
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+
+	}
+	
 	private void sendrequest(String emailid) {
 		MyRequestQueue queue = MyVolley.getRequestQueue();
 		Map<String, String> loginParam = QueryHelper.caretakerRequestSendQuery(
 				token, emailid);
 		CustomRequest customRequest = new CustomRequest(Method.POST,
 				Constants.URL_WEB_SERVICE, loginParam, this, this);
-
-		queue.add(customRequest);
+		customRequest.setTag(this);
+		
 		Email = emailid;
 	}
 

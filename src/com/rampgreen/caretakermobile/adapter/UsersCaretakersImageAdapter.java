@@ -10,16 +10,17 @@ import android.widget.TextView;
 
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.model.User;
+import com.rampgreen.caretakermobile.model.UserCaretakerBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsersCaretakersImageAdapter extends BaseAdapter {
 	private Context context;
-	private ArrayList<User> caretakersUsers;
+	private ArrayList<UserCaretakerBean> caretakersUsers;
 	LayoutInflater inflater;
 
-	public UsersCaretakersImageAdapter(Context context, ArrayList<User> caretakersUsers) {
+	public UsersCaretakersImageAdapter(Context context, ArrayList<UserCaretakerBean> caretakersUsers) {
 		this.context = context;
 		this.caretakersUsers = caretakersUsers;
 		inflater = (LayoutInflater) context
@@ -62,7 +63,7 @@ public class UsersCaretakersImageAdapter extends BaseAdapter {
 			// Get the ViewHolder back to get fast access to the TextView
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.accountName.setText(caretakersUsers.get(position).getUsername());
+		holder.accountName.setText(caretakersUsers.get(position).getUserName());
 		holder.accountName.getPaint().setFakeBoldText(true);
 		return convertView;
 	}
@@ -91,7 +92,7 @@ public class UsersCaretakersImageAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	public void setList(ArrayList<User> caretakersUsers) {
+	public void setList(ArrayList<UserCaretakerBean> caretakersUsers) {
 		this.caretakersUsers = caretakersUsers;
 		notifyDataSetChanged();
 	}

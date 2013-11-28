@@ -6,31 +6,28 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
-import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.android.volley.Response;
 import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.ui.util.TabBitmap;
-import com.rampgreen.caretakermobile.util.Constants;
 
 /**
  * Base activity class is used for future purposes. we can add functionality to all classes that will extend it. 
@@ -193,27 +190,32 @@ abstract public class BaseActivity extends SherlockFragmentActivity implements R
 		mTabHost.setOnTabChangedListener(onTabChangeListener);
 	}
 	
-	protected void setHeader(String title, boolean btnHomeVisible, boolean btnFeedbackVisible, boolean headerDetailVisible)
+	protected void setHeader(String title, boolean btnHomeVisible, boolean btnFeedbackVisible, boolean headerDetailVisible, int homeBtnID, int setingBtnId)
 	{
 		ViewStub stub = (ViewStub) findViewById(R.id.vsHeader);
 		View inflated = stub.inflate();
 		TextView txtTitle = (TextView) inflated.findViewById(R.id.txvheader);
 		txtTitle.setText(title);
 
-//		final ImageButton btnHome = (ImageButton) inflated.findViewById(R.id.btn_home);
-//		btnHome.setBackgroundResource(R.drawable.icon_account);
+		final ImageButton btnHome = (ImageButton) inflated.findViewById(R.id.btn_home);
+		if(homeBtnID != -1) {
+			btnHome.setImageResource(homeBtnID);
+		}
 //		ImageView btnHomeSeperator = (ImageView) inflated.findViewById(R.id.id_seperator_home);
-//		if(!btnHomeVisible) {
-//			btnHome.setVisibility(View.INVISIBLE);
+		if(!btnHomeVisible) {
+			btnHome.setVisibility(View.INVISIBLE);
 //			btnHomeSeperator.setVisibility(View.INVISIBLE);
-//		}
+		}
 
-//		ImageButton btnSetting= (ImageButton) inflated.findViewById(R.id.btn_setting);
+		ImageButton btnSetting= (ImageButton) inflated.findViewById(R.id.btn_setting);
 //		ImageView btnSettingSeperator = (ImageView) inflated.findViewById(R.id.id_seperator_setting);
-//		if(!btnFeedbackVisible) {
-//			btnSetting.setVisibility(View.INVISIBLE);
+		if(setingBtnId != -1) {
+			btnSetting.setImageResource(setingBtnId);
+		}
+		if(!btnFeedbackVisible) {
+			btnSetting.setVisibility(View.INVISIBLE);
 //			btnSettingSeperator.setVisibility(View.INVISIBLE);
-//		}
+		}
 		
 //		TextView headerDetail= (TextView) inflated.findViewById(R.id.txvheader_detail);
 //		if(!headerDetailVisible) {

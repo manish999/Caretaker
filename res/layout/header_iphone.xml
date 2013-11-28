@@ -3,19 +3,19 @@
     android:id="@+id/id_dashboard_header"
     android:layout_width="fill_parent"
     android:layout_height="80dp"
-    android:background="#63afc8"
+    android:background="#4d6baa"
     android:gravity="center"
     android:orientation="horizontal" >
 
     <ImageButton
-        android:id="@+id/imageButtonBack"
-        android:layout_width="64dp"
+        android:id="@+id/btn_home"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5.0dip"
         android:background="@android:color/transparent"
         android:contentDescription="description"
-        android:onClick="btnHomeClick"
-        android:src="@drawable/previous" />
+        android:onClick="btnHomeClick" 
+        android:src="@drawable/profile" />
 
     <TextView
         android:id="@+id/txvheader"
@@ -28,13 +28,13 @@
         android:textStyle="bold" />
 
     <ImageButton
-        android:id="@+id/imageButtonHome"
+        android:id="@+id/btn_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5.0dip"
         android:background="@android:color/transparent"
         android:contentDescription="ui_image_home_description"
         android:onClick="btnSettingClick"
-        android:src="@drawable/next" />
+        android:src="@drawable/profile" />
 
 </LinearLayout>

@@ -4,6 +4,11 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.Window;
 import android.widget.TabHost.OnTabChangeListener;
 
@@ -11,18 +16,31 @@ import com.android.volley.VolleyError;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.util.Constants;
+import com.viewpagerindicator.TabPageIndicator;
 
 public class ActivityProfile extends BaseActivity implements OnTabChangeListener {
 
+	private static final String[] CONTENT = new String[] { "Timeline",
+	"Summary" };
+	private UserCaretakerAdapter adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_profile);
-		
 //		setTitle("Activity Profile");
-		setHeader("Activity Profile", true, true, false);
+		setHeader("Activity Profile", true, true, false, R.drawable.mydata, R.drawable.alerts);
 		
+		adapter = new UserCaretakerAdapter(getSupportFragmentManager());
+
+		ViewPager pager = (ViewPager) findViewById(R.id.pager);
+		pager.setAdapter(adapter);
+		TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.indicator);
+
+		indicator.setViewPager(pager);
+//		indicator.setOnPageChangeListener(this);
+		indicator.notifyDataSetChanged();
+
 //		setTabs();
 //		setOnTabChangeListener(this);
 //		mTabHost.setCurrentTab(4);
@@ -77,5 +95,58 @@ public class ActivityProfile extends BaseActivity implements OnTabChangeListener
 		default:
 			break;
 		}
+	}
+	
+	class UserCaretakerAdapter extends FragmentPagerAdapter {
+		FragmentTimeline fragmentUsers = null;
+		FragmentSummary fragmentCaretakers = null;
+
+		public UserCaretakerAdapter(FragmentManager fm) {
+			super(fm);
+			fragmentUsers = FragmentTimeline.newInstance();
+			fragmentCaretakers = FragmentSummary.newInstance();
+
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+
+			switch (position) {
+			case 0:
+
+				return fragmentUsers;
+
+			default:
+
+				return fragmentCaretakers;
+			}
+
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return CONTENT[position % CONTENT.length];
+		}
+
+		@Override
+		public int getCount() {
+			return CONTENT.length;
+		}
+	}
+	
+	@Override
+	public void btnHomeClick(View v)
+	{
+		super.btnHomeClick(v);
+		// mydata
+		startActivity(new Intent(this, SelfScreen.class));
+	}
+	
+	@Override
+	public void btnSettingClick(View v)
+	{
+		super.btnSettingClick(v);
+		// alert
+		startActivity(new Intent(this, SelfScreen.class));
 	}
 }

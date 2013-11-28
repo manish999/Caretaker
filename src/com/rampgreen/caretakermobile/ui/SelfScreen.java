@@ -20,7 +20,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -45,9 +47,9 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
-		setTitle("Self Data");
+		setTitle("My Data");
 		setContentView(R.layout.simple_tabs);
-		setHeader("Activity Profile", true, true, false);
+		setHeader("My Data", true, true, false, R.drawable.alerts, R.drawable.profile);
 //		setupTabHost();
 //		mTabHostDays.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
 //
@@ -299,16 +301,18 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 		}
 	}
 	
-//	@Override
-//	public void btnHomeClick(View v)
-//	{
-//		super.btnHomeClick(v);
-//	}
-//	
-//	@Override
-//	public void btnSettingClick(View v)
-//	{
-//		// TODO Auto-generated method stub
-//		super.btnSettingClick(v);
-//	}
+	@Override
+	public void btnHomeClick(View v)
+	{
+		super.btnHomeClick(v);
+		// Alert Screen to be open
+	}
+	
+	@Override
+	public void btnSettingClick(View v)
+	{
+		super.btnSettingClick(v);
+		startActivity(new Intent(getApplicationContext(), ActivityProfile.class));
+		// activity profile is to be open
+	}
 }

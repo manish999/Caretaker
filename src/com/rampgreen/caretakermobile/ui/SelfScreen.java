@@ -20,6 +20,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -42,10 +43,11 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 	ViewPager pager;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setTitle("Self Data");
 		setContentView(R.layout.simple_tabs);
-
+		setHeader("Activity Profile", true, true, false);
 //		setupTabHost();
 //		mTabHostDays.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
 //
@@ -296,4 +298,17 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 			break;
 		}
 	}
+	
+//	@Override
+//	public void btnHomeClick(View v)
+//	{
+//		super.btnHomeClick(v);
+//	}
+//	
+//	@Override
+//	public void btnSettingClick(View v)
+//	{
+//		// TODO Auto-generated method stub
+//		super.btnSettingClick(v);
+//	}
 }

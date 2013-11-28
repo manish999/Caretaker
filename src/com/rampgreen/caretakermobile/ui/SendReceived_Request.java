@@ -13,13 +13,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.andreabaccega.widget.FormEditText;
 import com.android.volley.Request.Method;
 import com.android.volley.VolleyError;
 import com.rampgreen.caretakermobile.MyRequestQueue;
@@ -49,6 +49,8 @@ public class SendReceived_Request extends BaseActivity implements OnTabChangeLis
 	private String Email = "";
 	MyRequestQueue queue;
 	private boolean flag;
+	private boolean mIsValid;
+	private FormEditText mEtUserName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -222,7 +224,28 @@ public class SendReceived_Request extends BaseActivity implements OnTabChangeLis
 		}
 	}
 
+	public void onClickNext(View v)
+	{
+		mIsValid = true;
+		FormEditText[] allFields = { mEtUserName};
+		
+		for (FormEditText field : allFields)
+		{
+			mIsValid = field.testValidity() && mIsValid;
+		}
 
+		//for debug purpose
+		if (mIsValid)
+		{
+			mIsValid = true;
+			AppLog.logToast(this, "Valid");
+		} else
+		{
+			mIsValid = false;
+			AppLog.logToast(this, "inValid");			
+		}
+	}
+	
 	private void showDialog(){
 		LayoutInflater li = LayoutInflater.from(context);
 		View promptsView = li.inflate(R.layout.requestsent_prompts, null);
@@ -233,17 +256,18 @@ public class SendReceived_Request extends BaseActivity implements OnTabChangeLis
 		// set requestsent_prompts.xml to alertdialog builder
 		alertDialogBuilder.setView(promptsView);
 
-		final EditText userInput = (EditText) promptsView
-				.findViewById(R.id.SentrequestEditText);
+		mEtUserName = (FormEditText) promptsView
+				.findViewById(R.id.SentrequestEditText);	
 
 		// set dialog message
 		alertDialogBuilder
 		.setCancelable(false)
 		.setPositiveButton("Send",
 				new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog,
 					int id) {
-				sendrequest(userInput.getText().toString());
+				
 			}
 		})
 		.setNegativeButton("Cancel",
@@ -259,10 +283,24 @@ public class SendReceived_Request extends BaseActivity implements OnTabChangeLis
 		});
 
 		// create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
+		final AlertDialog alertDialog = alertDialogBuilder.create();
 
 		// show it
 		alertDialog.show();
+		
+		//Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
+		alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+		      {            
+		          @Override
+		          public void onClick(View v)
+		          {
+		        	  onClickNext(v);
+						if(mIsValid){
+							sendrequest(mEtUserName.getText().toString());	
+							alertDialog.dismiss();
+							}		             
+		          }
+		      });
 
 	}
 
@@ -318,6 +356,5 @@ public class SendReceived_Request extends BaseActivity implements OnTabChangeLis
 		default:
 			break;
 		}
-		//				AppLog.logToast(FragmentTabBottom.this.getSherlockActivity(), "Tab click"+tabId);
 	}
 }

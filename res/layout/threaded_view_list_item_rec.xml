@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginRight="30.0dip"
-    android:background="#FE2E2E"
+    android:background="@drawable/text_rect"
     android:minWidth="50.0dip"
     android:padding="10.0dip" >
 
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Adam heart rate is now 130/min"
-            android:textColor="#ffffff"
+            android:textColor="#222222"
             android:textSize="18.0dip" />
 
         <TextView

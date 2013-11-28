@@ -3,9 +3,7 @@
     style="@style/AppBaseTheme"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <!-- <include layout="@layout/top" /> -->
+    android:orientation="vertical" >   
 
     <ExpandableListView
         android:id="@+id/expandableListView"
@@ -15,5 +13,4 @@
         android:listSelector="@drawable/play_expand_seletor"
         android:scrollbars="none" >
     </ExpandableListView>
-
 </LinearLayout>

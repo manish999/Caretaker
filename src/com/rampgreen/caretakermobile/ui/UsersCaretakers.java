@@ -15,11 +15,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 //import android.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import android.widget.GridView;
+import android.widget.TabHost.OnTabChangeListener;
 
 import com.android.volley.Request.Method;
 import com.android.volley.VolleyError;
@@ -38,15 +41,14 @@ import com.viewpagerindicator.TabPageIndicator;
 //import com.example.testfragment2.MainActivity.MyAdapter;
 
 public class UsersCaretakers extends BaseActivity implements
-		OnPageChangeListener {
+OnPageChangeListener, OnTabChangeListener {
 	GridView gridView;
 	Menu menuItem;
 	private static final String[] CONTENT = new String[] { "My Users",
-			"My Caretakers" };
+	"My Caretakers" };
 	private UserCaretakerAdapter adapter;
 	private MyRequestQueue queue;
 
-	final Context context = this;
 	String token = BeanController.getLoginBean().getAccessToken();// "b1916c6daa00b1d5d2297166008f3a7c4825e6f8";
 	ArrayList<UserCaretakerBean> lstCaretakers = new ArrayList<UserCaretakerBean>();
 	ArrayList<UserCaretakerBean> lstUsers = new ArrayList<UserCaretakerBean>();
@@ -54,7 +56,7 @@ public class UsersCaretakers extends BaseActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.sendrecived_request);
+		setContentView(R.layout.network_screen);
 		adapter = new UserCaretakerAdapter(getSupportFragmentManager());
 
 		ViewPager pager = (ViewPager) findViewById(R.id.pager);
@@ -65,6 +67,9 @@ public class UsersCaretakers extends BaseActivity implements
 		indicator.setOnPageChangeListener(this);
 		indicator.notifyDataSetChanged();
 
+		setTabs();
+		setOnTabChangeListener(this);
+		mTabHost.setCurrentTab(2);
 	}
 
 	@Override
@@ -87,7 +92,6 @@ public class UsersCaretakers extends BaseActivity implements
 		if (queue != null){
 			queue.cancelAll(this);
 		}
-		
 	}
 
 	@Override
@@ -148,11 +152,10 @@ public class UsersCaretakers extends BaseActivity implements
 	}
 
 	private void GetCareTakers(String jsonObject) throws JSONException {
-		// ArrayList<UserCaretakerBean> lstUsers = null;
 		try {
 			lstCaretakers.clear();
 			lstUsers.clear();
-			
+
 			JSONObject j = new JSONObject(jsonObject);
 			UserCaretakerBean user;
 			JSONArray jArray = null;
@@ -266,7 +269,7 @@ public class UsersCaretakers extends BaseActivity implements
 	}
 
 
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
@@ -276,35 +279,59 @@ public class UsersCaretakers extends BaseActivity implements
 		return true;
 	}
 
-	
-@Override
-public boolean onOptionsItemSelected(MenuItem item) {
-	// TODO Auto-generated method stub
-	
-	
-	switch (item.getItemId()) {
-	case R.id.caretakers:
-		
-		
-		Bundle b = new Bundle();
-		b.putBoolean("POPUP",Boolean.TRUE);
-		Intent intent = new Intent();
-		
-		intent.setClass(this, SendReceived_Request.class);
-		intent.putExtras(b);
-		startActivity(intent);
-		
-		//Intent intent = new Intent(this , SendReceived_Request.class);
-		
-		
-		//startActivity(intent);
-		return true;
-	default:
-		return super.onOptionsItemSelected(item);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case R.id.caretakers:
+			Bundle b = new Bundle();
+			b.putBoolean("POPUP",Boolean.TRUE);
+			Intent intent = new Intent();
+
+			intent.setClass(this, SendReceived_Request.class);
+			intent.putExtras(b);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
-	
-	
-	
-	
-}
+
+	@Override
+	public void onTabChanged(String tabId)
+	{
+		Intent intent;
+		int tabNum = Integer.parseInt(tabId);
+
+		switch (tabNum) {
+		case 0:
+			intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
+			intent.putExtra(Constants.BUNDLE_KEY_USERS, BeanController.getUserBean());
+			startActivity(intent);
+			break;
+
+		case 1:
+			intent = new Intent(this, SelfScreen.class);
+			startActivity(intent);
+			break;
+
+		case 2:
+
+			break;
+
+		case 3:
+			intent = new Intent(this, SendReceived_Request.class);
+			startActivity(intent);
+			break;
+
+		case 4:
+			intent = new Intent(this, Rainbow.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+		//				AppLog.logToast(FragmentTabBottom.this.getSherlockActivity(), "Tab click"+tabId);
+	}
 }

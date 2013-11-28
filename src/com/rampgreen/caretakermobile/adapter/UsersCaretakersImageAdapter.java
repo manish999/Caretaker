@@ -6,19 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserCaretakerBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UsersCaretakersImageAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<UserCaretakerBean> caretakersUsers;
-	LayoutInflater inflater;
+	private LayoutInflater inflater;
 
 	public UsersCaretakersImageAdapter(Context context, ArrayList<UserCaretakerBean> caretakersUsers) {
 		this.context = context;
@@ -27,50 +26,27 @@ public class UsersCaretakersImageAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	//	public View getView(int position, View convertView, ViewGroup parent) {
-	//		if (convertView == null) {
-	//			convertView = LayoutInflater.from(context).inflate(R.layout.activity_users_caretakers, null);
-	//		}	// get layout from activity_users_caretakers.xml
-	//			gridView = inflater.inflate(R.layout.activity_users_caretakers,
-	//					null);
-	//			// set value into textview
-	//			TextView textView = (TextView) gridView
-	//					.findViewById(R.id.grid_item_label);
-	//			textView.setText(caretakersUsers.get(position).getUsername());
-	//			// set image based on selected text
-	//			ImageView imageView = (ImageView) gridView
-	//					.findViewById(R.id.grid_item_image);
-	//			//String user = caretakersUsers[position];
-	//			imageView.setImageResource(R.drawable.user);
-	//		} else {
-	//			gridView = (View) convertView;
-	//		}
-	//
-	//		return gridView;
-	//	}
-
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
-		if(convertView==null) {
-			convertView = inflater.inflate(R.layout.activity_users_caretakers, null);
-			holder = new ViewHolder();
-			holder.accountName = (TextView)convertView.findViewById(R.id.grid_item_label); 
-			holder.imageIcon= (ImageView)convertView.findViewById(R.id.grid_item_image);
-			holder.imageIcon.setImageResource(R.drawable.user);
+		ViewHolderUsersCaretakers holder;
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.icon, null);
+			holder = new ViewHolderUsersCaretakers();
+			holder.icontext = (TextView) convertView.findViewById(R.id.icon_text);
+			holder.imageView = (ImageView) convertView.findViewById(R.id.icon_image);
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+			holder.imageView.setLayoutParams(layoutParams);
 			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolderUsersCaretakers) convertView.getTag();
 		}
-		else {
-			// Get the ViewHolder back to get fast access to the TextView
-			holder = (ViewHolder) convertView.getTag();
-		}
-		holder.accountName.setText(caretakersUsers.get(position).getUserName());
-		holder.accountName.getPaint().setFakeBoldText(true);
+		holder.icontext.setText(caretakersUsers.get(position).getUserName());
+		holder.icontext.getPaint().setFakeBoldText(true);
 		return convertView;
 	}
 
-	private static class ViewHolder {
-		TextView accountName;
-		ImageView imageIcon;
+	static class ViewHolderUsersCaretakers {
+		TextView icontext;
+		ImageView imageView;
 	}
 
 	@Override
@@ -96,5 +72,4 @@ public class UsersCaretakersImageAdapter extends BaseAdapter {
 		this.caretakersUsers = caretakersUsers;
 		notifyDataSetChanged();
 	}
-
 }

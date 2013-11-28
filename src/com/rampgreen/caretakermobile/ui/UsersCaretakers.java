@@ -209,9 +209,8 @@ OnPageChangeListener, OnTabChangeListener {
 		public UserCaretakerAdapter(FragmentManager fm) {
 			super(fm);
 
-			fragmentUsers = FragmentUserCaretaker.newInstance(lstUsers, 0);
-			fragmentCaretakers = FragmentUserCaretaker.newInstance(
-					lstCaretakers, 1);
+			fragmentUsers = FragmentUserCaretaker.newInstance();
+			fragmentCaretakers = FragmentUserCaretaker.newInstance();
 
 		}
 
@@ -268,14 +267,11 @@ OnPageChangeListener, OnTabChangeListener {
 
 	}
 
-
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
 		this.menuItem = menu;
 		inflater.inflate(R.menu.users_caretakers, menu);
-		//inflater.inflate(R.menu.users_caretakers, menu);
 		return true;
 	}
 

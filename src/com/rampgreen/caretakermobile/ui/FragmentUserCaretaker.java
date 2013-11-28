@@ -1,41 +1,30 @@
 package com.rampgreen.caretakermobile.ui;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.UsersCaretakersImageAdapter;
-import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserCaretakerBean;
+import com.rampgreen.caretakermobile.util.AppLog;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class FragmentUserCaretaker extends Fragment {
+public class FragmentUserCaretaker extends SherlockFragment {
 	private static final String KEY_CONTENT = "TestFragment:Content";
-	int fragVal;
-	GridView gridView;
-	static ArrayList<UserCaretakerBean> users;
-	static Activity activity;
-	UsersCaretakersImageAdapter usersCaretakersImageAdapter;
+	private GridView gridView;
+	private ArrayList<UserCaretakerBean> users;
+	private UsersCaretakersImageAdapter usersCaretakersImageAdapter;
 
-	public static FragmentUserCaretaker newInstance(
-			ArrayList<UserCaretakerBean> user, int pos) {
-		FragmentUserCaretaker fragment = new FragmentUserCaretaker();
-		users = user;
-		Bundle args = new Bundle();
-		args.putInt("val", pos);
-		fragment.setArguments(args);
-		return fragment;
+	public static FragmentUserCaretaker newInstance() {
+		return new FragmentUserCaretaker();
 	}
 
 	private String mContent = "???";
@@ -43,7 +32,6 @@ public class FragmentUserCaretaker extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		fragVal = getArguments() != null ? getArguments().getInt("val") : 1;
 	}
 
 	@Override
@@ -57,18 +45,23 @@ public class FragmentUserCaretaker extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		gridView = (GridView) getView().findViewById(R.id.users_caretakers);
 		usersCaretakersImageAdapter = new UsersCaretakersImageAdapter(
-				getActivity(), users);
+				getSherlockActivity(), users);
 		gridView.setAdapter(usersCaretakersImageAdapter);
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
-				Toast.makeText(
-						getActivity().getApplicationContext(),
-						((TextView) v.findViewById(R.id.grid_item_label))
-								.getText(), Toast.LENGTH_SHORT).show();
+
+				Bundle bundle = new Bundle();
+				Intent intent = new Intent();
+				bundle.putString("title", users.get(position).getUserName());
+				intent.setClass(getSherlockActivity(), HomeActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
+
+				AppLog.logToast(getSherlockActivity(), "posi" + position);
+
 			}
 		});
-
 	}
 
 	@Override
@@ -79,8 +72,7 @@ public class FragmentUserCaretaker extends Fragment {
 	}
 
 	public void refreshAdapter(ArrayList<UserCaretakerBean> users) {
-//		usersCaretakersImageAdapter = new UsersCaretakersImageAdapter(
-//				getActivity(), users);
+		this.users = users;
 		if(usersCaretakersImageAdapter != null)
 			usersCaretakersImageAdapter.setList(users);
 

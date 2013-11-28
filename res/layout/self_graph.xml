@@ -26,28 +26,35 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="Hour" />
+            android:text="Hour" 
+            android:background="@drawable/selfbtn"/>
 
         <Button
             android:id="@+id/Button02"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="Day" />
+            android:text="Day"
+            android:layout_toRightOf="@+id/Button03" 
+            android:background="@drawable/selfbtn"/>
 
         <Button
             android:id="@+id/Button01"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="Week" />
+            android:text="Week"
+             android:layout_toRightOf="@+id/Button02" 
+             android:background="@drawable/selfbtn"/>
 
         <Button
             android:id="@+id/button1"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="Month" />
+            android:text="Month" 
+             android:layout_toRightOf="@+id/Button01"
+             android:background="@drawable/selfbtn"/>
     </LinearLayout>
 
 </RelativeLayout>

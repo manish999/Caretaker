@@ -147,6 +147,6 @@ public class ActivityProfile extends BaseActivity implements OnTabChangeListener
 	{
 		super.btnSettingClick(v);
 		// alert
-		startActivity(new Intent(this, SelfScreen.class));
+		startActivity(new Intent(this, ActivityAlert.class));
 	}
 }

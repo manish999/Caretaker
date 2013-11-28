@@ -136,7 +136,7 @@ public class AdapterUser extends BaseAdapter {
 			if(setting.getUserID().equalsIgnoreCase("-1")) {
 				menuNameList.add("<<");
 			} else {
-				menuNameList.add(userListProvider.getUser(setting.getUserID()).getUsername() + setting.getUserID());
+				menuNameList.add(userListProvider.getUser(setting.getUserID()).getUsername());
 			}
 		}
 		return menuNameList; 
@@ -149,7 +149,7 @@ public class AdapterUser extends BaseAdapter {
 			if(setting.getUserID().equalsIgnoreCase("-1")) {
 				menuNameList.add("<<");
 			} else {
-				menuNameList.add(userListProvider.getUser(setting.getUserID()).getUsername() + setting.getUserID());
+				menuNameList.add(userListProvider.getUser(setting.getUserID()).getUsername());
 			}
 		}
 		return menuNameList; 

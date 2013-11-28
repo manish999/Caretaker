@@ -305,7 +305,7 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 	public void btnHomeClick(View v)
 	{
 		super.btnHomeClick(v);
-		// Alert Screen to be open
+		startActivity(new Intent(getApplicationContext(), ActivityAlert.class));
 	}
 	
 	@Override

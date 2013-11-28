@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.TabHost.OnTabChangeListener;
 
 import com.android.volley.VolleyError;
@@ -11,17 +12,20 @@ import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.util.Constants;
 
-public class Rainbow extends BaseActivity implements OnTabChangeListener {
+public class ActivityProfile extends BaseActivity implements OnTabChangeListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_rainbow);
-		setTitle("Find Rainbow");
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_profile);
 		
-		setTabs();
-		setOnTabChangeListener(this);
-		mTabHost.setCurrentTab(4);
+//		setTitle("Activity Profile");
+		setHeader("Activity Profile", true, true, false);
+		
+//		setTabs();
+//		setOnTabChangeListener(this);
+//		mTabHost.setCurrentTab(4);
 	}
 
 	@Override

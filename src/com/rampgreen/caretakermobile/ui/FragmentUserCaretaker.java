@@ -79,7 +79,10 @@ public class FragmentUserCaretaker extends Fragment {
 	}
 
 	public void refreshAdapter(ArrayList<UserCaretakerBean> users) {
-		usersCaretakersImageAdapter.setList(users);
+//		usersCaretakersImageAdapter = new UsersCaretakersImageAdapter(
+//				getActivity(), users);
+		if(usersCaretakersImageAdapter != null)
+			usersCaretakersImageAdapter.setList(users);
 
 	}
 

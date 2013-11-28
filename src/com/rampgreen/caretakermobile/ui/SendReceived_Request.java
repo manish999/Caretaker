@@ -12,13 +12,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TabHost.OnTabChangeListener;
+import android.widget.Toast;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-
 import com.android.volley.Request.Method;
 import com.android.volley.VolleyError;
 import com.rampgreen.caretakermobile.MyRequestQueue;
@@ -35,7 +36,7 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.Map;
 
-public class SendReceived_Request extends BaseActivity {
+public class SendReceived_Request extends BaseActivity implements OnTabChangeListener {
 
 	private static final String[] CONTENT = new String[] { "Received", "Sent" };
 	//	private static final int[] ICONS = new int[] { R.drawable.received,
@@ -45,29 +46,36 @@ public class SendReceived_Request extends BaseActivity {
 	private TabPageIndicator indicator;
 	final Context context = this;
 	String token = BeanController.getLoginBean().getAccessToken();//"b1916c6daa00b1d5d2297166008f3a7c4825e6f8";
-	private String Email = "";		
+	private String Email = "";
+	MyRequestQueue queue;
+	private boolean flag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle("Requests");
 		setContentView(R.layout.sendrecived_request);
-
+		queue = MyVolley.getRequestQueue();
 		adapter = new GoogleMusicAdapter(getSupportFragmentManager());		
 
-		pager = (ViewPager) findViewById(R.id.pager);
+		pager = (ViewPager) findViewById(R.id.pager1);
 		pager.setAdapter(adapter);
 
-		indicator = (TabPageIndicator) findViewById(R.id.indicator);
+		indicator = (TabPageIndicator) findViewById(R.id.indicator1);
 		indicator.setViewPager(pager);
 
 		indicator.notifyDataSetChanged();
 		adapter.notifyDataSetChanged();		  
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null && bundle.getBoolean("POPUP")){
-			showDialog();	
+			showDialog();
+			flag=Boolean.TRUE;
+		}else{
+			flag=Boolean.FALSE;
 		}
-		
+		setTabs();
+		setOnTabChangeListener(this);
+		mTabHost.setCurrentTab(3);
 	}
 
 	class GoogleMusicAdapter extends FragmentPagerAdapter implements
@@ -192,7 +200,6 @@ public class SendReceived_Request extends BaseActivity {
 		if (code != ParserError.CODE_SUCCESS) {
 			AppLog.logToast(this, "error web service response code - " + code);
 		}
-
 	}
 
 	@Override
@@ -201,8 +208,8 @@ public class SendReceived_Request extends BaseActivity {
 
 	}
 
-	
-	
+
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -215,7 +222,7 @@ public class SendReceived_Request extends BaseActivity {
 		}
 	}
 
-	
+
 	private void showDialog(){
 		LayoutInflater li = LayoutInflater.from(context);
 		View promptsView = li.inflate(R.layout.requestsent_prompts, null);
@@ -244,7 +251,9 @@ public class SendReceived_Request extends BaseActivity {
 			public void onClick(DialogInterface dialog,
 					int id) {
 				System.out.println("Cancel Called....");
-				finish();
+				if (flag){
+					finish();
+				}
 				dialog.cancel();
 			}
 		});
@@ -256,9 +265,15 @@ public class SendReceived_Request extends BaseActivity {
 		alertDialog.show();
 
 	}
-	
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		queue.cancelAll(this);
+	}
+
 	private void sendrequest(String emailid) {
-		MyRequestQueue queue = MyVolley.getRequestQueue();
 		Map<String, String> loginParam = QueryHelper.caretakerRequestSendQuery(
 				token, emailid);
 		CustomRequest customRequest = new CustomRequest(Method.POST,
@@ -268,4 +283,41 @@ public class SendReceived_Request extends BaseActivity {
 		Email = emailid;
 	}
 
+	@Override
+	public void onTabChanged(String tabId)
+	{
+		Intent intent;
+		int tabNum = Integer.parseInt(tabId);
+
+		switch (tabNum) {
+		case 0:
+			intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
+			intent.putExtra(Constants.BUNDLE_KEY_USERS, BeanController.getUserBean());
+			startActivity(intent);
+			break;
+
+		case 1:
+			intent = new Intent(this, SelfScreen.class);
+			startActivity(intent);
+			break;
+
+		case 2:
+			intent = new Intent(this, UsersCaretakers.class);
+			startActivity(intent);
+			break;
+
+		case 3:
+			
+			break;
+
+		case 4:
+			intent = new Intent(this, Rainbow.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+		//				AppLog.logToast(FragmentTabBottom.this.getSherlockActivity(), "Tab click"+tabId);
+	}
 }

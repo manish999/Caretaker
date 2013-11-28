@@ -444,6 +444,8 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 					break;
 
 				case 1:
+					intent = new Intent(getSherlockActivity(), SelfScreen.class);
+					startActivity(intent);
 					break;
 
 				case 2:

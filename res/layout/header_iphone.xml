@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_dashboard_header"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/abs__background_holo_light"
+    android:layout_height="80dp"
+    android:background="#63afc8"
     android:gravity="center"
     android:orientation="horizontal" >
 
     <ImageButton
         android:id="@+id/imageButtonBack"
-        android:layout_width="wrap_content"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5.0dip"
         android:background="@android:color/transparent"
         android:contentDescription="description"
         android:onClick="btnHomeClick"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/previous" />
 
     <TextView
-        android:id="@+id/textViewTitleBar"
+        android:id="@+id/txvheader"
         style="@style/TitleBarText"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:singleLine="false"
         android:text="Self Screen"
-        android:textColor="@android:color/holo_blue_dark"
         android:textStyle="bold" />
 
     <ImageButton
@@ -35,6 +35,6 @@
         android:background="@android:color/transparent"
         android:contentDescription="ui_image_home_description"
         android:onClick="btnSettingClick"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/next" />
 
 </LinearLayout>

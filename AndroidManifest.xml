@@ -90,9 +90,10 @@
             android:theme="@style/AppTheme">
         </activity>
           <activity
-            android:name=".ui.ActivityProfile"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+              android:name=".ui.ActivityProfile"
+              android:screenOrientation="portrait"
+              android:theme="@style/AppTheme" >
+
         </activity>
          <activity
             android:name=".ui.ActivityAlert"

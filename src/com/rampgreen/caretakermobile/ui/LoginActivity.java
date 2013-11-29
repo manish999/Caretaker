@@ -200,9 +200,6 @@ public class LoginActivity extends BaseActivity
 			String msg = response.optString("message");
 			switch (code) {
 			case ParserError.CODE_NO_USER_FOUND:
-				closeLoadingBar();
-				break;
-			case ParserError.CODE_SUCCESS:
 				User userBean = BeanController.getUserBean();
 				userBean.populateBean(response);
 				AppLog.logString(response.toString());
@@ -214,6 +211,28 @@ public class LoginActivity extends BaseActivity
 				visualSetting.populateBean(response);
 				// on success , call Home screen
 				Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
+				intent.putExtra(Constants.BUNDLE_KEY_USERS, userBean);
+				startActivity(intent);
+				// to close the activity
+				finish();
+				closeLoadingBar();
+				
+				
+				
+//				closeLoadingBar();
+				break;
+			case ParserError.CODE_SUCCESS:
+				userBean = BeanController.getUserBean();
+				userBean.populateBean(response);
+				AppLog.logString(response.toString());
+				
+				textSetting = BeanController.getTextDisplaySettings();
+				textSetting.populateBean(response);
+				
+				visualSetting = BeanController.getVisualDisplaySettings();
+				visualSetting.populateBean(response);
+				// on success , call Home screen
+				intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
 				intent.putExtra(Constants.BUNDLE_KEY_USERS, userBean);
 				startActivity(intent);
 				// to close the activity

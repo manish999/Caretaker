@@ -32,23 +32,22 @@ public class UserNotification extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.usernotificationmain);	
-			
-		Intent myLocalIntent = getIntent();
-        Bundle myBundle = myLocalIntent.getExtras();
 
-        String title = myBundle.getString("title");
-       /* setTitle(title);*/
-        TextView tvHeadername = (TextView) this.findViewById(R.id.txvheader);
-        tvHeadername.setText(title);     
-        
-        adapter = new UsernotificationAdapter(getSupportFragmentManager());		
+		Intent myLocalIntent = getIntent();
+		Bundle myBundle = myLocalIntent.getExtras();
+
+		String title = myBundle.getString("title");
+		/* setTitle(title);*/
+		setHeader(title, true, true, false, R.drawable.network, R.drawable.add);
+
+		adapter = new UsernotificationAdapter(getSupportFragmentManager());		
 
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
 
 		indicator = (TabPageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
-		
+
 		/*prepareResource();
 		initPage();	*/
 	}
@@ -101,40 +100,40 @@ public class UserNotification extends BaseActivity {
 		//		}		
 
 	}
-	
+
 	/*private void prepareResource() {
 
 		mGroupCollection = new ArrayList<UserNotificationEntity>();
-		
+
 		UserNotificationEntity ge = new UserNotificationEntity();
 		GroupItemEntity gi = ge.new GroupItemEntity();
-		
+
 		ge.Name = "GSR";		
 		gi.Name = "heart rate is now 130/min";
 		ge.GroupItemCollection.add(gi);
 		mGroupCollection.add(ge);
-		
+
 		ge = new UserNotificationEntity();
 		gi = ge.new GroupItemEntity();
 		ge.Name = "Heart Rate";		
 		gi.Name = "Heart Rate: 130 /min Normal Range: 60-80 /min";
 		ge.GroupItemCollection.add(gi);
 		mGroupCollection.add(ge);
-		
+
 		ge = new UserNotificationEntity();
 		gi = ge.new GroupItemEntity();
 		ge.Name = "Accelerometer";
 		gi.Name = "Accelerometer";
 		ge.GroupItemCollection.add(gi);
 		mGroupCollection.add(ge);
-		
+
 		ge = new UserNotificationEntity();
 		gi = ge.new GroupItemEntity();
 		ge.Name = "Temperature";
 		gi.Name = "Temprature";
 		ge.GroupItemCollection.add(gi);
 		mGroupCollection.add(ge);
-		
+
 
 		for (int i = 1; i < 6; i++) {
 			GroupEntity ge = new GroupEntity();
@@ -160,18 +159,20 @@ public class UserNotification extends BaseActivity {
 
 		mExpandableListView.setAdapter(adapter);
 	}*/	
-	
+
 	public void btnHomeClick(View v)
 	{
 		Intent intent = new Intent(getApplicationContext(),
 				UsersCaretakers.class);
 		startActivity(intent);
 	}
-	
+
 	public void btnSettingClick(View v)
-	{Isactivepopup();}
-	
-	public boolean Isactivepopup()
+	{
+		isActivePopup();
+	}
+
+	public boolean isActivePopup()
 	{
 		boolean  Isactivepopup=false;
 		Bundle b = new Bundle();
@@ -188,13 +189,13 @@ public class UserNotification extends BaseActivity {
 	@Override
 	public void onResponse(JSONObject response) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onErrorResponse(VolleyError error) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

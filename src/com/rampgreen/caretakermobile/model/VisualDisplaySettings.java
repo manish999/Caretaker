@@ -3,8 +3,10 @@ package com.rampgreen.caretakermobile.model;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import com.rampgreen.caretakermobile.interfaces.Populator;
+import com.rampgreen.caretakermobile.util.AppLog;
 
 import java.util.ArrayList;
 
@@ -56,7 +58,8 @@ public class VisualDisplaySettings extends BaseDeleteSettings implements Populat
 				try
 				{
 					obj = jsonSettingObj.get("visualsetting");
-					if(obj ==  null || obj instanceof JSONObject) {
+					
+					if(obj ==  null || obj instanceof JSONObject || obj.toString().equalsIgnoreCase("null")) {
 						// visual display setting would be null, reset all visual settings 
 					} else {
 						JSONArray visualSettingArray = (JSONArray)obj;			
@@ -64,7 +67,7 @@ public class VisualDisplaySettings extends BaseDeleteSettings implements Populat
 					}
 				} catch (Exception e)
 				{
-					// TODO: handle exception
+					AppLog.e(e.getMessage());
 				}	
 			}
 		} catch (JSONException e)

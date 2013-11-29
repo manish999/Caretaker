@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relativeLayoutThreadedItem"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
+    <TextView
+        android:id="@+id/txv_chart_Msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:gravity="center_horizontal" >
+        android:layout_centerHorizontal="true"
+        android:text="123434"
+        android:textColor="#0d80e9"
+        android:textSize="15.0dip" />
 
-        <ImageView
-            android:id="@+id/imgview_homeContentChartDisplay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/graph" />
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/imgview_homeContentChartDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txv_chart_Msg"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/graph" />
 
 </RelativeLayout>

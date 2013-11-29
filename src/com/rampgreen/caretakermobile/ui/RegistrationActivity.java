@@ -26,7 +26,9 @@ import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.interfaces.ParserError;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.LoginBean;
+import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
+import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
@@ -132,7 +134,7 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 					RadioButton radioSexButton = (RadioButton) findViewById(selectedId);
 					String sexText = radioSexButton.getText().toString();
 					sexText = sexText.equalsIgnoreCase("Male") ? "M" : "F"; 
-					
+
 					if(! WidgetUtil.checkInternetConnection(RegistrationActivity.this)) {
 						WidgetUtil.showSettingDialog(RegistrationActivity.this);
 						return;
@@ -203,10 +205,10 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 			AppLog.logToast(this,  response.toString());
 			// open home activity 
 			callUserListWebService();
-//			Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
-//			startActivity(intent);
+			//			Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
+			//			startActivity(intent);
 			// to close the activity
-//			finish();
+			//			finish();
 			break;
 
 		default:
@@ -255,7 +257,7 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 		AppSettings.setPreference(this, null, AppSettings.DATE_OF_BIRTH, dateString);
 		//		WidgetUtil.callDatePicker(this, 0, this);
 	}
-	
+
 	private void callUserListWebService () {
 		String accessToken = BeanController.getLoginBean().getAccessToken();
 		MyRequestQueue queue = MyVolley.getRequestQueue();
@@ -277,7 +279,13 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 				User userBean = BeanController.getUserBean();
 				userBean.populateBean(response);
 				AppLog.logString(response.toString());
-				
+
+				TextDisplaySettings textSetting = BeanController.getTextDisplaySettings();
+				textSetting.populateBean(response);
+
+				VisualDisplaySettings visualSetting = BeanController.getVisualDisplaySettings();
+				visualSetting.populateBean(response);
+
 				// on success , call Home screen
 				Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
 				intent.putExtra(Constants.BUNDLE_KEY_USERS, userBean);
@@ -285,14 +293,19 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 				// to close the activity
 				closeLoadingBar();
 				finish();
-//				AppLog.showToast(this, "No userfound ")
-//				closeLoadingBar();
+
 				break;
 			case ParserError.CODE_SUCCESS:
 				userBean = BeanController.getUserBean();
 				userBean.populateBean(response);
 				AppLog.logString(response.toString());
-				
+
+				textSetting = BeanController.getTextDisplaySettings();
+				textSetting.populateBean(response);
+
+				visualSetting = BeanController.getVisualDisplaySettings();
+				visualSetting.populateBean(response);
+
 				// on success , call Home screen
 				intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
 				intent.putExtra(Constants.BUNDLE_KEY_USERS, userBean);
@@ -300,7 +313,7 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 				// to close the activity
 				closeLoadingBar();
 				finish();
-			
+
 				break;
 
 			default:

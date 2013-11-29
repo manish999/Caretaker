@@ -319,15 +319,14 @@ public class FragmentHomeMenuAlert extends SherlockListFragment implements  Resp
 	@Override
 	public void onErrorResponse(VolleyError error)
 	{
-		// TODO Auto-generated method stub
+		AppLog.e(error.getMessage());
 		
 	}
 
 	@Override
 	public void onResponse(JSONObject response)
 	{
-		// TODO Auto-generated method stub
-		
+		AppLog.e(response.toString());		
 	}
 
 

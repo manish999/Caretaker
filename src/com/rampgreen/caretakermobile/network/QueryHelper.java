@@ -107,6 +107,18 @@ public class QueryHelper {
 		params.put("type", "text");
 		return params;
 	}
+	
+	public static Map<String, String> createAddVisualDisplayQuery(String accessToken, String requestId, String biometricId, String biometricValue) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("action", "caretaker");
+		params.put("task", "edit_settings");
+		params.put("token", accessToken);
+		params.put("request_id", requestId);
+		params.put("biometric_id", biometricId);
+		params.put("biometric_val", biometricValue);
+		params.put("type", "visual");
+		return params;
+	}
 	// ishu 
 	
 	public static Map<String, String> getRecivedQuery(String token) {
@@ -161,17 +173,7 @@ public class QueryHelper {
 		return params;
 	}
 	
-	public static Map<String, String> createAddVisualDisplayQuery(String accessToken, String requestId, String biometricId, String biometricValue) {
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("action", "caretaker");
-		params.put("task", "edit_settings");
-		params.put("token", accessToken);
-		params.put("request_id", requestId);
-		params.put("biometric_id", biometricId);
-		params.put("biometric_val", biometricValue);
-		params.put("type", "visual");
-		return params;
-	}
+	
 	// ishu //
 	// rajeev
 	public static Map<String, String> getMyCaretakersQuery(String accessToken) {

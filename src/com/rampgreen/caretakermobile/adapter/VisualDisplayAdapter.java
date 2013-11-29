@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rampgreen.caretakermobile.R;
+import com.rampgreen.caretakermobile.model.TextDisplaySettings;
+import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 import com.rampgreen.caretakermobile.model.UserListProvider;
 
@@ -57,7 +59,7 @@ public class VisualDisplayAdapter extends BaseAdapter {
 		if(convertView==null) {
 			convertView = inflater.inflate(R.layout.list_item_visual_display, null);
 			holder = new ViewHolder();
-//			holder.accountName = (TextView)convertView.findViewById(R.id.TextViewMsg); 
+			holder.accountName = (TextView)convertView.findViewById(R.id.txv_chart_Msg); 
 			holder.imageIcon= (ImageView)convertView.findViewById(R.id.imgview_homeContentChartDisplay);
 //			holder.imageIcon.setImageResource(R.drawable.user);
 			convertView.setTag(holder);
@@ -66,6 +68,9 @@ public class VisualDisplayAdapter extends BaseAdapter {
 			// Get the ViewHolder back to get fast access to the TextView
 			holder = (ViewHolder) convertView.getTag();
 		}
+		User user = userListProvider.getUser(caretakersUsers.get(position).getUserID());
+		VisualDisplaySettings setting = caretakersUsers.get(position);
+		holder.accountName.setText(user.getUsername()+ "'s " + setting.getBiometricID()+ " chart");
 //		holder.accountName.setText(caretakersUsers.get(position).getUsername());
 //		holder.accountName.getPaint().setFakeBoldText(true);
 		return convertView;

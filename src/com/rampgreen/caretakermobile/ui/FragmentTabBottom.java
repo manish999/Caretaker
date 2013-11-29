@@ -240,14 +240,16 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 				//				userList = userListProvider.getTextDisplayList();
 				final ArrayList<TextDisplaySettings> textDisplaySettingList  = ListHolder.getTextDisplaySettingList();
 				final TextDisplaySettings textDisplaySettings = textDisplaySettingList.get(position);
+				String userID = textDisplaySettings.getUserID();
+				final User user = userListProvider.getUser(userID);
 				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
 				builder.setTitle("Delete");
-				builder.setMessage("Are You Sure to delete "+textDisplaySettings.getUserID()+" from home screen ?");
+				builder.setMessage("Are You Sure to delete "+user.getUsername()+ "'s " + textDisplaySettings.getBiometricID()+" from home screen ?");
 				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						// set the value on server
-						String rquestId = userListProvider.getUser(textDisplaySettings.getUserID()).getRequestId();
+						String rquestId = user.getRequestId();
 						String biometricId = getAndSetBiometricId(textDisplaySettings, textDisplaySettings.getBiometricID(), false, Constants.ADD_TEXT_DISPLAY);
 						MyRequestQueue queue = MyVolley.getRequestQueue();
 						Map<String, String> paramMap = QueryHelper.createAddTextDisplayQuery(BeanController.getLoginBean().getAccessToken(), rquestId, biometricId, "0");
@@ -300,15 +302,17 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			{
 				final ArrayList<VisualDisplaySettings> visualDisplaySettingList  = ListHolder.getVisualDisplaySettingsList();
 				final VisualDisplaySettings visualDisplaySettings = visualDisplaySettingList.get(position);
+				String userID = visualDisplaySettings.getUserID();
+				final User user = userListProvider.getUser(userID);
 				//				final User user = userList.get(position);
 				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
 				builder.setTitle("Delete");
-				builder.setMessage("Are You Sure to delete "+visualDisplaySettings.getUserID()+" from home screen ?");
+				builder.setMessage("Are You Sure to delete "+user.getUsername()+ "'s " + visualDisplaySettings.getBiometricID()+" from home screen ?");
 				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						// set the value on server
-						String rquestId = userListProvider.getUser(visualDisplaySettings.getUserID()).getRequestId();
+						String rquestId = user.getRequestId();
 						String biometricId = getAndSetBiometricId(visualDisplaySettings, visualDisplaySettings.getBiometricID(), false, Constants.ADD_TEXT_VISUALEXPLORER);
 
 						MyRequestQueue queue = MyVolley.getRequestQueue();
@@ -514,13 +518,13 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 	public void onErrorResponse(VolleyError error)
 	{
 		// TODO Auto-generated method stub
-
+		AppLog.e(error.toString());
 	}
 
 	@Override
 	public void onResponse(JSONObject response)
 	{
-		// TODO Auto-generated method stub
+		AppLog.e(response.toString());
 
 	}
 

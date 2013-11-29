@@ -80,6 +80,8 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 		int code = Integer.parseInt(response.optString("code"));
 		String msg = response.optString("message");
 		Intent intent;
+		userAdapter = new UserCustomAdapterRecived(getActivity(),
+				R.layout.row_ishu, 1, GetSentDetails(response));
 		switch (code) {
 		case ParserError.CODE_ACTION_NOT_FOUND:
 
@@ -130,9 +132,6 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 			AppLog.showToast(getActivity(), "No Request pending");
 			break;
 		case ParserError.CODE_SUCCESS:
-			userAdapter = new UserCustomAdapterRecived(getActivity(),
-					R.layout.row_ishu, 1, GetSentDetails(response));				
-
 			lvs = (ListView) getActivity().findViewById(R.id.lstSents);
 			/* lvs.setVisibility(View.VISIBLE); */
 			lvs.setAdapter(userAdapter);
@@ -156,9 +155,6 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 		try
 		{
 			JSONArray jArray = jsonObject.getJSONArray("caretaker_profile");
-
-
-
 			for (int i = 0; i < jArray.length(); i++) {
 				JSONObject objJson = jArray.getJSONObject(i);
 				jsonObject = jArray.getJSONObject(i);

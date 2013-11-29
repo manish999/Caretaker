@@ -80,6 +80,8 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 		int code = Integer.parseInt(response.optString("code"));
 		String msg = response.optString("message");
 		Intent intent;
+		userAdapter = new UserCustomAdapterRecived(getActivity(),
+				R.layout.row_ishu, 0, GetRecivedDetails(response));
 		switch (code) {
 		case ParserError.CODE_ACTION_NOT_FOUND:
 
@@ -130,9 +132,6 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 			AppLog.showToast(getActivity(), "No Request pending");
 			break;
 		case ParserError.CODE_SUCCESS:
-
-			userAdapter = new UserCustomAdapterRecived(getActivity(),
-					R.layout.row_ishu, 0, GetRecivedDetails(response));
 			userAdapter.notifyDataSetChanged();					
 
 			lvr = (ListView) getActivity()

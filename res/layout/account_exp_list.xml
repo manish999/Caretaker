@@ -13,11 +13,11 @@
             android:inflatedId="@+id/id_dashboard_header"
             android:layout="@layout/dashboard_header" />-->
         
-    <ExpandableListView
+    <ListView
         android:id="@+id/listView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scrollbars="none" >
-    </ExpandableListView>
+    </ListView>
 
 </LinearLayout>

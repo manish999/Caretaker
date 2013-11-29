@@ -56,6 +56,7 @@ OnPageChangeListener, OnTabChangeListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle("Network");
 		setContentView(R.layout.network_screen);
 		adapter = new UserCaretakerAdapter(getSupportFragmentManager());
 
@@ -303,11 +304,17 @@ OnPageChangeListener, OnTabChangeListener {
 		case 0:
 			intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
 			intent.putExtra(Constants.BUNDLE_KEY_USERS, BeanController.getUserBean());
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
 
 		case 1:
 			intent = new Intent(this, SelfScreen.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
 
@@ -317,11 +324,17 @@ OnPageChangeListener, OnTabChangeListener {
 
 		case 3:
 			intent = new Intent(this, SendReceived_Request.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
 
 		case 4:
 			intent = new Intent(this, Rainbow.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
 

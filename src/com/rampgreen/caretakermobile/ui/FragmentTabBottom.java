@@ -449,21 +449,33 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 
 				case 1:
 					intent = new Intent(getSherlockActivity(), SelfScreen.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(intent);
 					break;
 
 				case 2:
 					intent = new Intent(getSherlockActivity(), UsersCaretakers.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(intent);
 					break;
 
 				case 3:
 					intent = new Intent(getSherlockActivity(), SendReceived_Request.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(intent);
 					break;
 
 				case 4:
 					intent = new Intent(getSherlockActivity(), Rainbow.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(intent);
 					break;
 

@@ -43,7 +43,7 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -130,19 +130,13 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 			AppLog.showToast(getActivity(), "No Request pending");
 			break;
 		case ParserError.CODE_SUCCESS:
+			userAdapter = new UserCustomAdapterRecived(getActivity(),
+					R.layout.row_ishu, 1, GetSentDetails(response));				
 
-			try {				
-				userAdapter = new UserCustomAdapterRecived(getActivity(),
-						R.layout.row_ishu, 1, GetSentDetails(response));				
+			lvs = (ListView) getActivity().findViewById(R.id.lstSents);
+			/* lvs.setVisibility(View.VISIBLE); */
+			lvs.setAdapter(userAdapter);
 
-				lvs = (ListView) getActivity().findViewById(R.id.lstSents);
-				/* lvs.setVisibility(View.VISIBLE); */
-				lvs.setAdapter(userAdapter);
-
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			break;
 
 		default:
@@ -157,23 +151,30 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 
 	}
 
-	private ArrayList<Recived> GetSentDetails(JSONObject jsonObject)
-			throws JSONException {
-		JSONArray jArray = jsonObject.getJSONArray("caretaker_profile");
-
+	private ArrayList<Recived> GetSentDetails(JSONObject jsonObject)  {
 		ArrayList<Recived> ALIST_RD = new ArrayList<Recived>();
+		try
+		{
+			JSONArray jArray = jsonObject.getJSONArray("caretaker_profile");
 
-		for (int i = 0; i < jArray.length(); i++) {
-			JSONObject objJson = jArray.getJSONObject(i);
-			jsonObject = jArray.getJSONObject(i);
-			Recived ObjRD = new Recived();
 
-			ObjRD.userid = objJson.getString("u_id");
-			ObjRD.name = objJson.getString("firstname");
-			ObjRD.ispending = objJson.getString("rejectedaccepted");
-			ObjRD.isignore = objJson.getString("currentstatus");
-			ALIST_RD.add(ObjRD);
+
+			for (int i = 0; i < jArray.length(); i++) {
+				JSONObject objJson = jArray.getJSONObject(i);
+				jsonObject = jArray.getJSONObject(i);
+				Recived ObjRD = new Recived();
+
+				ObjRD.userid = objJson.getString("u_id");
+				ObjRD.name = objJson.getString("firstname");
+				ObjRD.ispending = objJson.getString("rejectedaccepted");
+				ObjRD.isignore = objJson.getString("currentstatus");
+				ALIST_RD.add(ObjRD);
+			}
+		} catch (Exception e)
+		{
+			// TODO: need to handle later
 		}
+
 		return ALIST_RD;
 	}
 

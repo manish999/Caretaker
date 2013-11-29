@@ -39,7 +39,7 @@ import com.rampgreen.caretakermobile.util.Constants;
 import com.viewpagerindicator.TabPageIndicator;
 
 public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
-	private static final String[] CONTENT = new String[] { "GSR", "HR", "Acc", "Temp"};
+	public static final String[] CONTENT = new String[] { "GSR", "HR", "Acc", "Temp"};
 	private TabHost mTabHostDays;
 	FragmentPagerAdapter adapter;
 	ViewPager pager;
@@ -50,13 +50,13 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 		setTitle("My Data");
 		setContentView(R.layout.simple_tabs);
 		setHeader("My Data", true, true, false, R.drawable.alerts, R.drawable.profile);
-//		setupTabHost();
-//		mTabHostDays.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
-//
-//		setupTab(new TextView(this), "Hour");
-//		setupTab(new TextView(this), "Day");
-//		setupTab(new TextView(this), "Week");
-//		setupTab(new TextView(this), "Month");
+		//		setupTabHost();
+		//		mTabHostDays.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
+		//
+		//		setupTab(new TextView(this), "Hour");
+		//		setupTab(new TextView(this), "Day");
+		//		setupTab(new TextView(this), "Week");
+		//		setupTab(new TextView(this), "Month");
 
 		adapter = new GoogleMusicAdapter(getSupportFragmentManager());
 
@@ -79,7 +79,25 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 
 		@Override
 		public Fragment getItem(int position) {
-			return TestFragment.newInstance(CONTENT[position % CONTENT.length]);
+			switch (position) {
+			case 0:
+				return TestFragment.newInstance(CONTENT[position % CONTENT.length]);
+
+			case 1:
+				return HeartFragment.newInstance(CONTENT[position % CONTENT.length]);
+
+			case 2:
+				return AccFragment.newInstance(CONTENT[position % CONTENT.length]);
+
+			case 3:
+				return TempFragment.newInstance(CONTENT[position % CONTENT.length]);
+
+
+			default:
+				return TestFragment.newInstance(CONTENT[position % CONTENT.length]);
+
+			}
+
 		}
 
 		@Override
@@ -93,7 +111,7 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 		}
 
 		//        public Fragment findFragmentByPosition(int position) {
-			//    	    FragmentPagerAdapter fragmentPagerAdapter = getFragmentPagerAdapter();
+		//    	    FragmentPagerAdapter fragmentPagerAdapter = getFragmentPagerAdapter();
 		//    	    return getSupportFragmentManager().findFragmentByTag(
 		//    	            "android:switcher:" + getViewPager().getId() + ":"
 		//    	                    + fragmentPagerAdapter.getItemId(position));
@@ -106,7 +124,7 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 	}
 
 	private void setupTabHost() {
-//		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.hourlylinearView);
+		//		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.hourlylinearView);
 		mTabHostDays = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHostDays.setup();
 		//		mTabHost.setOnTabChangedListener(new OnTabChangeListener(){
@@ -199,53 +217,121 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 	public final static class TestFragment extends Fragment {
 		private static final String KEY_CONTENT = "TestFragment:Content";
 		ImageView imageView;
+		static String contentType;
 
 		public static TestFragment newInstance(String content) {
 			TestFragment fragment = new TestFragment();
-
-			StringBuilder builder = new StringBuilder();
-			for (int i = 0; i < 20; i++) {
-				builder.append(content).append(" ");
-			}
-			builder.deleteCharAt(builder.length() - 1);
-			fragment.mContent = builder.toString();
-
+			contentType = content;
 			return fragment;
-		}
-
-		private String mContent = "???";
-
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-
-			if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-				mContent = savedInstanceState.getString(KEY_CONTENT);
-			}
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			return inflater.inflate(R.layout.self_graph, null);
+			return inflater.inflate(R.layout.self_gsr_graph, null);
 		}
 
-		@Override
-		public void onActivityCreated(Bundle savedInstanceState)
-		{
-			super.onActivityCreated(savedInstanceState);
-			imageView = (ImageView) getActivity().findViewById(R.id.graph);
-
-		}
+//		@Override
+//		public void onActivityCreated(Bundle savedInstanceState)
+//		{
+//			super.onActivityCreated(savedInstanceState);
+//			imageView = (ImageView) getActivity().findViewById(R.id.graph);
+//			imageView.setImageResource(R.drawable.gsr);
+//
+//		}
 
 		public void setGraphImage(int resId) {
 			imageView.setImageResource(resId);
 		}
+	}
+	/**********************************2**************************************/
+	public final static class HeartFragment extends Fragment {
+		private static final String KEY_CONTENT = "TestFragment:Content";
+		ImageView imageView;
+		static String contentType;
 
+		public static HeartFragment newInstance(String content) {
+			HeartFragment fragment = new HeartFragment();
+			contentType = content;
+			return fragment;
+		}
 
 		@Override
-		public void onSaveInstanceState(Bundle outState) {
-			super.onSaveInstanceState(outState);
-			outState.putString(KEY_CONTENT, mContent);
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			return inflater.inflate(R.layout.self_heart_graph, null);
+		}
+
+//		@Override
+//		public void onActivityCreated(Bundle savedInstanceState)
+//		{
+//			super.onActivityCreated(savedInstanceState);
+//			imageView = (ImageView) getActivity().findViewById(R.id.graph);
+//			imageView.setImageResource(R.drawable.heart);
+//
+//		}
+
+		public void setGraphImage(int resId) {
+			imageView.setImageResource(resId);
+		}
+	}
+	/*********************************************3************************************/
+	public final static class AccFragment extends Fragment {
+		private static final String KEY_CONTENT = "TestFragment:Content";
+		ImageView imageView;
+		static String contentType;
+
+		public static AccFragment newInstance(String content) {
+			AccFragment fragment = new AccFragment();
+			contentType = content;
+			return fragment;
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			return inflater.inflate(R.layout.self_acc_graph, null);
+		}
+
+//		@Override
+//		public void onActivityCreated(Bundle savedInstanceState)
+//		{
+//			super.onActivityCreated(savedInstanceState);
+//			imageView = (ImageView) getActivity().findViewById(R.id.graph);
+//			imageView.setImageResource(R.drawable.acc);
+//		}
+
+		public void setGraphImage(int resId) {
+			imageView.setImageResource(resId);
+		}
+	}
+
+	/******************************************************************/
+
+	public final static class TempFragment extends Fragment {
+		private static final String KEY_CONTENT = "TestFragment:Content";
+		ImageView imageView;
+		static String contentType;
+
+		public static TempFragment newInstance(String content) {
+			TempFragment fragment = new TempFragment();
+			contentType = content;
+			return fragment;
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			return inflater.inflate(R.layout.self_temp_graph, null);
+		}
+
+//		@Override
+//		public void onActivityCreated(Bundle savedInstanceState)
+//		{
+//			super.onActivityCreated(savedInstanceState);
+//			imageView = (ImageView) getActivity().findViewById(R.id.graph);
+//			imageView.setImageResource(R.drawable.temp);
+//
+//		}
+
+		public void setGraphImage(int resId) {
+			imageView.setImageResource(resId);
 		}
 	}
 
@@ -272,8 +358,9 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 		case 0:
 			intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
 			intent.putExtra(Constants.BUNDLE_KEY_USERS, BeanController.getUserBean());
-//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
-//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
 
@@ -283,16 +370,26 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 
 		case 2:
 			intent = new Intent(this, UsersCaretakers.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
+
 			break;
 
 		case 3:
 			intent = new Intent(this, SendReceived_Request.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
 
 		case 4:
 			intent = new Intent(this, Rainbow.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
 
@@ -300,14 +397,14 @@ public class SelfScreen extends BaseActivity  implements OnTabChangeListener {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void btnHomeClick(View v)
 	{
 		super.btnHomeClick(v);
 		startActivity(new Intent(getApplicationContext(), ActivityAlert.class));
 	}
-	
+
 	@Override
 	public void btnSettingClick(View v)
 	{

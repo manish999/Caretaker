@@ -38,7 +38,7 @@ public class UserNotification extends BaseActivity {
 
 		String title = myBundle.getString("title");
 		/* setTitle(title);*/
-		setHeader(title, true, true, false, R.drawable.network, R.drawable.add);
+		setHeader(title, true, true, false, R.drawable.network, R.drawable.user_white);
 
 		adapter = new UsernotificationAdapter(getSupportFragmentManager());		
 

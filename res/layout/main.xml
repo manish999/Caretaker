@@ -44,28 +44,59 @@
                     </GridView>
                     -->
 
-                    <com.rampgreen.caretakermobile.ui.util.ExpandableHeightGridView
-                        android:id="@+id/grid_view"
+                    <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:columnWidth="90dp"
-                        android:gravity="center"
-                        android:horizontalSpacing="10dp"
-                        android:numColumns="auto_fit"
-                        android:stretchMode="columnWidth"
-                        android:verticalSpacing="10dp" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/selfbtn"
+                        android:orientation="vertical" >
 
-                    <com.rampgreen.caretakermobile.ui.util.ExpandableListView
-                        android:id="@+id/homeContentTextDisplayList1"
+                        <com.rampgreen.caretakermobile.ui.util.ExpandableHeightGridView
+                            android:id="@+id/grid_view"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:columnWidth="90dp"
+                            android:gravity="center"
+                            android:horizontalSpacing="10dp"
+                            android:numColumns="auto_fit"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"                       
+                        android:orientation="vertical" >
 
-                    <com.rampgreen.caretakermobile.ui.util.ExpandableListView
-                        android:id="@+id/homeContentChartDisplayList"
+                        <com.rampgreen.caretakermobile.ui.util.ExpandableListView
+                            android:id="@+id/homeContentTextDisplayList1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:dividerHeight="10dp" 
+                            android:divider="@color/transparent"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"                       
+                        android:orientation="vertical" >
 
- 
+                        <com.rampgreen.caretakermobile.ui.util.ExpandableListView
+                            android:id="@+id/homeContentChartDisplayList"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent" 
+                            android:dividerHeight="10dp"
+                             android:divider="@color/transparent"/>
+                    </LinearLayout>
                 </LinearLayout>
             </ScrollView>
 
@@ -74,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text=""
+                android:text="Self"
                 android:textSize="25sp" />
 
             <TextView
@@ -82,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text=""
+                android:text="Network"
                 android:textSize="25sp" />
 
             <TextView
@@ -90,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text=""
+                android:text="Request"
                 android:textSize="25sp" />
 
             <TextView
@@ -98,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text=""
+                android:text="Rainbow"
                 android:textSize="25sp" />
         </FrameLayout>
 

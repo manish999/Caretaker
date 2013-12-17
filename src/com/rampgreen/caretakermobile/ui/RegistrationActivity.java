@@ -203,12 +203,10 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 			LoginBean login = BeanController.getLoginBean();
 			login.populateBean(response);
 			AppLog.logToast(this,  response.toString());
+			// store deviceID for 
+			AppSettings.setPreference(this, null, AppSettings.DEVICE_ID, login.getDeviceId());
 			// open home activity 
 			callUserListWebService();
-			//			Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
-			//			startActivity(intent);
-			// to close the activity
-			//			finish();
 			break;
 
 		default:

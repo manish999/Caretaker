@@ -22,6 +22,7 @@ import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
+import com.rampgreen.caretakermobile.socket.RouterService;
 import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
@@ -49,6 +50,9 @@ public class LoginActivity extends BaseActivity
 		mEtPassword = (FormEditText) findViewById(R.id.et_password);
 		mLoginButton = (Button) findViewById(R.id.btn_login);
 
+		Intent	routerSetupIntent= new Intent(this, RouterService.class);
+		this.startService(routerSetupIntent);
+		
 		// handle login button click 
 		mLoginButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -136,6 +140,8 @@ public class LoginActivity extends BaseActivity
 			LoginBean login = BeanController.getLoginBean();
 			login.populateBean(response);
 			AppLog.logString(response.toString());
+			// store deviceID for 
+			AppSettings.setPreference(this, null, AppSettings.DEVICE_ID, login.getDeviceId());
 
 			callUserListWebService();
 			break;

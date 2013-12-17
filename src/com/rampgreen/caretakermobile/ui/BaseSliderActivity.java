@@ -13,6 +13,9 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.util.AppSettings;
+import com.rampgreen.caretakermobile.util.DeviceUtil;
+import com.rampgreen.caretakermobile.util.StringUtils;
+import com.rampgreen.caretakermobile.util.UiUtil;
 
 /**
  * This class is used to give the functionality of menu. 
@@ -72,38 +75,47 @@ public abstract class BaseSliderActivity extends SlidingFragmentActivity {
 			return true;
 		case R.id.action_logout:
 			AppSettings.setPreference(this, null, AppSettings.ACCESS_TOKEN, "");
+			AppSettings.setPreference(this, null, AppSettings.DEVICE_ID, "");
 			BeanController.getLoginBean().setAccessToken("");
-			
+
 			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			finish();
 			return true;
-//		case R.id.action_period:
-//			return true;
-//			
-//		case R.id.action_refresh:
-//			setRefreshActionButtonState(refresh);
-//			refresh = !refresh;
-//			return true;
+		case R.id.action_device_id:
+			String deviceId = (String)AppSettings.getPrefernce(this, null, AppSettings.DEVICE_ID, "");
+			if(StringUtils.isEmpty(deviceId)) {
+				UiUtil.showOkDialog(this, "DeviceId is not configured.");
+			} else {
+				UiUtil.showOkDialog(this, "Associated device id : "+deviceId);
+			}
+			return true;
+			//		case R.id.action_period:
+			//			return true;
+			//			
+			//		case R.id.action_refresh:
+			//			setRefreshActionButtonState(refresh);
+			//			refresh = !refresh;
+			//			return true;
 
 		case R.id.action_settings:
-//			Intent calslIntent = new Intent(this, SettingsActivity.class);
-//			startActivity(calslIntent);
+			//			Intent calslIntent = new Intent(this, SettingsActivity.class);
+			//			startActivity(calslIntent);
 			return true;
 
-//		case R.id.action_help:
-//			Intent intent = new Intent(this, ActivityHelpDialog.class);
-//			startActivity(intent);
+			//		case R.id.action_help:
+			//			Intent intent = new Intent(this, ActivityHelpDialog.class);
+			//			startActivity(intent);
 
 			//			HelpDialog helpDialog = new HelpDialog(this);
 			//			helpDialog.setTitle("Simpliti Analytics Help!");
 			//			helpDialog.show();       
-//			return true;
+			//			return true;
 
-//		case R.id.action_feedback:
-////			DeviceUtil.openFeedbackChooser(this, "mailto:manish.pathak@rampgreen.net");
-//			return true;
+			//		case R.id.action_feedback:
+			////			DeviceUtil.openFeedbackChooser(this, "mailto:manish.pathak@rampgreen.net");
+			//			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -126,15 +138,15 @@ public abstract class BaseSliderActivity extends SlidingFragmentActivity {
 	 */
 	protected void setRefreshActionButtonState(final boolean refreshing) {
 		if (optionsMenu != null) {
-//			final MenuItem refreshItem = optionsMenu.findItem(R.id.action_refresh);
-//			if (refreshItem != null) {
-//				if (refreshing) {
-//					refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
-//				} else {
-//					refreshItem.setActionView(null);
-//					refreshItem.setVisible(false);
-//				}
-//			}
+			//			final MenuItem refreshItem = optionsMenu.findItem(R.id.action_refresh);
+			//			if (refreshItem != null) {
+			//				if (refreshing) {
+			//					refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+			//				} else {
+			//					refreshItem.setActionView(null);
+			//					refreshItem.setVisible(false);
+			//				}
+			//			}
 		}
 	}
 
@@ -142,14 +154,14 @@ public abstract class BaseSliderActivity extends SlidingFragmentActivity {
 	 * To keep screen off , change the  sharing preferences keepscreenon to empty. otherwise, it should be non empty. 
 	 */
 	private void keepScreenOn() {
-//		String screenOn = (String) AppSettings.getPrefernce(this, null, AppSettings.KEEP_SCREEN_ON_OFF, "1");
-//		if(StringUtils.isEmpty(screenOn)) {
-//			setKeepScreenOn(false);
-//		} else {
-//			setKeepScreenOn(true);
-//		}
+		//		String screenOn = (String) AppSettings.getPrefernce(this, null, AppSettings.KEEP_SCREEN_ON_OFF, "1");
+		//		if(StringUtils.isEmpty(screenOn)) {
+		//			setKeepScreenOn(false);
+		//		} else {
+		//			setKeepScreenOn(true);
+		//		}
 	}
-	
+
 	protected void setKeepScreenOn(boolean keepScreenOn) {
 		if(keepScreenOn) {
 			getWindow().

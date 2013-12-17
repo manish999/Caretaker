@@ -23,6 +23,12 @@ public class AppSettings {
 	public static final String ACCESS_TOKEN = "token";
 	public static final String TEMP_TOTAL_USER = "totaluser";
 	public static final String TEMP_DASHBOARD_USER = "dashuser";
+	
+	public static final String FIRST_LEFT_HEXDIGIT = "firstlefthexdigit";
+	public static final String FIRST_RIGHT_HEXDIGIT = "firstrighthexdigit";
+	public static final String MRID_LAST_TWO = "mrid_last_two";
+	
+	public static final String DEVICE_ID = "did";
 
 
 	public static Object getPrefernce(Context context, String prefName, String tag, Object defaultValue){

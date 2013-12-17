@@ -40,6 +40,18 @@ public class UiUtil {
 		builder.show();
 	}
 	
+	public static void showOkDialog(final Context context, String msg) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setMessage(msg)
+		.setCancelable(false)
+		.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		});
+		builder.show();
+	}
+	
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter(); 
         if (listAdapter == null) {

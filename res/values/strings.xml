@@ -3,14 +3,14 @@
 
     <string name="app_name">CareTakerMobile</string>
     <string name="action_settings">Settings</string>
+    <string name="action_device_id">Device Id</string>
     <string name="hint_email">me@email.com</string>
     <string name="hint_password">password</string>
     <string name="invalid_email_message">Provided e-mail address is invalid</string>
     <string name="message_empty">Mandatory</string>
     <string name="btn_login_txt">Log in / Register</string>
     <string name="select">select</string>
-     <string name="changing_fragments">Home screen</string>
-    
+    <string name="changing_fragments">Home screen</string>
     <string name="add_user_icon">Add User Icon</string>
     <string name="add_alert_notification">Add Alert Notification</string>
     <string name="add_visual_display">Add Visual Display</string>
@@ -30,5 +30,13 @@
     <string name="action_logout">Logout</string>
     <string name="sentrequest">sent request</string>
     
+    <string name="rtn_service_stopped">MobileApp SocketService stoped</string>
+    <string name="rtn_service_started">MobileApp SocketService started</string>
+    <string name="rtn_internet_error">Can\'t connect or no connection with remote server</string>
+    <string name="rtn_service_not_supported">RTnRouterService not Supported by peripheral device.</string>
+    <string name="bluetooth_disabled">Bluetooth adapter disabled, enable and try again </string>
+    <string name="bluetooth_smart_not_supported">bluetooth low energy not supported in this device</string>
+    <string name="internet_disabled_no_access">No Internet access, connect to a network and try again.</string>
+    <string name="scanning_time_out">scanning timeout, no nearby ble RTnDevices </string>
 
 </resources>

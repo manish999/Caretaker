@@ -10,6 +10,7 @@ public class LoginBean extends GeneralData implements Populator{
 
 	private String userName;
 	private String accessToken;
+	private String deviceId;
 
 
 	public LoginBean() {
@@ -48,5 +49,16 @@ public class LoginBean extends GeneralData implements Populator{
 	public void populateBean(JSONObject jsonObject)
 	{
 		accessToken = jsonObject.optString("access_token", "");
+		deviceId = jsonObject.optString("device_id", "");
+	}
+
+	public String getDeviceId()
+	{
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId)
+	{
+		this.deviceId = deviceId;
 	}
 }

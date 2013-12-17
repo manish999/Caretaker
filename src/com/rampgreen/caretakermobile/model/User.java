@@ -27,6 +27,7 @@ public class User implements Serializable, Populator
 	private String weight;
 	private String devicid;
 	private String requestId;
+	private String deviceId;// this id is used for web socket connection to router application through cloud.
 	
 	private boolean userOnHomeScreen = false;
 	private boolean notification = false;

@@ -75,6 +75,7 @@ public class Rainbow extends BaseActivity implements OnTabChangeListener, OnClic
 			@Override
 			public void receiveData(String jsonString)
 			{
+				AppLog.d(AppLog.APP_TAG, "WS response in Rainbow: " + jsonString);
 				Gson gson = new Gson();
 				mStatusData = gson.fromJson(jsonString, StatusData.class);
 				refreshUi();
@@ -85,12 +86,13 @@ public class Rainbow extends BaseActivity implements OnTabChangeListener, OnClic
 		if (deviceID.length() == 10) {
 			String C1 = (String) AppSettings.getPrefernce(Rainbow.this, null, AppSettings.FIRST_LEFT_HEXDIGIT, "");
 			String C2 =	(String) AppSettings.getPrefernce(Rainbow.this, null, AppSettings.FIRST_RIGHT_HEXDIGIT, "");
-			AppLog.d(AppLog.APP_TAG, "deviceID with out 2 digit: " + deviceID);
-			deviceID = deviceID+C1+C2;	
+			AppLog.d(AppLog.APP_TAG, "URID: " + deviceID);
+//			deviceID = deviceID+C1+C2;	
 			String statusDataJSon = GsonUtil.createStatusDataJsonString(deviceID, C1+C2);
 
 			RTnInternetRouter.setOnMsgCallback(onMessageCallback);
-			RTnInternetRouter.sendToRTnCloudServer(statusDataJSon);
+			boolean isSend = RTnInternetRouter.sendToRTnCloudServer(statusDataJSon);
+			AppLog.d(AppLog.APP_TAG, "Is Json sent to cloud ? : "+isSend+"****if false the connection is lost.");
 			//		} else if(deviceID.length() == 12){
 			//			AppLog.d(AppLog.APP_TAG, "deviceID : " + deviceID);
 			//			String statusDataJSon = GsonUtil.createStatusDataJsonString(deviceID, "");

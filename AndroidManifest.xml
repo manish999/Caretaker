@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".CareTakerApplication"
@@ -79,27 +80,35 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
         </activity>
-         <activity
+        <activity
             android:name=".ui.Rainbow"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
         </activity>
         <activity
             android:name=".ui.UserNotification"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
         </activity>
-          <activity
-              android:name=".ui.ActivityProfile"
-              android:screenOrientation="portrait"
-              android:theme="@style/AppTheme" >
-
+        <activity
+            android:name=".ui.ActivityProfile"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
         </activity>
-         <activity
+        <activity
             android:name=".ui.ActivityAlert"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
         </activity>
+         <activity
+            android:name=".ui.ActivityRainbowRegistration"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <service
+            android:name="com.rampgreen.caretakermobile.socket.RouterService"
+            android:icon="@drawable/ic_launcher" >
+        </service>
     </application>
 
 </manifest>

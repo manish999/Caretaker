@@ -34,8 +34,8 @@ public class RTnInternetRouter
 
 	/************************** Class Defines ******************************/
 	/* Sets the server IP address and port that we will connect to */
-	private static final String wsUri = "ws://121.240.116.173:8080/SensorSoc/cloud/mobile";
-
+	private static final String WS_BASE_URI = "ws://121.240.116.173:8080/SensorSoc/cloud/mobile";
+	private static String wsUri = WS_BASE_URI;
 	/************************* Class Variables *******************************/
 	/* WebsocketConnection object to handle all supported tx/rx functionality */
 	private static WebSocketConnection myConnection = null;
@@ -99,6 +99,7 @@ public class RTnInternetRouter
 
 		if(! WidgetUtil.checkInternetConnection(routerService)) {
 			// inform the user to enable wifi or cellular to connect to the internet
+			WidgetUtil.showSettingDialog(routerService);
 			showToastMessage(R.string.internet_disabled_no_access);
 			internetRouterErrorThrown = true;
 			return;
@@ -106,6 +107,10 @@ public class RTnInternetRouter
 
 		// if not connected, try to connect it .  
 		if (! isConnected()) {
+			String C1 = (String) AppSettings.getPrefernce(routerService, null, AppSettings.FIRST_LEFT_HEXDIGIT, "");
+			String C2 =	(String) AppSettings.getPrefernce(routerService, null, AppSettings.FIRST_RIGHT_HEXDIGIT, "");
+			String urId =	(String) AppSettings.getPrefernce(routerService, null, AppSettings.DEVICE_ID, "");
+			wsUri = WS_BASE_URI + "?deviceId="+urId+C1+C2;// append device Id to url 
 			connectToSocketCloud();
 		}
 	}
@@ -121,9 +126,8 @@ public class RTnInternetRouter
 				// called when connected
 				public void onOpen()
 				{
-					Log.e(TAG, "Connected to " + wsUri);
+					AppLog.e( "Connected to " + wsUri);
 					sendDeviceID();
-
 					// get mac address send to cloud server
 					//					String macAddress = WidgetUtil.getMacAddress(routerService);
 					//					String macId = GsonUtil.createMacJsonString(macAddress);
@@ -139,14 +143,13 @@ public class RTnInternetRouter
 				// called upon an incoming byte[]  packet
 				public void onBinaryMessage( byte [] receivedPacket )
 				{
-					Log.e(TAG, "Received Cloud Packet");
+					AppLog.e("Received Cloud Packet");
 					//					myRtnRouterInstance.internetRxCallback( receivedPacket );
 				}
 				@Override
 				// called upon an incoming String message
 				public void onTextMessage( String payload )
 				{
-					// check device id if present then store other wise leave it neds to be checke dby gsonm exception.
 					Log.e(TAG, "on Text message from the cloud"+payload);
 					if(RTnInternetRouter.onMessageCallback != null) {
 						RTnInternetRouter.onMessageCallback.receiveData(payload);
@@ -156,7 +159,7 @@ public class RTnInternetRouter
 				// called when disconnected or the connection is closed
 				public void onClose( int code, String reason )
 				{
-					Log.e(TAG, "Connection lost.");
+					AppLog.e("Connection lost."+reason);
 					showToastMessage(R.string.rtn_internet_error);
 					internetRouterErrorThrown = true;
 					connectedState = false; 
@@ -165,7 +168,7 @@ public class RTnInternetRouter
 		}
 		catch ( WebSocketException e)
 		{
-			Log.e(TAG, e.toString());
+			AppLog.e(e.toString());
 			showToastMessage(R.string.rtn_internet_error);
 			internetRouterErrorThrown = true;
 			return;
@@ -182,14 +185,17 @@ public class RTnInternetRouter
 	 ******************************************************************/
 	public boolean sendToRTnCloudServer(byte[] byteToTransmit)
 	{
-		Log.v(TAG, "Transmitted Packet to Cloud");
+		AppLog.d(TAG, "Transmitted Packet to Cloud");
 		myConnection.sendBinaryMessage( byteToTransmit );
 		return true;
 	}
 
 	public static boolean sendToRTnCloudServer(String json)
 	{
-		Log.v(TAG, "Transmitted json to Cloud"+json);
+		if(myConnection == null)
+			AppLog.d(TAG, "myconnection == null , Transmitted json to Cloud"+json);
+		AppLog.d(TAG, "Transmitted json to Cloud"+json);
+		
 		if(myConnection != null && myConnection.isConnected()) {
 			myConnection.sendTextMessage( json );
 			return true;
@@ -197,11 +203,6 @@ public class RTnInternetRouter
 		return false;
 	}
 
-	static OnMessageCallback onMessageCallback;
-	public static void setOnMsgCallback(OnMessageCallback onMessageCallback)
-	{
-		RTnInternetRouter.onMessageCallback = onMessageCallback;
-	}
 
 	/************************************************************
 	 * isConnected
@@ -277,8 +278,15 @@ public class RTnInternetRouter
 
 		sendToRTnCloudServer(jsonString);
 	}
-
+	
+	/*********************** interface for callback*****************************/
+	static OnMessageCallback onMessageCallback;
+	public static void setOnMsgCallback(OnMessageCallback onMessageCallback)
+	{
+		RTnInternetRouter.onMessageCallback = onMessageCallback;
+	}
 	public static interface OnMessageCallback {
 		public void receiveData(String jsonString);
 	}
+	/**************************************************************************/
 }

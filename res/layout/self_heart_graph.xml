@@ -6,23 +6,26 @@
     android:layout_gravity="center"
     android:background="#ffffff" >
 
-    <ImageView
-        android:id="@+id/graph"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/heart" >
-    </ImageView>
-    
+    <LinearLayout
+       android:id="@+id/chart_containerHr"
+       android:layout_width="fill_parent"
+       android:layout_height="280dp"       
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentRight="true"
+       android:layout_alignParentTop="true"
+       android:orientation="vertical" >
+       </LinearLayout>
+       
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/graph"
+        android:layout_below="@+id/chart_containerHr"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/Button03"
+            android:id="@+id/btnHour"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
@@ -30,30 +33,30 @@
             android:background="@drawable/selfbtn"/>
 
         <Button
-            android:id="@+id/Button02"
+            android:id="@+id/btnDay"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="Day"
-            android:layout_toRightOf="@+id/Button03" 
+            android:layout_toRightOf="@+id/btnHour" 
             android:background="@drawable/selfbtn"/>
 
         <Button
-            android:id="@+id/Button01"
+            android:id="@+id/btnWeek"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="Week"
-             android:layout_toRightOf="@+id/Button02" 
+             android:layout_toRightOf="@+id/btnDay" 
              android:background="@drawable/selfbtn"/>
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/btnMonth"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="Month" 
-             android:layout_toRightOf="@+id/Button01"
+             android:layout_toRightOf="@+id/btnWeek"
              android:background="@drawable/selfbtn"/>
     </LinearLayout>
 

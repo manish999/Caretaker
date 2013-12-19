@@ -173,6 +173,16 @@ public class QueryHelper {
 		return params;
 	}
 	
+	public static Map<String, String> getSensorDataQuery(String token,String from,String to) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		
+		params.put("action", "sensor");
+		params.put("task", "get_sensor_data");		
+		params.put("from", from);
+		params.put("to", to);
+		params.put("token", token);
+		return params;
+	}	
 	
 	// ishu //
 	// rajeev

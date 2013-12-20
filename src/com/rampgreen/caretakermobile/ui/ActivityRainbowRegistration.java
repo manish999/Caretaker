@@ -20,14 +20,13 @@ import com.rampgreen.caretakermobile.util.AppSettings;
 
 public class ActivityRainbowRegistration extends Activity
 {
-
-	public static final int RED_ON = 1;
-	public static final int YELLOW_ON = 2;
-	public static final int GREEN_ON = 4;
-
-	int redValue = 0;
+	public static final int RED_ON = 4; 
+	public static final int GREEN_ON = 2;
+	public static final int YELLOW_ON = 1;
+	
 	int yellowValue = 0;
 	int greenValue = 0;
+	int redValue = 0;
 
 	boolean firstClicked = false;
 	ToggleButton  redButton;
@@ -41,8 +40,8 @@ public class ActivityRainbowRegistration extends Activity
 		setContentView(R.layout.rainbow_registration);
 
 		redButton = (ToggleButton)findViewById(R.id.toggle_red);
-		yellowButton = (ToggleButton)findViewById(R.id.toggle_yellow);
-		greenButton = (ToggleButton)findViewById(R.id.toggle_green);
+		yellowButton = (ToggleButton)findViewById(R.id.toggle_yellowish);
+		greenButton = (ToggleButton)findViewById(R.id.toggle_greeno);
 
 		final TextView  textInstruction = (TextView)findViewById(R.id.textView1);
 		final Button  okButton = (Button)findViewById(R.id.btn_ok);
@@ -77,17 +76,9 @@ public class ActivityRainbowRegistration extends Activity
 		return true;
 	}
 
-	public void onRedClicked(View view) {
-		if(((ToggleButton) view).isChecked()) {
-			redValue = 1;
-		} else {
-			redValue = 0;
-		}    
-	}
-
 	public void onYellowClicked(View view) {
 		if(((ToggleButton) view).isChecked()) {
-			yellowValue = 2;
+			yellowValue = 1;
 		} else {
 			yellowValue = 0;
 		}    
@@ -95,9 +86,17 @@ public class ActivityRainbowRegistration extends Activity
 
 	public void onGreenClicked(View view) {
 		if(((ToggleButton) view).isChecked()) {
-			greenValue = 4;
+			greenValue = 2;
 		} else {
 			greenValue = 0;
+		}    
+	}
+	
+	public void onRedClicked(View view) {
+		if(((ToggleButton) view).isChecked()) {
+			redValue = 4;
+		} else {
+			redValue = 0;
 		}    
 	}
 
@@ -110,7 +109,8 @@ public class ActivityRainbowRegistration extends Activity
 	{
 		String firstHexDigit = (String)AppSettings.getPrefernce(this, null, AppSettings.FIRST_LEFT_HEXDIGIT, "");
 		AppSettings.setPreference(this, null, AppSettings.FIRST_RIGHT_HEXDIGIT, secondDigit+"");
-		Toast.makeText(this, firstHexDigit+secondDigit, Toast.LENGTH_SHORT).show();
+		AppLog.showToast(this, "Rainbow registration is completed successfully.");
+//		Toast.makeText(this, firstHexDigit+secondDigit, Toast.LENGTH_SHORT).show();
 		sendDeviceID();
 //		Intent	routerSetupIntent= new Intent(ActivityRainbowRegistration.this, RouterService.class);
 //		ActivityRainbowRegistration.this.startService(routerSetupIntent);

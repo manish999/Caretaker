@@ -126,7 +126,7 @@
                     android:paddingLeft="9.0dip"
                     android:paddingRight="9.0dip"
                     android:singleLine="true"
-                    android:text="ishu.chaudhary@rampgreen.net"
+                    android:text=""
                     whatever:customRegexp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
                     whatever:emptyErrorString="@string/message_empty"
                     whatever:testErrorString="@string/invalid_email_message"
@@ -148,7 +148,7 @@
                     android:paddingLeft="9.0dip"
                     android:paddingRight="9.0dip"
                     android:singleLine="true"
-                    android:text="ishu"
+                    android:text=""
                     whatever:emptyErrorString="@string/message_empty"
                     whatever:testType="nocheck" />
 

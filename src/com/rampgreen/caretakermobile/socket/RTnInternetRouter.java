@@ -160,8 +160,8 @@ public class RTnInternetRouter
 				public void onClose( int code, String reason )
 				{
 					AppLog.e("Connection lost."+reason);
-					showToastMessage(R.string.rtn_internet_error);
-					internetRouterErrorThrown = true;
+//					showToastMessage(R.string.rtn_internet_error);
+//					internetRouterErrorThrown = true;
 					connectedState = false; 
 				}
 			});
@@ -169,8 +169,8 @@ public class RTnInternetRouter
 		catch ( WebSocketException e)
 		{
 			AppLog.e(e.toString());
-			showToastMessage(R.string.rtn_internet_error);
-			internetRouterErrorThrown = true;
+//			showToastMessage(R.string.rtn_internet_error);
+//			internetRouterErrorThrown = true;
 			return;
 		}
 	}
@@ -195,11 +195,16 @@ public class RTnInternetRouter
 		if(myConnection == null)
 			AppLog.d(TAG, "myconnection == null , Transmitted json to Cloud"+json);
 		AppLog.d(TAG, "Transmitted json to Cloud"+json);
+
+//		if(! myConnection.isConnected()) {
+//			myConnection.disconnect();
+//			
+//		}
 		
 		if(myConnection != null && myConnection.isConnected()) {
 			myConnection.sendTextMessage( json );
 			return true;
-		} 
+		}
 		return false;
 	}
 
@@ -224,16 +229,17 @@ public class RTnInternetRouter
 	 ******************************************************************/
 	public void showToastMessage(final int messageId)
 	{
-		mainActivity.runOnUiThread( new Runnable()
-		{
-
-			@Override
-			public void run()
+		if(mainActivity != null) {
+			mainActivity.runOnUiThread( new Runnable()
 			{
-				Toast.makeText( mainActivity, messageId, Toast.LENGTH_LONG ).show();
-			}
-		} );
 
+				@Override
+				public void run()
+				{
+					Toast.makeText( mainActivity, messageId, Toast.LENGTH_LONG ).show();
+				}
+			} );
+		}
 	}
 
 	/************************************************************
@@ -270,15 +276,15 @@ public class RTnInternetRouter
 		String C1 = (String) AppSettings.getPrefernce(routerService, null, AppSettings.FIRST_LEFT_HEXDIGIT, "");
 		String C2 =	(String) AppSettings.getPrefernce(routerService, null, AppSettings.FIRST_RIGHT_HEXDIGIT, "");
 		String deviceID =	(String) AppSettings.getPrefernce(routerService, null, AppSettings.DEVICE_ID, "");
-//		AppLog.d(AppLog.APP_TAG, "deviceID with out 2 digit: " + deviceID);
-//		deviceID = deviceID+C1+C2;
+		//		AppLog.d(AppLog.APP_TAG, "deviceID with out 2 digit: " + deviceID);
+		//		deviceID = deviceID+C1+C2;
 		AppLog.d(AppLog.APP_TAG, "deviceID : " + deviceID);
 		String macID = WidgetUtil.getMacAddress(routerService);
 		String jsonString = GsonUtil.createDeviceIdJsonString(macID, deviceID, C1+C2);
 
 		sendToRTnCloudServer(jsonString);
 	}
-	
+
 	/*********************** interface for callback*****************************/
 	static OnMessageCallback onMessageCallback;
 	public static void setOnMsgCallback(OnMessageCallback onMessageCallback)
@@ -289,4 +295,11 @@ public class RTnInternetRouter
 		public void receiveData(String jsonString);
 	}
 	/**************************************************************************/
+	
+	public static boolean isSocketConnected() {
+		if(myConnection == null) {
+			return false;
+		}
+		return myConnection.isConnected();
+	}
 }

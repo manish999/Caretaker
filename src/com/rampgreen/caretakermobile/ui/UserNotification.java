@@ -9,23 +9,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.util.AppLog;
 import com.viewpagerindicator.IconPagerAdapter;
 import com.viewpagerindicator.TabPageIndicator;
 
 public class UserNotification extends BaseActivity {
 
-	/*private ExpandableListView mExpandableListView;
-	private List<UserNotificationEntity> mGroupCollection;*/
-	private static final String[] CONTENT = new String[] { "Notification", "Activity Profile","Body Data" };
+	private static final String[] CONTENT = new String[] { "Body Data" };
 	private UsernotificationAdapter adapter;
 	private ViewPager pager;
 	private TabPageIndicator indicator;
+	private Bundle myBundle;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -34,12 +30,12 @@ public class UserNotification extends BaseActivity {
 		setContentView(R.layout.usernotificationmain);	
 
 		Intent myLocalIntent = getIntent();
-		Bundle myBundle = myLocalIntent.getExtras();
-
+		myBundle = myLocalIntent.getExtras();
 		String title = myBundle.getString("title");
-		/* setTitle(title);*/
+		// added by ishu		
+		myBundle.putString("userid", myBundle.getString("userid"));
+		// end
 		setHeader(title, true, true, false, R.drawable.network, R.drawable.user_white);
-
 		adapter = new UsernotificationAdapter(getSupportFragmentManager());		
 
 		pager = (ViewPager) findViewById(R.id.pager);
@@ -47,9 +43,6 @@ public class UserNotification extends BaseActivity {
 
 		indicator = (TabPageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
-
-		/*prepareResource();
-		initPage();	*/
 	}
 
 	class UsernotificationAdapter extends FragmentPagerAdapter implements
@@ -59,19 +52,17 @@ public class UserNotification extends BaseActivity {
 		}
 
 		@Override
-		public Fragment getItem(int position) {		
-			/*return SendReceivedFragment.newInstance(lvr);*/
+		public Fragment getItem(int position) {
 			Fragment fragment =null;
 			switch (position) {
 			case 0:
+				Bundle bundle = new Bundle();
+				bundle.putString("userid", myBundle.getString("userid"));
+				// set Fragmentclass Arguments
 				fragment = new FragmentUserNotification();
+				fragment.setArguments(bundle);				
 				break;
-			case 1:
-				fragment = new FragmentUserNotification();
-				break;
-			case 2:
-				fragment = new FragmentUserNotification();
-				break; 
+
 			}
 			return fragment;
 		}
@@ -89,77 +80,9 @@ public class UserNotification extends BaseActivity {
 		@Override
 		public int getIconResId(int index)
 		{
-			// TODO Auto-generated method stub
 			return 0;
 		}
-
-		//		@Override
-		//		public int getIconResId(int index) {
-		//			// TODO Auto-generated method stub
-		//			return ICONS[index];
-		//		}		
-
 	}
-
-	/*private void prepareResource() {
-
-		mGroupCollection = new ArrayList<UserNotificationEntity>();
-
-		UserNotificationEntity ge = new UserNotificationEntity();
-		GroupItemEntity gi = ge.new GroupItemEntity();
-
-		ge.Name = "GSR";		
-		gi.Name = "heart rate is now 130/min";
-		ge.GroupItemCollection.add(gi);
-		mGroupCollection.add(ge);
-
-		ge = new UserNotificationEntity();
-		gi = ge.new GroupItemEntity();
-		ge.Name = "Heart Rate";		
-		gi.Name = "Heart Rate: 130 /min Normal Range: 60-80 /min";
-		ge.GroupItemCollection.add(gi);
-		mGroupCollection.add(ge);
-
-		ge = new UserNotificationEntity();
-		gi = ge.new GroupItemEntity();
-		ge.Name = "Accelerometer";
-		gi.Name = "Accelerometer";
-		ge.GroupItemCollection.add(gi);
-		mGroupCollection.add(ge);
-
-		ge = new UserNotificationEntity();
-		gi = ge.new GroupItemEntity();
-		ge.Name = "Temperature";
-		gi.Name = "Temprature";
-		ge.GroupItemCollection.add(gi);
-		mGroupCollection.add(ge);
-
-
-		for (int i = 1; i < 6; i++) {
-			GroupEntity ge = new GroupEntity();
-			ge.Name = "Group" + i;
-
-			for (int j = 1; j < 5; j++) {
-				GroupItemEntity gi = ge.new GroupItemEntity();
-				gi.Name = "Child" + j;
-				ge.GroupItemCollection.add(gi);
-			}
-
-			mGroupCollection.add(ge);
-		}
-
-	}
-
-	private void initPage() {
-		mExpandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-		mExpandableListView.setDividerHeight(2);
-		mExpandableListView.setChildDivider(getResources().getDrawable(R.color.gray));
-		UserNotificationExpandableListAdapter adapter = new UserNotificationExpandableListAdapter(this,
-				mExpandableListView, mGroupCollection);
-
-		mExpandableListView.setAdapter(adapter);
-	}*/	
-
 	public void btnHomeClick(View v)
 	{
 		Intent intent = new Intent(getApplicationContext(),
@@ -174,7 +97,7 @@ public class UserNotification extends BaseActivity {
 
 	public boolean isActivePopup()
 	{
-		boolean  Isactivepopup=false;
+		boolean  isActivePopup=false;
 		Bundle b = new Bundle();
 		b.putBoolean("POPUP",Boolean.TRUE);
 		Intent intent = new Intent();
@@ -182,20 +105,15 @@ public class UserNotification extends BaseActivity {
 		intent.setClass(this, SendReceived_Request.class);
 		intent.putExtras(b);
 		startActivity(intent);
-		Isactivepopup=true;
-		return Isactivepopup;
+		isActivePopup=true;
+		return isActivePopup;
 	}
 
 	@Override
 	public void onResponse(JSONObject response) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onErrorResponse(VolleyError error) {
-		// TODO Auto-generated method stub
-
 	}
-
 }

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package com.rampgreen.caretakermobile.ui;
 
 import org.achartengine.ChartFactory;
@@ -49,6 +46,7 @@ import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.interfaces.ParserError;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.SensorData;
+import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.ui.util.TabBitmap;
@@ -87,10 +85,13 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener {
 
 	private static ArrayList<SensorData> ALIST_Temp;
 	String token = BeanController.getLoginBean().getAccessToken();	//"1348c8cd897edc2925815ff158b55164a32209fc";
+	
 
 	/** The Constant CONTENT. */
 	public static final String[] CONTENT = new String[] { "GSR", "HR", "Acc",
 			"Temp" };
+
+	private static final User User = null;
 
 	/** The m tab host days. */
 	private TabHost mTabHostDays;
@@ -138,15 +139,17 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener {
 		Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c.getTime());
-        formattedDate = "2013-12-18";
+//        formattedDate = "2013-12-18";
         String StartDate = formattedDate + " 00:00:00";
         String EndDate = formattedDate + " 23:59:59";
+       
+        //BeanController.getUserBean().getUid();
         
 		MyRequestQueue queue = MyVolley.getRequestQueue();
-		Map<String, String> loginParam = QueryHelper.getSensorDataQuery(token, StartDate, EndDate);
+		Map<String, String> loginParam = QueryHelper.getSensorDataQuery(token,"", StartDate, EndDate);
 		CustomRequest customRequest = new CustomRequest(Method.POST,
 				Constants.URL_WEB_SERVICE, loginParam, this, this);	
-		showLoadingBar();
+//		showLoadingBar();
 		customRequest.setTag(this);			
 //		customRequest.setPriority(Priority.IMMEDIATE);
 		queue.add(customRequest);			
@@ -892,53 +895,53 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener {
 		String msg = response.optString("message");		
 		switch (code) {
 		case ParserError.CODE_ACTION_NOT_FOUND:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_MISSING_ACTION:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_MISSING_TASK:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_CLIENT_AUTHORIZATION_FAILED:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_TOKEN_GENERATION_FAILED:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_USERNAME_REQUIRED:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_PASSWORD_REQUIRED:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_PASSWORD_WRONG:	
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_USER_NOT_REGISTERED:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_INVALID_TOKEN:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_TOKEN_EXPIRED:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_INTERNAL_SERVER_ERROR:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_USER_ALREADY_REGISTERED:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_NO_REQUEST_RECEIVED:
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_NO_CARETAKER_REQUEST_SENT_IS_PENDING:	
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_SENSOR:
 			AppLog.showToast(this, "No sensor data available for this user");
-			closeLoadingBar();
+//			closeLoadingBar();
 			break;
 		case ParserError.CODE_SUCCESS:
 			GetSensor_Data(response);

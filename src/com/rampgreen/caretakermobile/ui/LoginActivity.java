@@ -22,6 +22,7 @@ import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
+import com.rampgreen.caretakermobile.socket.RTnInternetRouter;
 import com.rampgreen.caretakermobile.socket.RouterService;
 import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
 import com.rampgreen.caretakermobile.util.AppLog;
@@ -50,9 +51,12 @@ public class LoginActivity extends BaseActivity
 		mEtPassword = (FormEditText) findViewById(R.id.et_password);
 		mLoginButton = (Button) findViewById(R.id.btn_login);
 
-		Intent	routerSetupIntent= new Intent(this, RouterService.class);
-		this.startService(routerSetupIntent);
-		
+		// check if socket connected or not
+		if(! RTnInternetRouter.isSocketConnected()) {
+			Intent	routerSetupIntent= new Intent(this, RouterService.class);
+			this.startService(routerSetupIntent);
+		}
+
 		// handle login button click 
 		mLoginButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -209,10 +213,10 @@ public class LoginActivity extends BaseActivity
 				User userBean = BeanController.getUserBean();
 				userBean.populateBean(response);
 				AppLog.logString(response.toString());
-				
+
 				TextDisplaySettings textSetting = BeanController.getTextDisplaySettings();
 				textSetting.populateBean(response);
-				
+
 				VisualDisplaySettings visualSetting = BeanController.getVisualDisplaySettings();
 				visualSetting.populateBean(response);
 				// on success , call Home screen
@@ -222,19 +226,19 @@ public class LoginActivity extends BaseActivity
 				// to close the activity
 				finish();
 				closeLoadingBar();
-				
-				
-				
-//				closeLoadingBar();
+
+
+
+				//				closeLoadingBar();
 				break;
 			case ParserError.CODE_SUCCESS:
 				userBean = BeanController.getUserBean();
 				userBean.populateBean(response);
 				AppLog.logString(response.toString());
-				
+
 				textSetting = BeanController.getTextDisplaySettings();
 				textSetting.populateBean(response);
-				
+
 				visualSetting = BeanController.getVisualDisplaySettings();
 				visualSetting.populateBean(response);
 				// on success , call Home screen

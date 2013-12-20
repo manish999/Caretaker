@@ -54,6 +54,9 @@ public class FragmentUserCaretaker extends SherlockFragment {
 				Bundle bundle = new Bundle();
 				Intent intent = new Intent();
 				bundle.putString("title", users.get(position).getUserName());
+				//added by ishu
+				bundle.putString("userid", users.get(position).getUid());
+				//end
 				intent.setClass(getSherlockActivity(), UserNotification.class);
 				intent.putExtras(bundle);
 				startActivity(intent);

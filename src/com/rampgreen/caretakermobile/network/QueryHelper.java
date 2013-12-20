@@ -173,14 +173,15 @@ public class QueryHelper {
 		return params;
 	}
 	
-	public static Map<String, String> getSensorDataQuery(String token,String from,String to) {
+	public static Map<String, String> getSensorDataQuery(String accessToken,String userid,String fromDate,String toDate) {
 		HashMap<String, String> params = new HashMap<String, String>();	
 		
 		params.put("action", "sensor");
 		params.put("task", "get_sensor_data");		
-		params.put("from", from);
-		params.put("to", to);
-		params.put("token", token);
+		params.put("from", fromDate);
+		params.put("to", toDate);
+		params.put("token", accessToken);
+		params.put("user_id", userid);
 		return params;
 	}	
 	

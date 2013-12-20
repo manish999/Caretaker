@@ -28,5 +28,6 @@ public class ParserError
 	public static final int CODE_INVALID_MAIL_ID = 124;
 	public static final int CODE_NO_USER_FOUND = 125;
 	public static final int CODE_SENSOR = 134;
+	public static final int CODE_DEVICE = 135;
 	public static final int CODE_SUCCESS = 200;
 }

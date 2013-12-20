@@ -1735,9 +1735,9 @@ containing a value of this type.
         public static final int text_view_tab_title=0x7f0400d7;
         public static final int title=0x7f04009b;
         public static final int title_settings=0x7f04004f;
-        public static final int toggle_green=0x7f0400af;
+        public static final int toggle_greeno=0x7f0400ae;
         public static final int toggle_red=0x7f0400ad;
-        public static final int toggle_yellow=0x7f0400ae;
+        public static final int toggle_yellowish=0x7f0400af;
         public static final int top=0x7f040004;
         public static final int triangle=0x7f040001;
         public static final int tvChild=0x7f040065;

@@ -160,6 +160,9 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 				Bundle bundle = new Bundle();
 				Intent intent = new Intent();
 				bundle.putString("title", userList.get(position).getUsername());
+				//added by ishu
+				bundle.putString("userid", userList.get(position).getUid());
+				//end
 				intent.setClass(getSherlockActivity(), UserNotification.class);
 				intent.putExtras(bundle);
 				startActivity(intent);

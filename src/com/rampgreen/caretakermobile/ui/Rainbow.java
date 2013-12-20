@@ -18,6 +18,7 @@ import com.rampgreen.caretakermobile.model.RainbowPacketModel;
 import com.rampgreen.caretakermobile.model.RainbowPacketModel.Packet;
 import com.rampgreen.caretakermobile.socket.RTnInternetRouter;
 import com.rampgreen.caretakermobile.socket.RTnInternetRouter.OnMessageCallback;
+import com.rampgreen.caretakermobile.socket.RTnRouter;
 import com.rampgreen.caretakermobile.socket.model.GsonUtil;
 import com.rampgreen.caretakermobile.socket.model.StatusData;
 import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
@@ -27,8 +28,14 @@ import com.rampgreen.caretakermobile.util.Constants;
 
 public class Rainbow extends BaseActivity implements OnTabChangeListener, OnClickListener {
 
-	StatusData mStatusData;
-	TextView  mBatteryPercentage;
+	private StatusData mStatusData;
+	private TextView mBatteryPercentage;
+	private TextView mDeviceStatus;
+	private TextView mTransducerStatus;
+	private TextView mSensor;
+	private TextView mTTS;
+	private TextView mTRS;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,6 +48,12 @@ public class Rainbow extends BaseActivity implements OnTabChangeListener, OnClic
 
 		// getting the id from xml
 		mBatteryPercentage = (TextView)findViewById(R.id.tv_battery);
+		mDeviceStatus = (TextView)findViewById(R.id.tv_device_status);
+		mTransducerStatus = (TextView)findViewById(R.id.tv_transducer);
+		mSensor = (TextView)findViewById(R.id.tv_sensor);
+		mTTS = (TextView)findViewById(R.id.tv_tts);
+		mTRS = (TextView)findViewById(R.id.tv_trs);
+		
 		Button  sensorRegistraionButton = (Button)findViewById(R.id.btn_sensor_registration);
 		Button  batteryButton = (Button)findViewById(R.id.btn_refresh_battery);
 		Button  deviceButton = (Button)findViewById(R.id.btn_refresh_device);
@@ -57,6 +70,7 @@ public class Rainbow extends BaseActivity implements OnTabChangeListener, OnClic
 		sensorButton.setOnClickListener(this);
 		ttsButton.setOnClickListener(this);
 		trsButton.setOnClickListener(this);
+		resetVisibility();
 		//		Packet a = RainbowPacketModel.Packet.INSTRUCTION_PACKET;
 		//		String b = a.getValue();
 	}
@@ -151,11 +165,6 @@ public class Rainbow extends BaseActivity implements OnTabChangeListener, OnClic
 		}
 	}
 
-	protected void refreshUi()
-	{
-		mBatteryPercentage.setText(mStatusData.getBatteryPercentage());
-	}
-
 	@Override
 	public void onClick(View v)
 	{
@@ -171,28 +180,60 @@ public class Rainbow extends BaseActivity implements OnTabChangeListener, OnClic
 			break;
 
 		case R.id.btn_refresh_battery:
+			mBatteryPercentage.setVisibility(View.VISIBLE);
 			sendToCloudServer();
 			break;
 
 		case R.id.btn_refresh_device:
+			mDeviceStatus.setVisibility(View.VISIBLE);
 			sendToCloudServer();
 			break;
 
 		case R.id.btn_refresh_transducer:
+			mTransducerStatus.setVisibility(View.VISIBLE);
 			sendToCloudServer();
 			break;
 
 		case R.id.btn_refresh_sensor:
+			mSensor.setVisibility(View.VISIBLE);
 			sendToCloudServer();
 			break;
 
 		case R.id.btn_refresh_tts:
+			mTTS.setVisibility(View.VISIBLE);
 			sendToCloudServer();
 			break;
 
 		case R.id.btn_refresh_trs:
+			mTRS.setVisibility(View.VISIBLE);
 			sendToCloudServer();
 			break;
 		}
+	}
+	
+	private void resetVisibility() {
+		mBatteryPercentage.setVisibility(View.INVISIBLE);
+		mDeviceStatus.setVisibility(View.INVISIBLE);
+		mTransducerStatus.setVisibility(View.INVISIBLE);
+		mSensor.setVisibility(View.INVISIBLE);
+		mTRS.setVisibility(View.INVISIBLE);
+		mTTS.setVisibility(View.INVISIBLE);
+	}
+	
+	private void refreshUi()
+	{
+		mBatteryPercentage.setText(mStatusData.getBatteryPercentage());
+		mDeviceStatus.setText(mStatusData.getDeviceState());
+		mTransducerStatus.setText(mStatusData.getTransducerState());
+		mSensor.setText(mStatusData.getSensorState());
+		mTTS.setText(mStatusData.getTts());
+		mTRS.setText(mStatusData.getTrs());
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		resetVisibility();
 	}
 }

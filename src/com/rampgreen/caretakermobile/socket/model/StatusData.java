@@ -1,5 +1,7 @@
 package com.rampgreen.caretakermobile.socket.model;
 
+import com.rampgreen.caretakermobile.util.StringUtils;
+
 public class StatusData {
 	private String device_id;
 	private String deviceState = "0";
@@ -19,6 +21,7 @@ public class StatusData {
 
 	public void setDeviceState(String deviceState) {
 		this.deviceState = deviceState;
+		this.deviceState = StringUtils.cutString(this.deviceState, 12);
 	}
 
 	public String getSensorState() {
@@ -27,6 +30,7 @@ public class StatusData {
 
 	public void setSensorState(String sensorState) {
 		this.sensorState = sensorState;
+//		this.sensorState = StringUtils.cutString(this.sensorState, 12);
 	}
 
 	public String getTransducerState() {
@@ -50,7 +54,7 @@ public class StatusData {
 	}
 
 	public void setBatteryPercentage(String batteryPercentage) {
-		this.batteryPercentage = batteryPercentage;
+		this.batteryPercentage = batteryPercentage+" %";
 	}
 
 	public String getTts() {

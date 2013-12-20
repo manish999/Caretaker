@@ -17,6 +17,8 @@ public class CareTakerApplication extends Application {
         
         init();
         
+        Intent	routerSetupIntent= new Intent(this, RouterService.class);
+		this.startService(routerSetupIntent);
     }
 
 

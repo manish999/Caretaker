@@ -213,6 +213,20 @@ public class QueryHelper {
 		return params;
 	}	
 	
+//	http://121.240.116.173/mwservice/index.php?
+//		name=param&email=paramgir@gmail.com&registration_id=dabcdef&token=c632cebd15d3b5a9896227d0526ad46eecc8d451
+	public static Map<String, String> createGCMRegQuery(String token, String name, String email, String registration_id) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		params.put("action", "gcm");
+		params.put("task", "register_gcm_user");	
+		params.put("name", name);
+		params.put("email", email);
+//		params.put("userid", userID);
+		params.put("registration_id", registration_id);
+		params.put("token", token);
+		return params;
+	}	
+	
 	// rajeev//
 	
 }

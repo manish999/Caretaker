@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,6 +12,8 @@ import com.andreabaccega.widget.FormEditText;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
@@ -86,6 +89,14 @@ public class LoginActivity extends BaseActivity
 				}
 			}
 		});
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		// Check device for Play Services APK.
+		checkPlayServices();
 	}
 
 	@Override
@@ -271,5 +282,26 @@ public class LoginActivity extends BaseActivity
 		}
 	}
 
+	/****************************gcm*****************************************/
+	/**
+	 * Check the device to make sure it has the Google Play Services APK. If
+	 * it doesn't, display a dialog that allows users to download the APK from
+	 * the Google Play Store or enable it in the device's system settings.
+	 */
+	private boolean checkPlayServices() {
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		if (resultCode != ConnectionResult.SUCCESS) {
+			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+						Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
+			} else {
+				AppLog.showToast(this, "This device is not supported.");
+				Log.i(AppLog.APP_TAG, "This device is not supported.");
+				finish();
+			}
+			return false;
+		}
+		return true;
+	}
 
 }

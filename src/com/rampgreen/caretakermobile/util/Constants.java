@@ -30,6 +30,8 @@ public class Constants {
 	public static final int ADD_TEXT_DISPLAY = 103;
 	public static final int ADD_TEXT_VISUALEXPLORER = 104;
 	
+	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+	
 	public static class ActivityConstants 
 	{
 		public static final String FRAGMENT_CALLER = "fragcaller";

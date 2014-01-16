@@ -18,6 +18,13 @@ public class DateUtils {
 	public static final String FORMAT_YYYYMMDD_SLASHES = "yyyy/MM/dd";
 	public static final String GENERIC_DISPLAY_FORMAT = "E, dd MMM yyyy";
 	public static final String TIME_DISPLAY_FORMAT = "HH mm ss";
+	
+	private static final String DASH = "-";
+	private static final String COLON = ":";
+	private static final String SLASH_FORWARD = "/";
+	private static final String SLASH_BACKWARD = "\\";
+	private static final String SPACE = " ";
+	
 	public static final int TODAY = 0;
 	public static final int YESTERDAY = 1;
 	public static final int LAST_WEEK = 2;
@@ -50,10 +57,10 @@ public class DateUtils {
 		StringBuffer ret = new StringBuffer();
 		String separator = new String();
 		if(dateformat.equals(DateUtils.FORMAT_YYYYMMDD_DASHESH) ) {
-			separator = "-";
+			separator = DASH;
 		}
 		if(dateformat.equals(DateUtils.FORMAT_YYYYMMDD_SLASHES) ) {
-			separator = "/";
+			separator = SLASH_FORWARD;
 		}
 		ret.append(cal.get(Calendar.YEAR));
 		ret.append(separator);
@@ -72,10 +79,10 @@ public class DateUtils {
 		StringBuffer ret = new StringBuffer();
 		String separator = new String();
 		if(dateformat.equals(DateUtils.FORMAT_YYYYMMDD_DASHESH) ) {
-			separator = "-";
+			separator = DASH;
 		}
 		if(dateformat.equals(DateUtils.FORMAT_YYYYMMDD_SLASHES) ) {
-			separator = "/";
+			separator = SLASH_FORWARD;
 		}
 		ret.append(cal.get(Calendar.YEAR));
 		ret.append(separator);
@@ -92,7 +99,7 @@ public class DateUtils {
 
 		StringBuffer ret = new StringBuffer();
 		ret.append(cal.get(Calendar.HOUR));
-		ret.append(":");
+		ret.append(COLON);
 		ret.append(cal.get(Calendar.MINUTE));
 
 		return ret.toString();
@@ -105,9 +112,9 @@ public class DateUtils {
 			gc.setTimeZone(TimeZone.getTimeZone(tzString));
 			StringBuffer ret = new StringBuffer();
 			ret.append(gc.get(Calendar.HOUR));
-			ret.append(":");
+			ret.append(COLON);
 			ret.append(gc.get(Calendar.MINUTE));
-			ret.append(" ");
+			ret.append(SPACE);
 			if(gc.get(Calendar.AM_PM) == 0) {
 				ret.append("AM");
 			}
@@ -117,6 +124,7 @@ public class DateUtils {
 			return ret.toString();
 		}
 		catch(Exception e) {
+			AppLog.e(e.getMessage());
 			return "";
 		}
 	}
@@ -128,15 +136,15 @@ public class DateUtils {
 			gc.setTimeZone(TimeZone.getTimeZone(tzString));
 			StringBuffer ret = new StringBuffer();
 			ret.append(gc.get(Calendar.YEAR));
-			ret.append("-");
+			ret.append(DASH);
 			ret.append(gc.get(Calendar.MONTH) - 1);
-			ret.append("-");
+			ret.append(DASH);
 			ret.append(gc.get(Calendar.DATE));
-			ret.append(" ");
+			ret.append(SPACE);
 			ret.append(gc.get(Calendar.HOUR));
-			ret.append(":");
+			ret.append(COLON);
 			ret.append(gc.get(Calendar.MINUTE));
-			ret.append(" ");
+			ret.append(SPACE);
 			if(gc.get(Calendar.AM_PM) == 0) {
 				ret.append("AM");
 			}
@@ -146,6 +154,7 @@ public class DateUtils {
 			return ret.toString();
 		}
 		catch(Exception e) {
+			AppLog.e(e.getMessage());
 			return "";
 		}
 	}
@@ -154,7 +163,7 @@ public class DateUtils {
 		StringBuffer ret = new StringBuffer();
 		if(dateformat.equals(FORMAT_YYYYMMDD_DASHESH) ) {
 			ret.append(cal.get(Calendar.YEAR));
-			ret.append("-");
+			ret.append(DASH);
 
 			String month = null;
 			int mo = cal.get(Calendar.MONTH) + 1; /* Calendar month is zero indexed, string months are not */
@@ -166,7 +175,7 @@ public class DateUtils {
 			}
 			ret.append(month);      
 
-			ret.append("-");
+			ret.append(DASH);
 
 			String date = null;
 			int dt = cal.get(Calendar.DATE);
@@ -188,7 +197,7 @@ public class DateUtils {
 				date = "" + dt;
 			}
 			ret.append(date);
-			ret.append("-");
+			ret.append(DASH);
 			
 			String month = null;
 			int mo = cal.get(Calendar.MONTH) + 1; /* Calendar month is zero indexed, string months are not */
@@ -200,7 +209,7 @@ public class DateUtils {
 			}
 			ret.append(month);      
 
-			ret.append("-");
+			ret.append(DASH);
 			ret.append(cal.get(Calendar.YEAR));
 		}
 
@@ -218,6 +227,7 @@ public class DateUtils {
 		}
 		catch(Exception e) {
 			//If exception, return server TimeStamp
+			AppLog.e(e.getMessage());
 			return new GregorianCalendar();
 		}
 	}
@@ -386,6 +396,7 @@ public class DateUtils {
 			Date time = (Date) formatter.parseObject(date);
 			calendar.setTime(time);
 		} catch (ParseException e) {
+			AppLog.e(e.getMessage());
 			AppLog.e("Parsing exception to convert date in dateutils class");
 		}
 		return calendar;

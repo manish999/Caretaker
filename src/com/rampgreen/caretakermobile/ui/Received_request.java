@@ -1,7 +1,6 @@
 package com.rampgreen.caretakermobile.ui;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -27,6 +26,8 @@ import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.Constants;
+import com.rampgreen.caretakermobile.viewbadger.BadgeTabManager;
+import com.rampgreen.caretakermobile.viewbadger.BadgeTabWidget;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -137,6 +138,12 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 			lvr = (ListView) getActivity()
 					.findViewById(R.id.lstRecived);					
 			lvr.setAdapter(userAdapter);
+			//to add the badge on caretaker request -->
+			int TotalCount = lvr.getCount();
+			BadgeTabWidget tabWidget = (BadgeTabWidget) getActivity().findViewById(android.R.id.tabs);
+			BadgeTabManager.init(tabWidget);
+
+			BadgeTabManager.getInstance().setBadgeAtIndex(TotalCount, 3);
 			break;
 
 		default:

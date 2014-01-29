@@ -5,12 +5,20 @@
         android:orderInCategory="90"
         android:showAsAction="never"
         android:title="@string/action_device_id"/>
-    <item
+    <!--
+         <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-     <item
+    -->
+    <item
+        android:id="@+id/action_alert"
+        android:icon="@drawable/ic_alert"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_alert"/>
+    <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
         android:showAsAction="never"

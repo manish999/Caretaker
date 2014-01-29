@@ -226,7 +226,33 @@ public class QueryHelper {
 		params.put("token", token);
 		return params;
 	}	
-	
+	public static Map<String, String>  changeAlertSetting(String token,String userId,String onOrOff,String type) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		
+		params.put("action", "caretaker");
+		params.put("task", "edit_notifications");		
+		//params.put("token", "004b19a364e30cf4ebe5f651192724f4f72fae9f");
+		params.put("token", token);
+		params.put("user_id", userId);
+		params.put("notification_val", onOrOff);
+		
+		params.put("type", type);
+		
+		
+		
+		return params;
+	}	
+	public static Map<String, String>  getAlertSettings(String token,String userId) {
+		HashMap<String, String> params = new HashMap<String, String>();	
+		
+		params.put("action", "caretaker");
+		params.put("task", "get_alerts");		
+		params.put("token", token);
+		params.put("user_id", userId);
+
+		
+		return params;
+	}
 	// rajeev//
 	
 }

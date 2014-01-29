@@ -67,8 +67,9 @@
                 android:text=""
                 android:textSize="25sp" />
         </FrameLayout>
+        <!-- to add the badge on caretaker request -->
 
-        <TabWidget
+        <com.rampgreen.caretakermobile.viewbadger.BadgeTabWidget
             android:id="@android:id/tabs"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/tab_height" />

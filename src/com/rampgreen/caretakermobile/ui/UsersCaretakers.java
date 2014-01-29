@@ -1,13 +1,9 @@
 package com.rampgreen.caretakermobile.ui;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,15 +11,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-//import android.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import android.widget.GridView;
 import android.widget.TabHost.OnTabChangeListener;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.android.volley.Request.Method;
 import com.android.volley.VolleyError;
 import com.rampgreen.caretakermobile.MyRequestQueue;
@@ -37,6 +30,9 @@ import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.Constants;
 import com.viewpagerindicator.TabPageIndicator;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 //import com.example.testfragment2.MainActivity.MyAdapter;
 
@@ -242,9 +238,9 @@ OnPageChangeListener, OnTabChangeListener {
 
 		public void refreshAdapter(ArrayList<UserCaretakerBean> users, int pos) {
 			if (pos == 0)
-				((FragmentUserCaretaker) getItem(0)).refreshAdapter(users);
+				((FragmentUserCaretaker) getItem(0)).refreshAdapter(users, pos);
 			else
-				((FragmentUserCaretaker) getItem(1)).refreshAdapter(users);
+				((FragmentUserCaretaker) getItem(1)).refreshAdapter(users, pos);
 		}
 
 	}

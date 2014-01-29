@@ -74,11 +74,22 @@ public class FragmentUserCaretaker extends SherlockFragment {
 
 	}
 
-	public void refreshAdapter(ArrayList<UserCaretakerBean> users) {
+	public void refreshAdapter(ArrayList<UserCaretakerBean> users, int pos) { 
+		if (pos == 0) {
+			dontClickGridViewItem(true);
+		} else {
+			dontClickGridViewItem(false);
+		}
+			
 		this.users = users;
 		if(usersCaretakersImageAdapter != null)
 			usersCaretakersImageAdapter.setList(users);
 
+	}
+	
+	public void dontClickGridViewItem(boolean enabled) {
+		if(gridView != null)
+			gridView.setEnabled(enabled);
 	}
 
 }

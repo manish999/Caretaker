@@ -28,6 +28,8 @@ public class User implements Serializable, Populator
 	private String devicid;
 	private String requestId;
 	private String deviceId;// this id is used for web socket connection to router application through cloud.
+	private String GraphNmae;
+	private String BiometricNmae;
 	
 	private boolean userOnHomeScreen = false;
 	private boolean notification = false;
@@ -90,6 +92,13 @@ public class User implements Serializable, Populator
 	public User () {
 
 	}
+	
+	public User (String UserID,String GraphName,String BiometricNmae) {	
+		this.uId = UserID;
+		this.GraphNmae = GraphName;
+		this.BiometricNmae = BiometricNmae;
+	}
+	
 	/**
 	 * @param name
 	 * @param notification
@@ -105,6 +114,12 @@ public class User implements Serializable, Populator
 		this.notificationCount = notificationCount;
 	}
 
+	public String GetBiometricNmae(){
+		return BiometricNmae;
+	}
+	public String GetGraphNmae(){
+		return GraphNmae;
+	}
 	public boolean isNotification()
 	{
 		return notification;

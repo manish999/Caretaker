@@ -16,6 +16,14 @@
         android:inflatedId="@+id/id_dashboard_header"
         android:layout="@layout/header_iphone" />
 
+    <TextView
+        android:id="@+id/text_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text=""
+        android:textSize="15sp" />
+
     <TabHost
         android:id="@android:id/tabhost"
         android:layout_width="fill_parent"

@@ -37,7 +37,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/SliderTheme" >
-        <activity
+       <activity
             android:name="com.rampgreen.caretakermobile.ui.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
@@ -49,7 +49,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <!--
           WakefulBroadcastReceiver that will receive intents from GCM
           services and hand them to the custom IntentService.
@@ -126,6 +125,11 @@
             android:theme="@style/AppTheme" >
         </activity>
         <activity
+            android:name=".ui.SelfScreenNavigation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
             android:name=".ui.Rainbow"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
@@ -147,6 +151,22 @@
         </activity>
         <activity
             android:name=".ui.ActivityRainbowRegistration"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".ui.AlertSettings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
+        </activity>
+         <activity
+            android:name=".ui.FragmentCalendarView"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
+        </activity>
+        
+         <activity
+            android:name=".ui.ActivityNotification"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
         </activity>

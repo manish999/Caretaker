@@ -17,8 +17,10 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
+import com.rampgreen.caretakermobile.adapter.VisualDisplayAdapter;
 import com.rampgreen.caretakermobile.interfaces.ParserError;
 import com.rampgreen.caretakermobile.model.BeanController;
+import com.rampgreen.caretakermobile.model.ListHolder;
 import com.rampgreen.caretakermobile.model.LoginBean;
 import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
@@ -32,6 +34,7 @@ import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
 import com.rampgreen.caretakermobile.util.Constants;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class LoginActivity extends BaseActivity
@@ -154,7 +157,7 @@ public class LoginActivity extends BaseActivity
 		case ParserError.CODE_SUCCESS:
 			LoginBean login = BeanController.getLoginBean();
 			login.populateBean(response);
-			AppLog.logString(response.toString());
+//			AppLog.logString(response.toString());
 			// store deviceID for 
 			AppSettings.setPreference(this, null, AppSettings.DEVICE_ID, login.getDeviceId());
 
@@ -176,7 +179,7 @@ public class LoginActivity extends BaseActivity
 	public void onErrorResponse(VolleyError error)
 	{
 		closeLoadingBar();
-		AppLog.logToast(this, error.toString());
+//		AppLog.logToast(this, error.toString());
 	}
 
 	public void onClickNext(View v)
@@ -193,11 +196,11 @@ public class LoginActivity extends BaseActivity
 		if (mIsValid)
 		{
 			mIsValid = true;
-			AppLog.logToast(this, "Valid");
+//			AppLog.logToast(this, "Valid");
 		} else
 		{
 			mIsValid = false;
-			AppLog.logToast(this, "inValid");
+//			AppLog.logToast(this, "inValid");
 			// EditText are going to appear with an exclamation mark and an
 			// explicative message.
 		}
@@ -230,17 +233,24 @@ public class LoginActivity extends BaseActivity
 
 				VisualDisplaySettings visualSetting = BeanController.getVisualDisplaySettings();
 				visualSetting.populateBean(response);
+				
+//				getting the data for graph too.
+//				ArrayList<VisualDisplaySettings> visualDisplaySettingsList = ListHolder.getVisualDisplaySettingsList();//userListProvider.getTextDisplayList();
+//				fetchSensorData(caretakersUsers);
+				
+//				 ListHolder.getVisualDisplaySet	tingsList();
+//				 ArrayList<VisualDisplaySettings> visualDisplaySettings = ListHolder.getVisualDisplaySettingsList();//userListProvider.getTextDisplayList();
+//					mVisualDisplayAdapter = new VisualDisplayAdapter(getSherlockActivity(), visualDisplaySettings);
+//					homeChartDisplayListView.setAdapter(mVisualDisplayAdapter);
 				// on success , call Home screen
 				Intent intent = new Intent(getApplicationContext(), FragmentChangeActivity.class);
 				intent.putExtra(Constants.BUNDLE_KEY_USERS, userBean);
 				startActivity(intent);
 				// to close the activity
 				finish();
-				closeLoadingBar();
+				closeLoadingBar();	
 
-
-
-				//				closeLoadingBar();
+								closeLoadingBar();
 				break;
 			case ParserError.CODE_SUCCESS:
 				userBean = BeanController.getUserBean();

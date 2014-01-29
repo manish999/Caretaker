@@ -25,8 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"           
             android:text="Adam heart rate is now 130/min"
-            android:textColor="#222222"
-            android:textSize="18.0dip" 
+           android:textColor="#FF555555"
+            android:textSize="14.0dip" 
             />
 
         <TextView

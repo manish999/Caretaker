@@ -1,24 +1,22 @@
 package com.rampgreen.caretakermobile.ui;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.socket.RTnInternetRouter;
-import com.rampgreen.caretakermobile.socket.RouterService;
 import com.rampgreen.caretakermobile.socket.model.GsonUtil;
 import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
 
-public class ActivityRainbowRegistration extends Activity
+public class ActivityRainbowRegistration extends SherlockFragmentActivity
 {
 	public static final int RED_ON = 4; 
 	public static final int GREEN_ON = 2;
@@ -42,6 +40,9 @@ public class ActivityRainbowRegistration extends Activity
 		redButton = (ToggleButton)findViewById(R.id.toggle_red);
 		yellowButton = (ToggleButton)findViewById(R.id.toggle_yellowish);
 		greenButton = (ToggleButton)findViewById(R.id.toggle_greeno);
+		
+		getSupportActionBar().setHomeButtonEnabled (true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		final TextView  textInstruction = (TextView)findViewById(R.id.textView1);
 		final Button  okButton = (Button)findViewById(R.id.btn_ok);
@@ -68,14 +69,25 @@ public class ActivityRainbowRegistration extends Activity
 		});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu)
+//	{
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.main, menu);
+//		return true;
+//	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 	public void onYellowClicked(View view) {
 		if(((ToggleButton) view).isChecked()) {
 			yellowValue = 1;

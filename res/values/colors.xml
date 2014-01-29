@@ -9,5 +9,12 @@
     <color name="tab_transparent_dark">#16FFFFFF</color>
     <color name="tab_transparent_light">#38FFFFFF</color>
     <color name="transparent">#00000000</color>
+    
+    <color name="graph_fill_orange">#ffe5f2fa</color>
+    <color name="graph_line_orange">#ff1873ba</color>
+     <color name="blue_dark">#ff005683</color>
+     
+    <color name="list_bg">#ff454545</color>
+    <color name="section_header">#FFCCCCCC</color>
 
 </resources>

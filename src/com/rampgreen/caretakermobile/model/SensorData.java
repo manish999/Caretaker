@@ -11,6 +11,7 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class SensorData implements Serializable {
 
+	public String UserID;
 	/** The temp_ambient. */
 	public double temp_ambient;
 	
@@ -49,6 +50,9 @@ public class SensorData implements Serializable {
 	
 	public String updated_on;
 	
+	public String GetUserID(){
+		return this.UserID;
+	}
 	public String gettime(){
 		return this.updated_on;
 	}

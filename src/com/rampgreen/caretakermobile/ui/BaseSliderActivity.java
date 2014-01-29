@@ -99,10 +99,10 @@ public abstract class BaseSliderActivity extends SlidingFragmentActivity {
 			//			refresh = !refresh;
 			//			return true;
 
-		case R.id.action_settings:
+//		case R.id.action_settings:
 			//			Intent calslIntent = new Intent(this, SettingsActivity.class);
 			//			startActivity(calslIntent);
-			return true;
+//			return true;
 
 			//		case R.id.action_help:
 			//			Intent intent = new Intent(this, ActivityHelpDialog.class);

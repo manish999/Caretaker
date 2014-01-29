@@ -31,13 +31,13 @@ public class FragmentMenuColor extends SherlockFragment
 
 	private int[] slider_menu_icon = new int[] {
 			R.drawable.user_slider,
-			R.drawable.notification_slider,
+//			R.drawable.notification_slider,
 			R.drawable.visual_slider,
 			R.drawable.text_slider};
 
 	private String[] slider_menu_text = new String[] { 
 			"Add User Icon",
-			"Add Alert Notification", 
+//			"Add Alert Notification", 
 			"Add Visual Display" , 
 			"Add Text Display"};
 
@@ -61,7 +61,7 @@ public class FragmentMenuColor extends SherlockFragment
 		// android.R.layout.simple_list_item_1, android.R.id.text1, colors);
 		// setListAdapter(colorAdapter);
 		SampleAdapter adapter = new SampleAdapter(getActivity());
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < slider_menu_icon.length; i++) {
 			adapter.add(new SampleItem(slider_menu_text[i], slider_menu_icon[i]));
 		}
 
@@ -92,20 +92,20 @@ public class FragmentMenuColor extends SherlockFragment
 					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
 					newContent.setArguments(bundle);
 					break;
+//				case 1:
+//					newContent = FragmentHomeMenuNotification.newInstance();
+//					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_NOTIFICATION);
+//					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
+//					newContent.setArguments(bundle);
+//					break;
 				case 1:
-					newContent = FragmentHomeMenuNotification.newInstance();
-					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_NOTIFICATION);
-					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
-					newContent.setArguments(bundle);
-					break;
-				case 2:
 					// direct call fragment.
 					newContent = FragmentHomeMenuDisease.newInstance();
 					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_TEXT_VISUALEXPLORER);
 					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);
 					newContent.setArguments(bundle);
 					break;
-				case 3:
+				case 2:
 					newContent = FragmentHomeMenuDisease.newInstance();
 					bundle.putInt(Constants.FRAGMENT_ADD_MENU_CALLER, Constants.ADD_TEXT_DISPLAY);
 					bundle.putInt(Constants.ActivityConstants.FRAGMENT_CALLER, Constants.ActivityConstants.FragmentHomeMenuDisease);

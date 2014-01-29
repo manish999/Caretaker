@@ -5,104 +5,162 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.model.TextDisplaySettings;
+import com.rampgreen.caretakermobile.model.BeanController;
+import com.rampgreen.caretakermobile.model.SensorData;
 import com.rampgreen.caretakermobile.model.User;
-import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 import com.rampgreen.caretakermobile.model.UserListProvider;
-
+import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
+import com.rampgreen.caretakermobile.ui.GraphHome;
 
 import java.util.ArrayList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VisualDisplayAdapter.
+ */
 public class VisualDisplayAdapter extends BaseAdapter {
+
+	/** The context. */
 	private Context context;
+
+	/** The caretakers users. */
 	private ArrayList<VisualDisplaySettings> caretakersUsers;
+
+	/** The inflater. */
 	private LayoutInflater inflater;
+
+	/** The user list provider. */
 	private UserListProvider userListProvider;
 
-	public VisualDisplayAdapter(Context context, ArrayList<VisualDisplaySettings> caretakersUsers) {
+	/** The token. */
+	String token = BeanController.getLoginBean().getAccessToken();
+
+	/** The holder. */
+	private ViewHolder holder;;
+	// private TextView accountName;
+	/** The account name. */
+	String accountName;
+
+	private ArrayList<SensorData> mSensorDataList = new ArrayList<SensorData>();;
+
+	/**
+	 * Instantiates a new visual display adapter.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param caretakersUsers
+	 *            the caretakers users
+	 */
+	public VisualDisplayAdapter(Context context,
+			ArrayList<VisualDisplaySettings> caretakersUsers) {
 		this.context = context;
-//		this.caretakersUsers = FragmentHomeMenuAlert.visualArrayList;
+		// this.caretakersUsers = FragmentHomeMenuAlert.visualArrayList;
 		this.caretakersUsers = caretakersUsers;
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		userListProvider = new UserListProvider();
 	}
 
-	//	public View getView(int position, View convertView, ViewGroup parent) {
-	//		if (convertView == null) {
-	//			convertView = LayoutInflater.from(context).inflate(R.layout.activity_users_caretakers, null);
-	//		}	// get layout from activity_users_caretakers.xml
-	//			gridView = inflater.inflate(R.layout.activity_users_caretakers,
-	//					null);
-	//			// set value into textview
-	//			TextView textView = (TextView) gridView
-	//					.findViewById(R.id.grid_item_label);
-	//			textView.setText(caretakersUsers.get(position).getUsername());
-	//			// set image based on selected text
-	//			ImageView imageView = (ImageView) gridView
-	//					.findViewById(R.id.grid_item_image);
-	//			//String user = caretakersUsers[position];
-	//			imageView.setImageResource(R.drawable.user);
-	//		} else {
-	//			gridView = (View) convertView;
-	//		}
-	//
-	//		return gridView;
-	//	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getView(int, android.view.View,
+	 * android.view.ViewGroup)
+	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
-		if(convertView==null) {
-			convertView = inflater.inflate(R.layout.list_item_visual_display, null);
+		User user = userListProvider.getUser(caretakersUsers.get(position)
+				.getUserID());
+		VisualDisplaySettings setting = caretakersUsers.get(position);
+
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.list_item_visual_display,
+					null);
 			holder = new ViewHolder();
-			holder.accountName = (TextView)convertView.findViewById(R.id.txv_chart_Msg); 
-			holder.imageIcon= (ImageView)convertView.findViewById(R.id.imgview_homeContentChartDisplay);
-//			holder.imageIcon.setImageResource(R.drawable.user);
+			holder.chartLayout = (LinearLayout) convertView
+					.findViewById(R.id.chart_container);
+
 			convertView.setTag(holder);
 		}
 		else {
 			// Get the ViewHolder back to get fast access to the TextView
 			holder = (ViewHolder) convertView.getTag();
 		}
-		User user = userListProvider.getUser(caretakersUsers.get(position).getUserID());
-		VisualDisplaySettings setting = caretakersUsers.get(position);
-		holder.accountName.setText(user.getUsername()+ "'s " + setting.getBiometricID()+ " chart");
-//		holder.accountName.setText(caretakersUsers.get(position).getUsername());
-//		holder.accountName.getPaint().setFakeBoldText(true);
+		// GetSensorData(user.getUid());
+		GraphHome graphHome = new GraphHome();
+		if(mSensorDataList.size()>0) {
+			
+			// how much time would take this function 
+			View view = graphHome.displayGraph(context, mSensorDataList, user.getUid(),user.getUsername(),
+					setting.getBiometricID()); 
+//			View view = graphHome.displayGraph(context, mSensorDataList);
+			holder.chartLayout.addView(view);}
 		return convertView;
 	}
 
+	/**
+	 * The Class ViewHolder.
+	 */
 	private static class ViewHolder {
-		TextView accountName;
-		ImageView imageIcon;
+
+		/** The chart layout. */
+		LinearLayout chartLayout;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getCount()
+	 */
 	@Override
 	public int getCount() {
-		if(caretakersUsers != null){
+		if (caretakersUsers != null) {
 			return caretakersUsers.size();
-		}else{
+		} else {
 			return 0;
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getItem(int)
+	 */
 	@Override
 	public Object getItem(int position) {
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getItemId(int)
+	 */
 	@Override
 	public long getItemId(int position) {
 		return 0;
 	}
 
+	/**
+	 * Sets the list.
+	 * 
+	 * @param caretakersUsers
+	 *            the new list
+	 */
 	public void setList(ArrayList<VisualDisplaySettings> caretakersUsers) {
 		this.caretakersUsers = caretakersUsers;
 		notifyDataSetChanged();
 	}
-
+	
+	/**
+	 *  used to set the graph data to the list on home screen
+	 * @param graphData
+	 */
+	public void setGraphDataList(ArrayList<SensorData> graphData) {
+		this.mSensorDataList = graphData;
+		notifyDataSetChanged();
+	}
 }

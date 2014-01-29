@@ -1,5 +1,6 @@
 package com.rampgreen.caretakermobile.ui;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -25,6 +26,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.Toast;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
@@ -39,8 +41,10 @@ import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.adapter.ListItemDetails;
 import com.rampgreen.caretakermobile.adapter.TextDisplayAdapter;
 import com.rampgreen.caretakermobile.adapter.VisualDisplayAdapter;
+import com.rampgreen.caretakermobile.interfaces.ParserError;
 import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.model.ListHolder;
+import com.rampgreen.caretakermobile.model.SensorData;
 import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.UserListProvider;
@@ -51,9 +55,13 @@ import com.rampgreen.caretakermobile.ui.util.ExpandableHeightGridView;
 import com.rampgreen.caretakermobile.ui.util.ExpandableListView;
 import com.rampgreen.caretakermobile.ui.util.TabBitmap;
 import com.rampgreen.caretakermobile.util.AppLog;
+import com.rampgreen.caretakermobile.util.AppSettings;
 import com.rampgreen.caretakermobile.util.Constants;
+import com.rampgreen.caretakermobile.util.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 
 /**
@@ -149,6 +157,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		imageAdapter = new ImageAdapter(getSherlockActivity(), userList);
 		gridView.setAdapter(imageAdapter);
 
+		tempJugadSelfScreen(); // will remove it, it's temprary
 		/**
 		 * On Click event for Single Gridview Item
 		 * */
@@ -163,7 +172,8 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 				//added by ishu
 				bundle.putString("userid", userList.get(position).getUid());
 				//end
-				intent.setClass(getSherlockActivity(), UserNotification.class);
+//				intent.setClass(getSherlockActivity(), UserNotification.class);
+				intent.setClass(getSherlockActivity(), SelfScreen.class);
 				intent.putExtras(bundle);
 				startActivity(intent);
 				AppLog.logToast(getSherlockActivity(), "posi"+position);
@@ -288,6 +298,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		mVisualDisplayAdapter = new VisualDisplayAdapter(getSherlockActivity(), visualDisplaySettings);
 		homeChartDisplayListView.setAdapter(mVisualDisplayAdapter);
 
+//		refreshVisualDisplayListAdapter(visualDisplaySettings);
 		homeChartDisplayListView.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
@@ -326,7 +337,10 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 
 						//						UserListProvider userListProvider = new UserListProvider();
 						//						userList = userListProvider.getVisualDisplayList();
-						refreshVisualDisplayListAdapter(visualDisplaySettingList);
+//						ArrayList<VisualDisplaySettings> visualDisplaySettings = ListHolder.getVisualDisplaySettingsList();//userListProvider.getTextDisplayList();
+//						mVisualDisplayAdapter = new VisualDisplayAdapter(getSherlockActivity(), visualDisplaySettings);
+//						homeChartDisplayListView.setAdapter(mVisualDisplayAdapter);
+//						refreshVisualDisplayListAdapter(visualDisplaySettingList);
 					}
 				});
 
@@ -362,7 +376,9 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		super.onResume();
 		Activity act = getSherlockActivity();
 		AppLog.logToast(act, act.getClass().toString());
-
+		
+		ArrayList<VisualDisplaySettings> visualDisplaySettings = ListHolder.getVisualDisplaySettingsList();
+		fetchSensorData(visualDisplaySettings);
 		//		String	totalUser = (String)AppSettings.getPrefernce(getSherlockActivity(), null, AppSettings.TEMP_TOTAL_USER, "0");
 		//		int totuser= Integer.parseInt(totalUser);
 		//		ImageAdapter imageAdapter = new ImageAdapter(getSherlockActivity(), totuser);
@@ -383,6 +399,10 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 
 	private void refreshVisualDisplayListAdapter(ArrayList<VisualDisplaySettings> userList2) {
 		mVisualDisplayAdapter.setList(userList2);
+		mVisualDisplayAdapter.notifyDataSetChanged();
+	}
+	private void refreshVisualDisplayGraphListAdapter(ArrayList<SensorData> graphDataList) {
+		mVisualDisplayAdapter.setGraphDataList(graphDataList);
 		mVisualDisplayAdapter.notifyDataSetChanged();
 	}
 
@@ -455,6 +475,24 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					String UserID = "";
+					String title = "";
+					Bundle bundle = new Bundle();
+					for(int i=0;i<userList.size();i++){
+						String strusename;
+						strusename = userList.get(i).getUsername();
+						if(strusename.equals("Self")){
+							UserID = userList.get(i).getUid();
+							title=strusename;
+						}
+					}	
+					
+					if(StringUtils.isEmpty(title)) {
+						title = "Self";
+					}
+					bundle.putString("userid", UserID);	
+					bundle.putString("title",title);
+					intent.putExtras(bundle);
 					startActivity(intent);
 					break;
 
@@ -605,4 +643,161 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 		return userList;
 	}
 
+	private class ResponseListener implements Response.Listener<JSONObject> {
+		private ArrayList<SensorData> mSensorDataList;
+
+		@Override
+		public void onResponse(JSONObject response){
+			int code = Integer.parseInt(response.optString("code"));
+			String msg = response.optString("message");
+			switch (code) {
+			case ParserError.CODE_ACTION_NOT_FOUND:
+
+				break;
+			case ParserError.CODE_MISSING_ACTION:
+
+				break;
+			case ParserError.CODE_MISSING_TASK:
+
+				break;
+			case ParserError.CODE_CLIENT_AUTHORIZATION_FAILED:
+
+				break;
+			case ParserError.CODE_TOKEN_GENERATION_FAILED:
+
+				break;
+			case ParserError.CODE_USERNAME_REQUIRED:
+
+				break;
+			case ParserError.CODE_PASSWORD_REQUIRED:
+
+				break;
+			case ParserError.CODE_PASSWORD_WRONG:
+				/* AppLog.showToast(this, "wrong password"); */
+				break;
+			case ParserError.CODE_USER_NOT_REGISTERED:
+
+				break;
+			case ParserError.CODE_INVALID_TOKEN:
+
+				break;
+			case ParserError.CODE_TOKEN_EXPIRED:
+
+				break;
+			case ParserError.CODE_INTERNAL_SERVER_ERROR:
+
+				break;
+			case ParserError.CODE_DEVICE:	
+				AppLog.showToast(getActivity(), "No device mapped with this user");	
+				break;
+			case ParserError.CODE_USER_ALREADY_REGISTERED:
+
+				break;
+			case ParserError.CODE_SENSOR:
+				Toast.makeText(getSherlockActivity(), "No sensor data available for this user",
+						Toast.LENGTH_LONG).show();
+				break;
+			case ParserError.CODE_SUCCESS:
+				mSensorDataList = parseSensorData(response);
+				refreshVisualDisplayGraphListAdapter(mSensorDataList);
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+
+
+	private class ErrorListener implements Response.ErrorListener{
+		@Override
+		public void onErrorResponse(VolleyError error){
+//			closeLoadingBar();
+			AppLog.logToast(getSherlockActivity(), error.toString());
+		}
+	}
+	
+	/**
+	 * Gets the sensor data.
+	 * 
+	 * @param userArray
+	 *            the user array
+	 */
+	private void fetchSensorData(ArrayList<VisualDisplaySettings> userArray) {
+		for (int i = 0; i < userArray.size(); i++) {
+			VisualDisplaySettings setting = userArray.get(i);
+			String userID = setting.getUserID();
+			Calendar c = Calendar.getInstance();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			String formattedDate = df.format(c.getTime());
+//			formattedDate = "2013-12-18";
+			String StartDate = formattedDate + " 00:00:00";
+			String EndDate = formattedDate + " 23:59:59";
+
+			MyRequestQueue queue = MyVolley.getRequestQueue();
+			String token = BeanController.getLoginBean().getAccessToken();
+			Map<String, String> loginParam = QueryHelper.getSensorDataQuery(
+					token, userID, StartDate, EndDate);
+			CustomRequest customRequest = new CustomRequest(Method.POST,
+					Constants.URL_WEB_SERVICE, loginParam, 
+					new ResponseListener(), new ErrorListener());
+
+			customRequest.setTag(this);
+			queue.add(customRequest);
+			queue.start();
+		}
+	}
+
+	/**
+	 * Gets the sensor_ data.
+	 * 
+	 * @param jsonObject
+	 *            the json object
+	 * @return the array list
+	 */
+	private ArrayList<SensorData> parseSensorData(JSONObject jsonObject) {
+		ArrayList<SensorData> sensorDataList = new ArrayList<SensorData>();
+		try {
+			JSONArray jArrayuser = jsonObject.getJSONArray("user_id");
+			JSONArray jArray = jsonObject.getJSONArray("sensor_data");		
+
+			for (int i = 0; i < jArray.length(); i++) {
+				JSONObject objJson = jArray.getJSONObject(i);
+				jsonObject = jArray.getJSONObject(i);
+
+				SensorData sensorData = new SensorData();
+				sensorData.UserID = jArrayuser.getString(0);
+				sensorData.temp_ambient = Double.parseDouble(objJson.getString("temp_ambient"));
+				sensorData.temp_skin = Double.parseDouble(objJson.getString("temp_skin"));
+				sensorData.pox_hr = Double.parseDouble(objJson.getString("pox_hr"));
+				sensorData.pox_pulse = Double.parseDouble(objJson.getString("pox_pulse"));
+				sensorData.acc_x = Double.parseDouble(objJson.getString("acc_x"));
+				sensorData.acc_y = Double.parseDouble(objJson.getString("acc_y"));
+				sensorData.acc_z = Double.parseDouble(objJson.getString("acc_z"));
+				sensorData.gsr = Double.parseDouble(objJson.getString("gsr"));
+				sensorData.led1ac = Double.parseDouble(objJson.getString("led1ac"));
+				sensorData.led2ac = Double.parseDouble(objJson.getString("led2ac"));
+				sensorData.led1dc = Double.parseDouble(objJson.getString("led1dc"));
+				sensorData.led2dc = Double.parseDouble(objJson.getString("led2dc"));
+				sensorData.updated_on = objJson.getString("updated_on");
+				sensorDataList.add(sensorData);
+			}
+		} catch (Exception e) {
+			AppLog.e(e.getMessage());
+		}
+		return sensorDataList;
+	}
+
+	
+	private void tempJugadSelfScreen() {
+		for(int i=0;i<userList.size();i++){
+			String strusename;
+			strusename = userList.get(i).getUsername();
+			if(strusename.equals("Self")){
+				String UserID = userList.get(i).getUid();
+				AppSettings.setPreference(getSherlockActivity(), null, AppSettings.TEMP_JUGAD_SELF_SCREEN, UserID);
+//				title=strusename;
+			}
+		}	
+	}
 }

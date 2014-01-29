@@ -105,7 +105,7 @@ public class VisualDisplaySettings extends BaseDeleteSettings implements Populat
 				//				user.heartRateTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
 				//				user.heartRateVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
 
-			} else if(disease.equalsIgnoreCase("Accelerometer")) {
+			} else if(disease.equalsIgnoreCase("SPO2")) {
 				if(visualSetting.equalsIgnoreCase("1")) {
 					VisualDisplaySettings textDisplaySettings = new VisualDisplaySettings(userId, disease, uniqueIdForDeletion);
 					ArrayList<VisualDisplaySettings> tdSettingList = ListHolder.getVisualDisplaySettingsList();
@@ -114,7 +114,7 @@ public class VisualDisplaySettings extends BaseDeleteSettings implements Populat
 				//				user.accelerometerTextDisplay = textSetting.equalsIgnoreCase("1") ? true : false;
 				//				user.accelerometerVisualDisplay = visualSetting.equalsIgnoreCase("1") ? true : false;
 
-			} else if(disease.equalsIgnoreCase("Temperature")) {
+			} else if(disease.equalsIgnoreCase("Temperature_ambient")) {
 				if(visualSetting.equalsIgnoreCase("1")) {
 					VisualDisplaySettings textDisplaySettings = new VisualDisplaySettings(userId, disease, uniqueIdForDeletion);
 					ArrayList<VisualDisplaySettings> tdSettingList = ListHolder.getVisualDisplaySettingsList();

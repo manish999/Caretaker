@@ -3,6 +3,7 @@ package com.rampgreen.caretakermobile.ui;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -274,11 +275,21 @@ public class FragmentChangeActivity extends BaseSliderActivity implements Respon
 			mContent.getActivity();
 			//refersh the list on click 
 			break;
-			//		case R.id.action_period:
-			//			openPeriodSelector();
-			//			return true;
+		case R.id.action_alert:
+			openNotificationList();
+			return true;
 		}
 		return super.onOptionsItemSelected(p_item);
+	}
+
+	private void openNotificationList()
+	{
+		Bundle bundle = new Bundle();
+		bundle.putString(Constants.CALLED_COMPONENT, Constants.ACTIVITY_FRAGMENT_CHANGE_ACTIVITY);
+
+		Intent intent = new Intent(this, ActivityNotification.class);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	/****************************gcm*****************************************/
@@ -444,6 +455,6 @@ public class FragmentChangeActivity extends BaseSliderActivity implements Respon
 	@Override
 	public void onResponse(JSONObject response)
 	{
-		AppLog.d(AppLog.APP_TAG, response.toString());
+		AppLog.d(AppLog.APP_TAG, "gcm registration successfully  "+response.toString());
 	}
 }

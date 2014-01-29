@@ -23,13 +23,14 @@ import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.interfaces.ParserError;
+import com.rampgreen.caretakermobile.model.BeanController;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.util.Constants;
 
 public class LegalTerms extends BaseActivity {
 	String userid;
-	String token = "b1916c6daa00b1d5d2297166008f3a7c4825e6f8";
+	String token = BeanController.getLoginBean().getAccessToken();
 	String UserName;
 
 	@Override
@@ -50,6 +51,7 @@ public class LegalTerms extends BaseActivity {
 			public void onClick(View arg0) {
 				// if every field is valid, send request to RTNeuroserver
 				response_accept(token, userid);
+				finish();
 			}
 		});
 	}

@@ -78,7 +78,7 @@ public class DemoActivity extends Activity {
 			gcm = GoogleCloudMessaging.getInstance(this);
 			regid = getRegistrationId(context);
 
-			if (regid.isEmpty()) {
+			if (regid.equals("")) {
 				registerInBackground();
 			}
 		} else {
@@ -141,7 +141,7 @@ public class DemoActivity extends Activity {
 	private String getRegistrationId(Context context) {
 		final SharedPreferences prefs = getGcmPreferences(context);
 		String registrationId = prefs.getString(PROPERTY_REG_ID, "");
-		if (registrationId.isEmpty()) {
+		if (registrationId.equals("")) {
 			Log.i(TAG, "Registration not found.");
 			return "";
 		}

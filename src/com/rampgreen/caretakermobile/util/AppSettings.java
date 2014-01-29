@@ -29,6 +29,8 @@ public class AppSettings {
 	public static final String MRID_LAST_TWO = "mrid_last_two";
 	
 	public static final String DEVICE_ID = "did";
+	public static final String STORE_NOTI_LIST = "noti_list";
+	public static final String TEMP_JUGAD_SELF_SCREEN= "selfjugad";
 
 
 	public static Object getPrefernce(Context context, String prefName, String tag, Object defaultValue){

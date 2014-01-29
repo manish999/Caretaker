@@ -20,8 +20,8 @@ public class Constants {
 	public static final String BUNDLE_KEY_DISEASE = "bundledisease";
 	public static final String DISEASE_GSR = "GSR";//"bundleGSR";
 	public static final String DISEASE_HEART_RATE = "Heart Rate";
-	public static final String DISEASE_ACCELEROMETER = "Accelerometer";
-	public static final String DISEASE_TEMPRATURE = "Temperature";
+	public static final String DISEASE_ACCELEROMETER = "SPO2";
+	public static final String DISEASE_TEMPRATURE = "Temperature_ambient";
 	
 	public static final String FRAGMENT_ADD_MENU_CALLER = "fragmainmenucaller";
 	
@@ -31,6 +31,12 @@ public class Constants {
 	public static final int ADD_TEXT_VISUALEXPLORER = 104;
 	
 	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+	
+	public static final String NOTIFICATION_MSG = "noti_msg";
+	public static final String CALLED_COMPONENT = "called_component";
+	
+	public static final String ACTIVITY_FRAGMENT_CHANGE_ACTIVITY = "fragmentchangeactivity";
+	public static final String SERVICE_GCM_INTENT= "gcm_intent";
 	
 	public static class ActivityConstants 
 	{

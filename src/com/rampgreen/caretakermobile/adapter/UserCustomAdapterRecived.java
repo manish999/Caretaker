@@ -27,6 +27,7 @@ import com.rampgreen.caretakermobile.model.Recived;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
 import com.rampgreen.caretakermobile.ui.LegalTerms;
+import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.Constants;
 
 import java.util.ArrayList;
@@ -139,8 +140,7 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					response_ignor(token,userrs.getUserid());
-					Toast.makeText(context, "Record Ignor",
-							Toast.LENGTH_LONG).show();
+					AppLog.logToast(context, "Record Ignore");
 					((Recived)data.get(position)).isignore = "0";
 					notifyDataSetChanged();
 				}
@@ -152,8 +152,7 @@ public class UserCustomAdapterRecived extends ArrayAdapter<Recived> implements R
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					response_delete(token,userrs.getUserid());
-					Toast.makeText(context, "Record Deleted",
-							Toast.LENGTH_LONG).show();
+					AppLog.logToast(context, "Record Deleted");
 					data.remove(position);
 					notifyDataSetChanged(); 
 				}

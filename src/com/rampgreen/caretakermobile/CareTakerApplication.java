@@ -1,9 +1,6 @@
 package com.rampgreen.caretakermobile;
 
 import android.app.Application;
-import android.content.Intent;
-
-import com.rampgreen.caretakermobile.socket.RouterService;
 
 /**
  * Application class for the demo. Used to ensure that MyVolley is initialized. {@see MyVolley}
@@ -17,8 +14,8 @@ public class CareTakerApplication extends Application {
         
         init();
         
-        Intent	routerSetupIntent= new Intent(this, RouterService.class);
-		this.startService(routerSetupIntent);
+//        Intent	routerSetupIntent= new Intent(this, RouterService.class);
+//		this.startService(routerSetupIntent);
     }
 
 

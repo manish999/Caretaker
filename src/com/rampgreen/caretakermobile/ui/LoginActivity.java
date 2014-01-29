@@ -17,24 +17,19 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.rampgreen.caretakermobile.MyRequestQueue;
 import com.rampgreen.caretakermobile.MyVolley;
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.adapter.VisualDisplayAdapter;
 import com.rampgreen.caretakermobile.interfaces.ParserError;
 import com.rampgreen.caretakermobile.model.BeanController;
-import com.rampgreen.caretakermobile.model.ListHolder;
 import com.rampgreen.caretakermobile.model.LoginBean;
 import com.rampgreen.caretakermobile.model.TextDisplaySettings;
 import com.rampgreen.caretakermobile.model.User;
 import com.rampgreen.caretakermobile.model.VisualDisplaySettings;
 import com.rampgreen.caretakermobile.network.CustomRequest;
 import com.rampgreen.caretakermobile.network.QueryHelper;
-import com.rampgreen.caretakermobile.socket.RTnInternetRouter;
-import com.rampgreen.caretakermobile.socket.RouterService;
 import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
 import com.rampgreen.caretakermobile.util.Constants;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class LoginActivity extends BaseActivity
@@ -57,11 +52,12 @@ public class LoginActivity extends BaseActivity
 		mEtPassword = (FormEditText) findViewById(R.id.et_password);
 		mLoginButton = (Button) findViewById(R.id.btn_login);
 
+		/*****************************************************/
 		// check if socket connected or not
-		if(! RTnInternetRouter.isSocketConnected()) {
-			Intent	routerSetupIntent= new Intent(this, RouterService.class);
-			this.startService(routerSetupIntent);
-		}
+//		if(! RTnInternetRouter.isSocketConnected()) {
+//			Intent	routerSetupIntent= new Intent(this, RouterService.class);
+//			this.startService(routerSetupIntent);
+//		}
 
 		// handle login button click 
 		mLoginButton.setOnClickListener(new View.OnClickListener()

@@ -1,7 +1,6 @@
 package com.rampgreen.caretakermobile.ui;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,9 +9,6 @@ import android.widget.ToggleButton;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.rampgreen.caretakermobile.R;
-import com.rampgreen.caretakermobile.socket.RTnInternetRouter;
-import com.rampgreen.caretakermobile.socket.model.GsonUtil;
-import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
 import com.rampgreen.caretakermobile.util.AppLog;
 import com.rampgreen.caretakermobile.util.AppSettings;
 
@@ -132,17 +128,17 @@ public class ActivityRainbowRegistration extends SherlockFragmentActivity
 	void sendDeviceID()
 	{
 		//C=C1C2 , 2 last digit of MAC id of the Health device
-		String C1 = (String) AppSettings.getPrefernce(this, null, AppSettings.FIRST_LEFT_HEXDIGIT, "");
-		String C2 =	(String) AppSettings.getPrefernce(this, null, AppSettings.FIRST_RIGHT_HEXDIGIT, "");
-		String deviceID =	(String) AppSettings.getPrefernce(this, null, AppSettings.DEVICE_ID, "");
-//		AppLog.d(AppLog.APP_TAG, "deviceID with out 2 digit: " + deviceID);
-//		deviceID = deviceID+C1+C2;
-		AppLog.d(AppLog.APP_TAG, "deviceID : " + deviceID);
-		String macID = WidgetUtil.getMacAddress(this);
-		String jsonString = GsonUtil.createDeviceIdJsonString(macID, deviceID, C1+C2);
-		
-		boolean isSend = RTnInternetRouter.sendToRTnCloudServer(jsonString);
-		AppLog.d(AppLog.APP_TAG, "Is Json sent to cloud ? : "+isSend+"****if false the connection is lost.");
+//		String C1 = (String) AppSettings.getPrefernce(this, null, AppSettings.FIRST_LEFT_HEXDIGIT, "");
+//		String C2 =	(String) AppSettings.getPrefernce(this, null, AppSettings.FIRST_RIGHT_HEXDIGIT, "");
+//		String deviceID =	(String) AppSettings.getPrefernce(this, null, AppSettings.DEVICE_ID, "");
+////		AppLog.d(AppLog.APP_TAG, "deviceID with out 2 digit: " + deviceID);
+////		deviceID = deviceID+C1+C2;
+//		AppLog.d(AppLog.APP_TAG, "deviceID : " + deviceID);
+//		String macID = WidgetUtil.getMacAddress(this);
+//		String jsonString = GsonUtil.createDeviceIdJsonString(macID, deviceID, C1+C2);
+//		
+//		boolean isSend = RTnInternetRouter.sendToRTnCloudServer(jsonString);
+//		AppLog.d(AppLog.APP_TAG, "Is Json sent to cloud ? : "+isSend+"****if false the connection is lost.");
 	}
 
 	private void resetToggleButton()

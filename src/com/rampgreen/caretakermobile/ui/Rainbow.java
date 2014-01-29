@@ -11,14 +11,8 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 import com.rampgreen.caretakermobile.R;
 import com.rampgreen.caretakermobile.model.BeanController;
-import com.rampgreen.caretakermobile.model.RainbowPacketModel;
-import com.rampgreen.caretakermobile.model.RainbowPacketModel.Packet;
-import com.rampgreen.caretakermobile.socket.RTnInternetRouter;
-import com.rampgreen.caretakermobile.socket.RTnInternetRouter.OnMessageCallback;
-import com.rampgreen.caretakermobile.socket.RTnRouter;
 import com.rampgreen.caretakermobile.socket.model.GsonUtil;
 import com.rampgreen.caretakermobile.socket.model.StatusData;
 import com.rampgreen.caretakermobile.ui.util.WidgetUtil;
@@ -84,17 +78,17 @@ public class Rainbow extends BaseActivity implements OnTabChangeListener, OnClic
 	private void sendToCloudServer()
 	{
 		// register callback so that we could refresh ui
-		RTnInternetRouter.OnMessageCallback onMessageCallback = new RTnInternetRouter.OnMessageCallback()
-		{
-			@Override
-			public void receiveData(String jsonString)
-			{
-				AppLog.d(AppLog.APP_TAG, "WS response in Rainbow: " + jsonString);
-				Gson gson = new Gson();
-				mStatusData = gson.fromJson(jsonString, StatusData.class);
-				refreshUi();
-			}
-		};
+//		RTnInternetRouter.OnMessageCallback onMessageCallback = new RTnInternetRouter.OnMessageCallback()
+//		{
+//			@Override
+//			public void receiveData(String jsonString)
+//			{
+//				AppLog.d(AppLog.APP_TAG, "WS response in Rainbow: " + jsonString);
+//				Gson gson = new Gson();
+//				mStatusData = gson.fromJson(jsonString, StatusData.class);
+//				refreshUi();
+//			}
+//		};
 		// device ID required to cloud in each packet
 		String deviceID =	(String) AppSettings.getPrefernce(Rainbow.this, null, AppSettings.DEVICE_ID, "");
 		if (deviceID.length() == 10) {
@@ -104,9 +98,9 @@ public class Rainbow extends BaseActivity implements OnTabChangeListener, OnClic
 //			deviceID = deviceID+C1+C2;	
 			String statusDataJSon = GsonUtil.createStatusDataJsonString(deviceID, C1+C2);
 
-			RTnInternetRouter.setOnMsgCallback(onMessageCallback);
-			boolean isSend = RTnInternetRouter.sendToRTnCloudServer(statusDataJSon);
-			AppLog.d(AppLog.APP_TAG, "Is Json sent to cloud ? : "+isSend+"****if false the connection is lost.");
+//			RTnInternetRouter.setOnMsgCallback(onMessageCallback);
+//			boolean isSend = RTnInternetRouter.sendToRTnCloudServer(statusDataJSon);
+//			AppLog.d(AppLog.APP_TAG, "Is Json sent to cloud ? : "+isSend+"****if false the connection is lost.");
 			//		} else if(deviceID.length() == 12){
 			//			AppLog.d(AppLog.APP_TAG, "deviceID : " + deviceID);
 			//			String statusDataJSon = GsonUtil.createStatusDataJsonString(deviceID, "");

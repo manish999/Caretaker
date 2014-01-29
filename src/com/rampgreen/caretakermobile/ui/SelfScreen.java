@@ -169,7 +169,7 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String formattedDate = df.format(c.getTime());
-		// formattedDate = "2013-12-18";
+		 formattedDate = "2014-01-29";
 		String StartDate = formattedDate + " 00:00:00";
 		String EndDate = formattedDate + " 23:59:59";
 		
@@ -717,7 +717,7 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 				}
 				setChartSettings(renderer, "Sensor Accelerometer", "Hour",
 						"m/s", x.get(0)[0].getTime(),
-						x.get(0)[x.get(0).length - 1].getTime(), 0, 19.8,
+						x.get(0)[x.get(0).length - 1].getTime(), -19.8, 19.8,
 						Color.BLACK, Color.BLACK);
 
 				viewGsr = ChartFactory

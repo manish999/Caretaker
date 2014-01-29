@@ -730,7 +730,7 @@ public class FragmentTabBottom extends SherlockFragment implements  Response.Lis
 			Calendar c = Calendar.getInstance();
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String formattedDate = df.format(c.getTime());
-//			formattedDate = "2013-12-18";
+			 formattedDate = "2014-01-29";
 			String StartDate = formattedDate + " 00:00:00";
 			String EndDate = formattedDate + " 23:59:59";
 

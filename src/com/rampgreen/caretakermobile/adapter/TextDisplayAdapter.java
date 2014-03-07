@@ -139,19 +139,20 @@ public class TextDisplayAdapter extends BaseAdapter {
 	 *            the user array
 	 */
 	private void GetSensorData(ArrayList<TextDisplaySettings> caretakersUsers2) {
-		for (int i = 0; i < caretakersUsers2.size(); i++) {
-			MyRequestQueue queue = MyVolley.getRequestQueue();
-			Map<String, String> loginParam = QueryHelper
-					.createAllUsersQuery(accessToken);
+		// to be removed ishu no user id required
+		//	for (int i = 0; i < caretakersUsers2.size(); i++) {
+		MyRequestQueue queue = MyVolley.getRequestQueue();
+		Map<String, String> loginParam = QueryHelper
+				.createAllUsersQuery(accessToken);
 
-			CustomRequest customRequest = new CustomRequest(Method.POST,
-					Constants.URL_WEB_SERVICE, loginParam,
-					new ResponseListener(), new ErrorListener());
+		CustomRequest customRequest = new CustomRequest(Method.POST,
+				Constants.URL_WEB_SERVICE, loginParam,
+				new ResponseListener(), new ErrorListener());
 
-			customRequest.setTag(this);
-			queue.add(customRequest);
-			queue.start();
-		}
+		customRequest.setTag(this);
+		queue.add(customRequest);
+		queue.start();
+		//	}
 	}
 
 	/**
@@ -280,16 +281,17 @@ public class TextDisplayAdapter extends BaseAdapter {
 	 * @return the string
 	 */
 	private String DisplayTextValue(String UserID, String UserName,
-			String BiometricName) {
+			String BiometricNames) {
+		String BiometricName = "";
 		if (LIST_SensorData != null) {
 			for (int i = 0; i < LIST_SensorData.size(); i++) {
 				if (UserID.equals(LIST_SensorData.get(i).GetUserID())) {
-					if (BiometricName.equals("GSR")) {
+					if (BiometricNames.equals("GSR")) {
 						BiometricName = UserName + " GSR <b><font color=\"red\">" + LIST_SensorData.get(i).updated_on +"</font></b><br>"
 								+ "<b><font color=\"green\">GSR</font></b> : "
 								+ LIST_SensorData.get(i).getacc_x()
 								+ " Ohms";
-					} else if (BiometricName.equals("Heart Rate")) {
+					} else if (BiometricNames.equals("Heart Rate")) {
 						BiometricName = UserName
 								+ " Heart Rate <b><font color=\"red\">" + LIST_SensorData.get(i).updated_on +"</font></b><br>"
 								+ "<b><font color=\"green\">Pulse</font></b> : "
@@ -298,7 +300,7 @@ public class TextDisplayAdapter extends BaseAdapter {
 								+ "<br><b><font color=\"blue\">HR</font></b> : "
 								+ LIST_SensorData.get(i).getpox_hr()
 								+ " Beats/min";
-					} else if (BiometricName.equals("SPO2")) {
+					} else if (BiometricNames.equals("SPO2")) {
 						BiometricName = UserName
 								+ " Accelerometer <b><font color=\"red\">" + LIST_SensorData.get(i).updated_on +"</font></b><br>"
 								+ "<b><font color=\"green\">X axis</font></b> : "
@@ -310,7 +312,7 @@ public class TextDisplayAdapter extends BaseAdapter {
 								+ "<br><b><font color=\"red\">Z axis</font></b> : "
 								+ LIST_SensorData.get(i).getacc_z()
 								+ " m/s<sup>2</sup>";
-					} else if (BiometricName.equals("Temperature_ambient")) {
+					} else if (BiometricNames.equals("Temperature_ambient")) {
 						BiometricName = UserName
 								+ " Temperature <b><font color=\"red\">" + LIST_SensorData.get(i).updated_on +"</font></b><br>"
 								+ "<b><font color=\"green\">Ambient</font></b> : "
@@ -320,20 +322,22 @@ public class TextDisplayAdapter extends BaseAdapter {
 								+ LIST_SensorData.get(i).gettemp_skin()
 								+ " Celsius";
 					}
-				} else {
-					if (BiometricName.equals("GSR")) {
-						BiometricName = UserName + " GSR ";
-					} else if (BiometricName.equals("Heart Rate")) {
-						BiometricName = UserName + " Heart Rate ";
-					} else if (BiometricName.equals("SPO2")) {
-						BiometricName = UserName + " Accelerometer ";
-					} else if (BiometricName.equals("Temperature_ambient")) {
-						BiometricName = UserName + " Temperature ";
-					}
-
-				}
+				} 
+				//	else {
+				//	if (BiometricNames.equals("GSR")) {
+				//	BiometricName = UserName + " GSR ";
+				//	} else if (BiometricNames.equals("Heart Rate")) {
+				//	BiometricName = UserName + " Heart Rate ";
+				//	} else if (BiometricNames.equals("SPO2")) {
+				//	BiometricName = UserName + " Accelerometer ";
+				//	} else if (BiometricNames.equals("Temperature_ambient")) {
+				//	BiometricName = UserName + " Temperature ";
+				//	}
+				//
+				//	}
 			}
 		}
+		if(BiometricName ==""){BiometricName = UserName + BiometricNames + " :- No Sensor data!";}
 		return BiometricName;
 	}
 }

@@ -222,7 +222,7 @@ public class RegistrationActivity extends BaseActivity implements OnDateSetListe
 	@Override
 	public void onErrorResponse(VolleyError error)
 	{
-		Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show();
+		AppLog.logToast(this, error.toString());
 	}
 
 	public void onClickNext(View v)

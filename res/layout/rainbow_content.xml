@@ -10,14 +10,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dip"
-        android:background="@drawable/btn_login"
+        android:background="@drawable/btn_rainbow"
         android:gravity="center"
         android:paddingBottom="0.0dip"
         android:paddingTop="0.0dip"
-        android:text="Sensor Registration"
-        android:textColor="@android:color/white"
-        android:textSize="16.0sp"
-        android:textStyle="bold" />
+        android:text="Sensor Registration" />
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -33,53 +30,21 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <RelativeLayout
-                    android:id="@+id/battery_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="25dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@android:color/holo_blue_dark" >
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dip"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginTop="2dip"
-                        android:text="Battery"
-                        android:textColor="@android:color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <View
-                    android:id="@+id/textViewline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dip"
-                    android:layout_below="@+id/textView1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="1dp"
-                    android:background="#F8E6E0" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/selfbtn" >
 
                 <Button
                     android:id="@+id/btn_refresh_battery"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/battery_view"
                     android:layout_margin="5dip"
-                    android:background="@drawable/btn_login"
+                    android:background="@drawable/btn_rainbow"
                     android:gravity="center"
                     android:paddingBottom="0.0dip"
                     android:paddingTop="0.0dip"
-                    android:text="Get Live Status"
-                    android:textColor="@android:color/white"
-                    android:textSize="16.0sp"
-                    android:textStyle="bold" />
+                    android:text="Get Live Status" />
 
                 <TextView
                     android:id="@+id/tv_battery"
@@ -90,8 +55,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/textView3"
                     android:text="Full"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#6E6E6E" />
+                    android:textColor="#6E6E6E"
+                    android:textSize="16.0sp" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -100,60 +65,28 @@
                     android:layout_alignBaseline="@+id/tv_battery"
                     android:layout_alignBottom="@+id/tv_battery"
                     android:layout_alignParentLeft="true"
-                    android:text="Status: "
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2E9AFE" />
+                    android:text="Battery: "
+                    android:textColor="@android:color/black"
+                    android:textSize="16.0sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <RelativeLayout
-                    android:id="@+id/device_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="25dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@android:color/holo_blue_dark" >
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dip"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginTop="2dip"
-                        android:text="Device"
-                        android:textColor="@android:color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <View
-                    android:id="@+id/textViewline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dip"
-                    android:layout_below="@+id/textView1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="1dp"
-                    android:background="#F8E6E0" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/selfbtn" >
 
                 <Button
                     android:id="@+id/btn_refresh_device"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/device_view"
                     android:layout_margin="5dip"
-                    android:background="@drawable/btn_login"
+                    android:background="@drawable/btn_rainbow"
                     android:gravity="center"
                     android:paddingBottom="0.0dip"
                     android:paddingTop="0.0dip"
-                    android:text="Get Live Status"
-                    android:textColor="@android:color/white"
-                    android:textSize="16.0sp"
-                    android:textStyle="bold" />
+                    android:text="Get Live Status" />
 
                 <TextView
                     android:id="@+id/tv_device_status"
@@ -174,60 +107,28 @@
                     android:layout_alignBaseline="@+id/tv_device_status"
                     android:layout_alignBottom="@+id/tv_device_status"
                     android:layout_alignParentLeft="true"
-                    android:text="Status: "
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2E9AFE" />
+                    android:text="Device: "
+                    android:textColor="@android:color/black"
+                    android:textSize="16.0sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <RelativeLayout
-                    android:id="@+id/battery_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="25dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@android:color/holo_blue_dark" >
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dip"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginTop="2dip"
-                        android:text="Transducer"
-                        android:textColor="@android:color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <View
-                    android:id="@+id/textViewline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dip"
-                    android:layout_below="@+id/textView1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="1dp"
-                    android:background="#F8E6E0" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/selfbtn" >
 
                 <Button
                     android:id="@+id/btn_refresh_transducer"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/battery_view"
                     android:layout_margin="5dip"
-                    android:background="@drawable/btn_login"
+                    android:background="@drawable/btn_rainbow"
                     android:gravity="center"
                     android:paddingBottom="0.0dip"
                     android:paddingTop="0.0dip"
-                    android:text="Get Live Status"
-                    android:textColor="@android:color/white"
-                    android:textSize="16.0sp"
-                    android:textStyle="bold" />
+                    android:text="Get Live Status" />
 
                 <TextView
                     android:id="@+id/tv_transducer"
@@ -248,60 +149,28 @@
                     android:layout_alignBaseline="@+id/tv_transducer"
                     android:layout_alignBottom="@+id/tv_transducer"
                     android:layout_alignParentLeft="true"
-                    android:text="Status: "
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2E9AFE" />
+                    android:text="Transducer: "
+                    android:textColor="@android:color/black"
+                    android:textSize="16.0sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <RelativeLayout
-                    android:id="@+id/battery_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="25dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@android:color/holo_blue_dark" >
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dip"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginTop="2dip"
-                        android:text="Sensor"
-                        android:textColor="@android:color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <View
-                    android:id="@+id/textViewline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dip"
-                    android:layout_below="@+id/textView1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="1dp"
-                    android:background="#F8E6E0" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/selfbtn" >
 
                 <Button
                     android:id="@+id/btn_refresh_sensor"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/battery_view"
                     android:layout_margin="5dip"
-                    android:background="@drawable/btn_login"
+                    android:background="@drawable/btn_rainbow"
                     android:gravity="center"
                     android:paddingBottom="0.0dip"
                     android:paddingTop="0.0dip"
-                    android:text="Get Live Status"
-                    android:textColor="@android:color/white"
-                    android:textSize="16.0sp"
-                    android:textStyle="bold" />
+                    android:text="Get Live Status" />
 
                 <TextView
                     android:id="@+id/tv_sensor"
@@ -322,60 +191,28 @@
                     android:layout_alignBaseline="@+id/tv_sensor"
                     android:layout_alignBottom="@+id/tv_sensor"
                     android:layout_alignParentLeft="true"
-                    android:text="Status: "
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2E9AFE" />
+                    android:text="Sensor: "
+                    android:textColor="@android:color/black"
+                    android:textSize="16.0sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <RelativeLayout
-                    android:id="@+id/battery_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="25dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@android:color/holo_blue_dark" >
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dip"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginTop="2dip"
-                        android:text="TTS"
-                        android:textColor="@android:color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <View
-                    android:id="@+id/textViewline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dip"
-                    android:layout_below="@+id/textView1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="1dp"
-                    android:background="#F8E6E0" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/selfbtn" >
 
                 <Button
                     android:id="@+id/btn_refresh_tts"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/battery_view"
                     android:layout_margin="5dip"
-                    android:background="@drawable/btn_login"
+                    android:background="@drawable/btn_rainbow"
                     android:gravity="center"
                     android:paddingBottom="0.0dip"
                     android:paddingTop="0.0dip"
-                    android:text="Get Live Status"
-                    android:textColor="@android:color/white"
-                    android:textSize="16.0sp"
-                    android:textStyle="bold" />
+                    android:text="Get Live Status" />
 
                 <TextView
                     android:id="@+id/tv_tts"
@@ -396,60 +233,28 @@
                     android:layout_alignBaseline="@+id/tv_tts"
                     android:layout_alignBottom="@+id/tv_tts"
                     android:layout_alignParentLeft="true"
-                    android:text="Status: "
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2E9AFE" />
+                    android:text="TTS: "
+                    android:textColor="@android:color/black"
+                    android:textSize="16.0sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <RelativeLayout
-                    android:id="@+id/battery_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="25dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@android:color/holo_blue_dark" >
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dip"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginTop="2dip"
-                        android:text="TRS"
-                        android:textColor="@android:color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <View
-                    android:id="@+id/textViewline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dip"
-                    android:layout_below="@+id/textView1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="1dp"
-                    android:background="#F8E6E0" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/selfbtn" >
 
                 <Button
                     android:id="@+id/btn_refresh_trs"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/battery_view"
                     android:layout_margin="5dip"
-                    android:background="@drawable/btn_login"
+                    android:background="@drawable/btn_rainbow"
                     android:gravity="center"
                     android:paddingBottom="0.0dip"
                     android:paddingTop="0.0dip"
-                    android:text="Get Live Status"
-                    android:textColor="@android:color/white"
-                    android:textSize="16.0sp"
-                    android:textStyle="bold" />
+                    android:text="Get Live Status" />
 
                 <TextView
                     android:id="@+id/tv_trs"
@@ -470,9 +275,9 @@
                     android:layout_alignBaseline="@+id/tv_trs"
                     android:layout_alignBottom="@+id/tv_trs"
                     android:layout_alignParentLeft="true"
-                    android:text="Status: "
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2E9AFE" />
+                    android:text="TRS: "
+                    android:textColor="@android:color/black"
+                    android:textSize="16.0sp" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

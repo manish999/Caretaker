@@ -105,7 +105,7 @@ public class FragmentChangeActivity extends BaseSliderActivity implements Respon
 			gcm = GoogleCloudMessaging.getInstance(this);
 			regid = getRegistrationId(this);
 
-			if (regid.isEmpty()) {
+			if (regid != null && regid.length() == 0) {
 				registerInBackground();
 			}
 		} else {
@@ -342,7 +342,7 @@ public class FragmentChangeActivity extends BaseSliderActivity implements Respon
 	private String getRegistrationId(Context context) {
 		final SharedPreferences prefs = getGcmPreferences(context);
 		String registrationId = prefs.getString(PROPERTY_REG_ID, "");
-		if (registrationId.isEmpty()) {
+		if (registrationId != null && registrationId.length() == 0) {
 			AppLog.d("Registration not found.");
 			return "";
 		}
@@ -399,7 +399,7 @@ public class FragmentChangeActivity extends BaseSliderActivity implements Respon
 
 			@Override
 			protected void onPostExecute(String msg) {
-				Toast.makeText(FragmentChangeActivity.this, msg, Toast.LENGTH_SHORT).show();
+				AppLog.logToast(FragmentChangeActivity.this, msg);
 				//				mDisplay.append(msg + "\n");
 			}
 		}.execute(null, null, null);

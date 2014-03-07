@@ -51,7 +51,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/selfbtn"
+                        android:background="@drawable/layout_home_grid_screen"
                         android:orientation="vertical" >
 
                         <com.rampgreen.caretakermobile.ui.util.ExpandableHeightGridView

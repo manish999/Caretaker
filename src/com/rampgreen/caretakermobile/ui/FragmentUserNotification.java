@@ -63,7 +63,7 @@ Response.Listener<JSONObject>, Response.ErrorListener{
 		Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c.getTime());
-        formattedDate = "2014-01-29";
+//        formattedDate = "2014-01-29";
         String startDate = formattedDate + " 00:00:00";
         String endDate = formattedDate + " 23:59:59";
         strUserId = getArguments().getString("userid");      

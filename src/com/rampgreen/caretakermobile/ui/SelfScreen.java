@@ -92,12 +92,12 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 	/** The view gsr. */
 	private static GraphicalView viewGsr;
 
-	private static ArrayList<SensorData> ALIST_Temp;
-	String token = BeanController.getLoginBean().getAccessToken(); // "1348c8cd897edc2925815ff158b55164a32209fc";
+	private static  ArrayList<SensorData> ALIST_Temp;
+	private String token = BeanController.getLoginBean().getAccessToken(); // "1348c8cd897edc2925815ff158b55164a32209fc";
 
 	/** The Constant CONTENT. */
 	public static final String[] CONTENT = new String[] { "GSR", "HR", "Acc",
-			"Temp" };
+	"Temp" };
 
 	private static final User User = null;
 
@@ -113,8 +113,7 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 	private String[] mDisplayist;
 	TabPageIndicator indicator;
 	private FragmentCalendarView mCalendarDisplayAdapter;
-	
-    
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -122,9 +121,8 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-//		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState);		
-		
+		//	requestWindowFeature(Window.FEATURE_NO_TITLE);
+		super.onCreate(savedInstanceState);	
 		Intent myLocalIntent = getIntent();
 		myBundle = myLocalIntent.getExtras();
 		String title = "Self";
@@ -135,10 +133,8 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 		setContentView(R.layout.simple_tabs);
 		TextView txtDisplayName = (TextView) findViewById(R.id.text_view_title);
 		txtDisplayName.setText(title + " Graphical Data");
-		
-//		setHeader(title, true, true, false, R.drawable.alerts,
-//				R.drawable.profile);		
-		
+		//	setHeader(title, true, true, false, R.drawable.alerts,
+		//	R.drawable.profile);	
 		adapter = new GoogleMusicAdapter(getSupportFragmentManager());
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
@@ -150,16 +146,14 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 		ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource(
 				this, R.array.SelfScreenDisplay,
 				R.layout.sherlock_spinner_item);
-		list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);		
-		
+		list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);	
 		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		getSupportActionBar().setListNavigationCallbacks(list, this);
 
 		getSupportActionBar().show();
-//		getSupportActionBar().setDisplayShowHomeEnabled(false);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);		
+		//	getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);	
 	}
-	
 
 	@Override
 	public void onStart() {
@@ -169,10 +163,9 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String formattedDate = df.format(c.getTime());
-		 formattedDate = "2014-01-29";
+		// formattedDate = "2013-12-18";
 		String StartDate = formattedDate + " 00:00:00";
 		String EndDate = formattedDate + " 23:59:59";
-		
 		String userID = "";
 		if(myBundle != null) {
 			userID = myBundle.getString("userid");
@@ -220,23 +213,23 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 			switch (position) {
 			case 0:
 				return TestFragment.newInstance(CONTENT[position
-						% CONTENT.length]);
+				                                        % CONTENT.length]);
 
 			case 1:
 				return HeartFragment.newInstance(CONTENT[position
-						% CONTENT.length]);
+				                                         % CONTENT.length]);
 
 			case 2:
 				return AccFragment.newInstance(CONTENT[position
-						% CONTENT.length]);
+				                                       % CONTENT.length]);
 
 			case 3:
 				return TempFragment.newInstance(CONTENT[position
-						% CONTENT.length]);
+				                                        % CONTENT.length]);
 
 			default:
 				return TestFragment.newInstance(CONTENT[position
-						% CONTENT.length]);
+				                                        % CONTENT.length]);
 
 			}
 
@@ -279,9 +272,9 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 	/**
 	 * Setup tab host.
 	 */
-	private void setupTabHost() {		
+	private void setupTabHost() {	
 		mTabHostDays = (TabHost) findViewById(android.R.id.tabhost);
-		mTabHostDays.setup();		
+		mTabHostDays.setup();	
 	}
 
 	/**
@@ -321,7 +314,6 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 		tv.setText(text);
 		return view;
 	}
-	
 
 	/**
 	 * Creates the tab drawable.
@@ -457,7 +449,7 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 				int length = renderer.getSeriesRendererCount();
 				for (int i = 0; i < length; i++) {
 					((XYSeriesRenderer) renderer.getSeriesRendererAt(i))
-							.setFillPoints(true);
+					.setFillPoints(true);
 				}
 				setChartSettings(renderer, "Sensor GSR", "Hour", "Ohms",
 						x.get(0)[0].getTime(),
@@ -593,7 +585,7 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 				int length = renderer.getSeriesRendererCount();
 				for (int i = 0; i < length; i++) {
 					((XYSeriesRenderer) renderer.getSeriesRendererAt(i))
-							.setFillPoints(true);
+					.setFillPoints(true);
 				}
 				setChartSettings(renderer, "Sensor HR", "Hour", "Beats/min",
 						x.get(0)[0].getTime(),
@@ -713,7 +705,7 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 				int length = renderer.getSeriesRendererCount();
 				for (int i = 0; i < length; i++) {
 					((XYSeriesRenderer) renderer.getSeriesRendererAt(i))
-							.setFillPoints(true);
+					.setFillPoints(true);
 				}
 				setChartSettings(renderer, "Sensor Accelerometer", "Hour",
 						"m/s", x.get(0)[0].getTime(),
@@ -834,7 +826,7 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 				int length = renderer.getSeriesRendererCount();
 				for (int i = 0; i < length; i++) {
 					((XYSeriesRenderer) renderer.getSeriesRendererAt(i))
-							.setFillPoints(true);
+					.setFillPoints(true);
 				}
 				setChartSettings(renderer, "Sensor Temperature", "Hour",
 						"Celsius", x.get(0)[0].getTime(),
@@ -940,11 +932,16 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 			// closeLoadingBar();
 			break;
 		case ParserError.CODE_SENSOR:
-			AppLog.showToast(this, "No sensor data available for this user");
+			AppLog.showToast(this, "No sensor data available for this user");	
+			if(ALIST_Temp != null){
+				ALIST_Temp.clear();	
+				pager.setAdapter(null);	
+			}	
+			//	adapter.notifyDataSetChanged();	
 			// closeLoadingBar();
 			break;
-		case ParserError.CODE_SUCCESS:
-			GetSensor_Data(response);
+		case ParserError.CODE_SUCCESS:	
+			GetSensor_Data(response);	
 			adapter = new GoogleMusicAdapter(getSupportFragmentManager());
 
 			pager = (ViewPager) findViewById(R.id.pager);
@@ -1257,50 +1254,48 @@ public class SelfScreen extends BaseActivity implements OnTabChangeListener, OnN
 	 */
 	@Override
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-		Bundle bundle = new Bundle();		
-		 Intent intent = null;
-		 if(myBundle == null) {
+		Bundle bundle = new Bundle();	
+		Intent intent = null;
+		if(myBundle == null) {
 			String userID = (String) AppSettings.getPrefernce(this, null, AppSettings.TEMP_JUGAD_SELF_SCREEN, "");
-			 bundle.putString("userid", userID);	
-				bundle.putString("title", "Self");
-				bundle.putString("lvitempos", "1");	 
-		 } else {
-			 bundle.putString("userid", myBundle.getString("userid"));	
-				bundle.putString("title", myBundle.getString("title"));
-				bundle.putString("lvitempos", String.valueOf(itemPosition));	 
-		 }
-		
-		
+			bundle.putString("userid", userID);	
+			bundle.putString("title", "Self");
+			bundle.putString("lvitempos", "1");	 
+		} else {
+			bundle.putString("userid", myBundle.getString("userid"));	
+			bundle.putString("title", myBundle.getString("title"));
+			bundle.putString("lvitempos", String.valueOf(itemPosition));	 
+		}
 		if (mDisplayist[itemPosition].equals("Graphical view")) {
 		} else if (mDisplayist[itemPosition].equals("Text view")) {	
-			 intent = new Intent(getApplicationContext(),
-					 UserNotification.class);				
-			 intent.putExtras(bundle);
-			 startActivity(intent);		
-           
+			intent = new Intent(getApplicationContext(),
+					UserNotification.class);	
+			intent.putExtras(bundle);
+			startActivity(intent);	
+
 		} else if (mDisplayist[itemPosition].equals("Calendar view")) {
-			 intent = new Intent(getApplicationContext(),
-					 FragmentCalendarView.class);				
-			 intent.putExtras(bundle);
-			 startActivity(intent);	
+			intent = new Intent(getApplicationContext(),
+					FragmentCalendarView.class);	
+			intent.putExtras(bundle);
+			startActivity(intent);	
 		}
 		return true;
 	}
-  
+
 	/* (non-Javadoc)
 	 * @see com.actionbarsherlock.app.SherlockFragmentActivity#onCreateOptionsMenu(android.view.Menu)
 	 */
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    super.onCreateOptionsMenu(menu);
-	    SubMenu subMenu1 = menu.addSubMenu(0, 0, Menu.NONE,"Action Item");
-        subMenu1.add(0, 1, Menu.NONE,"Alerts").setIcon(R.drawable.bell);
-        subMenu1.add(0, 2, Menu.NONE,"Setting").setIcon(R.drawable.settings);       
+		super.onCreateOptionsMenu(menu);
+		SubMenu subMenu1 = menu.addSubMenu(0, 0, Menu.NONE,"Action Item");
+		subMenu1.add(0, 1, Menu.NONE,"Alerts").setIcon(R.drawable.bell);
+		subMenu1.add(0, 2, Menu.NONE,"Setting").setIcon(R.drawable.settings);       
 
-        MenuItem subMenu1Item = subMenu1.getItem();
-        subMenu1Item.setIcon(R.drawable.abs__ic_menu_moreoverflow_normal_holo_light);
-        subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		MenuItem subMenu1Item = subMenu1.getItem();
+		subMenu1Item.setIcon(R.drawable.abs__ic_menu_moreoverflow_normal_holo_light);
+		subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
-	    return super.onCreateOptionsMenu(menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	/* (non-Javadoc)
